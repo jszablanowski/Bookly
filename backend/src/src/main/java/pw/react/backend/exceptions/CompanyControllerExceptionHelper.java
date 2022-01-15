@@ -29,4 +29,9 @@ public class CompanyControllerExceptionHelper {
         return new ResponseEntity<>(new ExceptionDetails(HttpStatus.UNAUTHORIZED, ex.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler(value = { ForbiddenException.class })
+    public ResponseEntity<ExceptionDetails> handleForbiddenException(ForbiddenException ex) {
+        logger.error("Invalid Input Exception: {}", ex.getMessage());
+        return new ResponseEntity<>(new ExceptionDetails(HttpStatus.FORBIDDEN, ex.getMessage()), HttpStatus.FORBIDDEN);
+    }
 }
