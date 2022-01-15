@@ -27,9 +27,8 @@ public class Booking {
     @Column(name = "Active")
     private boolean active;
 
-    @OneToOne
-    @JoinColumn(name = "itemId")
-    private Item item;
+    @Column(name = "itemId")
+    private String itemId;
 
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
