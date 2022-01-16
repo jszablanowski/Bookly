@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import pw.react.backend.dao.UserRepository;
-import pw.react.backend.exceptions.ResourceNotFoundException;
+import pw.react.backend.models.User;
 
 @Service
-class SecurityService implements SecurityProvider {
+public class SecurityService implements SecurityProvider {
 
     private static final String SECURITY_HEADER = "security-header";
     private final UserRepository userRepository;
@@ -35,5 +35,19 @@ class SecurityService implements SecurityProvider {
     @Override
     public boolean isAuthorized(HttpHeaders headers) {
         return isAuthenticated(headers);
+    }
+
+    @Override
+    public User getUserFromHeaders(HttpHeaders headers){
+        if (headers == null) {
+            return null;
+        }
+
+        if (headers.containsKey(SECURITY_HEADER)){
+            var token = headers.getFirst(SECURITY_HEADER);
+            var user = userRepository.findBySecurityToken(token);
+            return user.get();
+        }
+        return null;
     }
 }
