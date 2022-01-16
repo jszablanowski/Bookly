@@ -1,0 +1,1 @@
+This is the entry point for Lab 3 of the PW React Course

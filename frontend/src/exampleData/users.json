@@ -1,0 +1,23 @@
+[
+    {
+        "key": "1",
+        "userid": "1234",
+        "username": "johnbrown1234@gmail.com",
+        "firstname": "John",
+        "lastname": "Brown"
+    },
+    {
+        "key": "2",
+        "userid": "2345",
+        "username": "jimgreen@gmail.com",
+        "firstname": "Jim",
+        "lastname": "Green"
+    },
+    {
+        "key": "3",
+        "userid": "5678",
+        "username": "joeblack7@gmail.com",
+        "firstname": "Joe",
+        "lastname": "Black"
+    }
+]
