@@ -16,7 +16,7 @@ export class AppRouter extends Component {
             <Route path='bookings'>
               <Route path='flats' element={<FlatsBookingsView />}/>
               <Route path='cars' element={<CarsBookingsView />}/>
-              <Route path='parking-spots' element={<ParkingSpotsBookingsView />}/>
+              <Route path='parking_spots' element={<ParkingSpotsBookingsView />}/>
             </Route>
             <Route path='*' element={<NotFound />}/>
         </Routes>

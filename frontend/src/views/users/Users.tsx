@@ -3,23 +3,48 @@ import 'antd/dist/antd.css';
 import { Table, Space, Button, Input, Row } from 'antd';
 import exampleUsers from "../../exampleData/users.json";
 import {Typography} from "antd"
+import { AddUser } from './AddUser';
+import { User } from './User';
 
 const { Title } = Typography;
 const { Search } = Input;
 
-export class Users extends Component {
+interface State {
+  addingUser : boolean,
+  searchedPhrase : string
+  carList : User[]
+}
+export class Users extends Component<any, State> {
   static displayName = Users.name;
-  carList = exampleUsers;
-  searchedPhrase = "";
-
-  onSearchHandler = (value: any) => {
-    this.searchedPhrase = value;
-    console.log("Searching " + value);
-    this.forceUpdate();
+  
+  constructor(props : any){
+      super(props);
+      this.state={
+          addingUser: false,
+          searchedPhrase: "",
+          carList : exampleUsers
+      }
   }
 
+  onSearchHandler = (value: any) => {
+    this.setState({searchedPhrase: value});
+    console.log("Searching " + value);
+  }
   addUserHandler = () => {
-    console.log("Adding new user");
+    this.setState({addingUser: true});
+    console.log("Adding new user : " + this.state.addingUser);
+  }
+  addUserCancel = () => {
+    this.setState({addingUser: false});
+    console.log("Adding user has been canceled");
+  }
+  addUserConfirm = (user : User) => {
+    user.userid = "6996"
+    this.setState(prevState => ({
+      addingUser: false,
+      carList: [...prevState.carList, user]
+    }))
+    console.log("Adding new user : " + user.username);
   }
 
   columns = [
@@ -48,7 +73,7 @@ export class Users extends Component {
       key: 'action',
       render: (_text: any, record: { firstname: string; lastname: string; }) => (
         <Space size="middle">
-            <Button>Edit {record.firstname + ' ' + record.lastname}</Button>
+            <Button>Edit</Button>
             <Button>Delete</Button>
         </Space>
       ),
@@ -65,9 +90,11 @@ export class Users extends Component {
             <Button onClick={this.addUserHandler} style={{ width: 150}} >Add user</Button>
           </Row>
           
-          <Table columns={this.columns} dataSource={this.carList.filter((user) => (
-            user.username.toUpperCase().includes(this.searchedPhrase.toUpperCase())
+          <Table columns={this.columns} dataSource={this.state.carList.filter((user) => (
+            user.username.toUpperCase().includes(this.state.searchedPhrase.toUpperCase())
            ))} />
+
+          <AddUser visible={this.state.addingUser} onCancel={this.addUserCancel} onAdd={this.addUserConfirm} />
         </div>
     );
   }
