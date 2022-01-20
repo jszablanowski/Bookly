@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import 'antd/dist/antd.css';
-import { Table, Space, Button, Input, Row } from 'antd';
+import { Table, Space, Button, Input, Row, message } from 'antd';
 import exampleUsers from "../../exampleData/users.json";
 import {Typography} from "antd"
 import { AddUser } from './AddUser';
@@ -28,24 +28,28 @@ export class Users extends Component<any, State> {
 
   onSearchHandler = (value: any) => {
     this.setState({searchedPhrase: value});
-    console.log("Searching " + value);
   }
   addUserHandler = () => {
     this.setState({addingUser: true});
-    console.log("Adding new user : " + this.state.addingUser);
   }
-  addUserCancel = () => {
+  addUserCancelHandler = () => {
     this.setState({addingUser: false});
     console.log("Adding user has been canceled");
   }
-  addUserConfirm = (user : User) => {
+  addUserConfirmHandler = (user : User) => {
     user.userid = "6996"
     this.setState(prevState => ({
       addingUser: false,
       carList: [...prevState.carList, user]
     }))
-    console.log("Adding new user : " + user.username);
+    this.displaySuccessMessage();
   }
+  displaySuccessMessage = () => {
+    message.success('New user added succesfully!');
+  };
+  displayErrorMessage = () => {
+    message.error('Operation failed!');
+  };
 
   columns = [
     {
@@ -94,7 +98,7 @@ export class Users extends Component<any, State> {
             user.username.toUpperCase().includes(this.state.searchedPhrase.toUpperCase())
            ))} />
 
-          <AddUser visible={this.state.addingUser} onCancel={this.addUserCancel} onAdd={this.addUserConfirm} />
+          <AddUser visible={this.state.addingUser} onCancel={this.addUserCancelHandler} onAdd={this.addUserConfirmHandler} />
         </div>
     );
   }
