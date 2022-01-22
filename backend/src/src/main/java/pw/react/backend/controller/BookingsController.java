@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import pw.react.backend.requests.BookingResponse;
@@ -32,8 +33,9 @@ public class BookingsController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<ArrayList<BookingResponse>> getUserBookings(Authentication authentication) {
-        var user = userService.getByUserName(authentication.getName());
+    public ResponseEntity<ArrayList<BookingResponse>> getUserBookings() {
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.getByUserName(userName);
         var bookings = bookingService.getUserBookings(user.getId());
         return ResponseEntity.ok(bookings);
     }
