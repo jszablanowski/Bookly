@@ -32,4 +32,16 @@ public class Booking {
 
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
+
+    public static Booking Create(User user, Date startDateTime, String itemId, ItemType itemType)
+    {
+        var booking = new Booking();
+        booking.user = user;
+        booking.startDateTime = startDateTime;
+        booking.active = true;
+        booking.itemId = itemId;
+        booking.itemType = itemType;
+        
+        return booking;
+    }
 }

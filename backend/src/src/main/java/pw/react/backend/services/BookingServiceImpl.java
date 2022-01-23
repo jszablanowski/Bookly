@@ -3,7 +3,10 @@ package pw.react.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pw.react.backend.dao.BookingRepository;
+import pw.react.backend.dto.AddBookingDto;
+import pw.react.backend.enums.ItemType;
 import pw.react.backend.exceptions.ResourceNotFoundException;
+import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BookingResponse;
 
 import java.util.ArrayList;
@@ -26,26 +29,31 @@ public class BookingServiceImpl implements BookingService {
 
         var responseList = new ArrayList<BookingResponse>();
         var userBookings = repository.findBookingsByUserId((userId));
-        for (var booking: userBookings)
+        for (var bookingEntry: userBookings)
         {
-            var response = new BookingResponse();
-            response.booking = booking;
-            response.item = itemService.getItem(booking.getItemId(), booking.getItemType());
+            var bookingItem = itemService.getItem(bookingEntry.getItemId(), bookingEntry.getItemType());
+
+            responseList.add( new BookingResponse()
+            {{
+                booking = bookingEntry;
+                item = bookingItem;
+            }});
         }
         return responseList;
     }
 
     @Override
     public BookingResponse getBooking(long bookingId) throws ResourceNotFoundException {
-        var booking = repository.findById(bookingId);
+        var bookingEntry = repository.findById(bookingId);
 
-        if (!booking.isPresent())
+        if (!bookingEntry.isPresent())
             throw new ResourceNotFoundException("Booking not found");
 
-        var response = new BookingResponse();
-        response.booking = booking.get();
-        response.item = itemService.getItem(booking.get().getItemId(), booking.get().getItemType());
-        return response;
+        var itemBase = itemService.getItem(bookingEntry.get().getItemId(), bookingEntry.get().getItemType());
+        return new BookingResponse(){{
+            booking =  bookingEntry.get();
+            item = itemBase;
+        }};
     }
 
     @Override
@@ -59,5 +67,10 @@ public class BookingServiceImpl implements BookingService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void addBooking(Booking booking) {
+        repository.save(booking);
     }
 }

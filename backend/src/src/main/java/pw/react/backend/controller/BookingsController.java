@@ -6,10 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
+import pw.react.backend.dto.AddBookingDto;
+import pw.react.backend.enums.ItemType;
+import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BookingResponse;
 import pw.react.backend.services.BookingService;
 import pw.react.backend.services.UserService;
@@ -40,6 +41,19 @@ public class BookingsController {
         return ResponseEntity.ok(bookings);
     }
 
+    @PostMapping(path = "")
+    public ResponseEntity<Booking> addBooking(@RequestBody AddBookingDto addBookingDto)
+    {
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.getByUserName(userName);
+        var itemTypeEnum = ItemType.valueOf(addBookingDto.itemType);
+        var newBooking = Booking.Create(user, addBookingDto.startDateTime, addBookingDto.itemId,
+                itemTypeEnum);
+
+        bookingService.addBooking(newBooking);
+        return ResponseEntity.ok(newBooking);
+    }
+
 
     @GetMapping(path = "/{bookingId}")
     public ResponseEntity<BookingResponse> getBooking(@RequestHeader HttpHeaders headers,
@@ -54,9 +68,8 @@ public class BookingsController {
                                                       @PathVariable long bookingId)
     {
         var result = bookingService.deleteBooking(bookingId);
-        var response = result == true ? ResponseEntity.ok("Booking deleted")
+        return result ? ResponseEntity.ok("Booking deleted")
                 : ResponseEntity.ok("Error when deleting booking");
         // tu powinnismy jeszcze jakis badRequest jak nie ma bookingu zwracac ale tego nie ma w spec.
-        return response;
     }
 }
