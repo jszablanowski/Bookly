@@ -12,4 +12,5 @@ public interface BookingService {
     BookingResponse getBooking(long bookingId) throws ResourceNotFoundException;
     boolean deleteBooking(long bookingId) throws ResourceNotFoundException;
     void addBooking(Booking booking);
+    void updateBooking(Booking booking);
 }

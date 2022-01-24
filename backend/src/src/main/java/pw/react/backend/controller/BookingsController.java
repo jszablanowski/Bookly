@@ -9,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pw.react.backend.dto.AddBookingDto;
+import pw.react.backend.dto.UpdateBookingDto;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.models.Booking;
+import pw.react.backend.dto.AddBookingDto;
 import pw.react.backend.requests.BookingResponse;
 import pw.react.backend.services.BookingService;
 import pw.react.backend.services.UserService;
@@ -39,6 +41,33 @@ public class BookingsController {
         var user = userService.getByUserName(userName);
         var bookings = bookingService.getUserBookings(user.getId());
         return ResponseEntity.ok(bookings);
+    }
+    @PutMapping(path = "/{bookingId}")
+    public ResponseEntity<Booking> updateBooking(@RequestBody UpdateBookingDto updateBookingDto, @PathVariable long bookingId)
+    {
+
+        var booking = bookingService.getBooking(bookingId).booking;
+
+        if(updateBookingDto.itemType != null)
+        {
+            var itemTypeEnum = ItemType.valueOf(updateBookingDto.itemType);
+            booking.setItemType(itemTypeEnum);
+        }
+
+        if(updateBookingDto.itemId != null)
+        {
+            booking.setItemId(updateBookingDto.itemId);
+        }
+
+        if(updateBookingDto.startDateTime != null)
+        {
+            booking.setStartDateTime(updateBookingDto.startDateTime);
+        }
+
+        booking.setActive(updateBookingDto.Active);
+
+        bookingService.updateBooking(booking);
+        return ResponseEntity.ok(booking);
     }
 
     @PostMapping(path = "")
@@ -71,5 +100,6 @@ public class BookingsController {
         return result ? ResponseEntity.ok("Booking deleted")
                 : ResponseEntity.ok("Error when deleting booking");
         // tu powinnismy jeszcze jakis badRequest jak nie ma bookingu zwracac ale tego nie ma w spec.
+        return response;
     }
 }

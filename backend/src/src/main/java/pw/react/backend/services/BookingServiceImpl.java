@@ -73,4 +73,9 @@ public class BookingServiceImpl implements BookingService {
     public void addBooking(Booking booking) {
         repository.save(booking);
     }
+
+    @Override
+    public void updateBooking(Booking booking)  {
+        repository.save(booking);
+    }
 }
