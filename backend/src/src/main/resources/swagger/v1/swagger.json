@@ -1,0 +1,650 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Api Documentation",
+    "version": "1.0",
+    "title": "Api Documentation",
+    "termsOfService": "urn:tos",
+    "contact": {},
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  },
+  "host": "localhost:8090",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "basic-error-controller",
+      "description": "Basic Error Controller"
+    },
+    { "name": "bookings-controller", "description": "Bookings Controller" },
+    {
+      "name": "jwt-authentication-controller",
+      "description": "Jwt Authentication Controller"
+    },
+    { "name": "jwt-user-controller", "description": "Jwt User Controller" },
+    { "name": "operation-handler", "description": "Operation Handler" },
+    { "name": "web-mvc-links-handler", "description": "Web Mvc Links Handler" }
+  ],
+  "paths": {
+    "/actuator": {
+      "get": {
+        "tags": ["web-mvc-links-handler"],
+        "summary": "links",
+        "operationId": "linksUsingGET",
+        "produces": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v2+json",
+          "application/vnd.spring-boot.actuator.v3+json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "additionalProperties": { "$ref": "#/definitions/Link" }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/actuator/beans": {
+      "get": {
+        "tags": ["operation-handler"],
+        "summary": "handle",
+        "operationId": "handleUsingGET",
+        "produces": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v2+json",
+          "application/vnd.spring-boot.actuator.v3+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/actuator/health": {
+      "get": {
+        "tags": ["operation-handler"],
+        "summary": "handle",
+        "operationId": "handleUsingGET_1",
+        "produces": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v2+json",
+          "application/vnd.spring-boot.actuator.v3+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/actuator/health/**": {
+      "get": {
+        "tags": ["operation-handler"],
+        "summary": "handle",
+        "operationId": "handleUsingGET_2",
+        "produces": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v2+json",
+          "application/vnd.spring-boot.actuator.v3+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/actuator/loggers": {
+      "get": {
+        "tags": ["operation-handler"],
+        "summary": "handle",
+        "operationId": "handleUsingGET_3",
+        "produces": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v2+json",
+          "application/vnd.spring-boot.actuator.v3+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/actuator/loggers/{name}": {
+      "get": {
+        "tags": ["operation-handler"],
+        "summary": "handle",
+        "operationId": "handleUsingGET_4",
+        "produces": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v2+json",
+          "application/vnd.spring-boot.actuator.v3+json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "post": {
+        "tags": ["operation-handler"],
+        "summary": "handle",
+        "operationId": "handleUsingPOST",
+        "consumes": [
+          "application/json",
+          "application/vnd.spring-boot.actuator.v3+json",
+          "application/vnd.spring-boot.actuator.v2+json"
+        ],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "body",
+            "required": false,
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "string" }
+            }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/authenticate": {
+      "post": {
+        "tags": ["jwt-authentication-controller"],
+        "summary": "createAuthenticationToken",
+        "operationId": "createAuthenticationTokenUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "authenticationRequest",
+            "description": "authenticationRequest",
+            "required": true,
+            "schema": { "$ref": "#/definitions/JwtRequest" }
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "object" } },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/bookings": {
+      "get": {
+        "tags": ["bookings-controller"],
+        "summary": "getUserBookings",
+        "operationId": "getUserBookingsUsingGET",
+        "produces": ["*/*"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/BookingResponse" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/bookings/{bookingId}": {
+      "get": {
+        "tags": ["bookings-controller"],
+        "summary": "getBooking",
+        "operationId": "getBookingUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "bookingId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/BookingResponse" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "delete": {
+        "tags": ["bookings-controller"],
+        "summary": "deleteBooking",
+        "operationId": "deleteBookingUsingDELETE",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "bookingId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": { "description": "OK", "schema": { "type": "string" } },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/error": {
+      "get": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingGET",
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "head": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingHEAD",
+        "consumes": ["application/json"],
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "post": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "put": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "delete": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingDELETE",
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "options": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingOPTIONS",
+        "consumes": ["application/json"],
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "patch": {
+        "tags": ["basic-error-controller"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingPATCH",
+        "consumes": ["application/json"],
+        "produces": ["text/html"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/ModelAndView" }
+          },
+          "204": { "description": "No Content" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/users": {
+      "post": {
+        "tags": ["jwt-user-controller"],
+        "summary": "createUser",
+        "operationId": "createUserUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "user",
+            "description": "user",
+            "required": true,
+            "schema": { "$ref": "#/definitions/User" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/User" }
+          },
+          "201": { "description": "Created" },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "JWT": { "type": "apiKey", "name": "Authorization", "in": "header" }
+  },
+  "definitions": {
+    "Booking": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "id": { "type": "integer", "format": "int64" },
+        "itemId": { "type": "string" },
+        "itemType": { "type": "string", "enum": ["CAR", "PARKING", "ROOM"] },
+        "startDateTime": { "type": "string", "format": "date-time" },
+        "user": { "$ref": "#/definitions/User" }
+      },
+      "title": "Booking"
+    },
+    "BookingResponse": {
+      "type": "object",
+      "properties": {
+        "booking": { "$ref": "#/definitions/Booking" },
+        "item": { "$ref": "#/definitions/ItemBase" }
+      },
+      "title": "BookingResponse"
+    },
+    "ItemBase": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "endDateTime": { "type": "string", "format": "date-time" },
+        "name": { "type": "string" },
+        "startDateTime": { "type": "string", "format": "date-time" }
+      },
+      "title": "ItemBase"
+    },
+    "JwtRequest": {
+      "type": "object",
+      "properties": {
+        "password": { "type": "string" },
+        "username": { "type": "string" }
+      },
+      "title": "JwtRequest"
+    },
+    "Link": {
+      "type": "object",
+      "properties": {
+        "href": { "type": "string" },
+        "templated": { "type": "boolean" }
+      },
+      "title": "Link"
+    },
+    "ModelAndView": {
+      "type": "object",
+      "properties": {
+        "empty": { "type": "boolean" },
+        "model": { "type": "object" },
+        "modelMap": {
+          "type": "object",
+          "additionalProperties": { "type": "object" }
+        },
+        "reference": { "type": "boolean" },
+        "status": {
+          "type": "string",
+          "enum": [
+            "ACCEPTED",
+            "ALREADY_REPORTED",
+            "BAD_GATEWAY",
+            "BAD_REQUEST",
+            "BANDWIDTH_LIMIT_EXCEEDED",
+            "CHECKPOINT",
+            "CONFLICT",
+            "CONTINUE",
+            "CREATED",
+            "DESTINATION_LOCKED",
+            "EXPECTATION_FAILED",
+            "FAILED_DEPENDENCY",
+            "FORBIDDEN",
+            "FOUND",
+            "GATEWAY_TIMEOUT",
+            "GONE",
+            "HTTP_VERSION_NOT_SUPPORTED",
+            "IM_USED",
+            "INSUFFICIENT_SPACE_ON_RESOURCE",
+            "INSUFFICIENT_STORAGE",
+            "INTERNAL_SERVER_ERROR",
+            "I_AM_A_TEAPOT",
+            "LENGTH_REQUIRED",
+            "LOCKED",
+            "LOOP_DETECTED",
+            "METHOD_FAILURE",
+            "METHOD_NOT_ALLOWED",
+            "MOVED_PERMANENTLY",
+            "MOVED_TEMPORARILY",
+            "MULTIPLE_CHOICES",
+            "MULTI_STATUS",
+            "NETWORK_AUTHENTICATION_REQUIRED",
+            "NON_AUTHORITATIVE_INFORMATION",
+            "NOT_ACCEPTABLE",
+            "NOT_EXTENDED",
+            "NOT_FOUND",
+            "NOT_IMPLEMENTED",
+            "NOT_MODIFIED",
+            "NO_CONTENT",
+            "OK",
+            "PARTIAL_CONTENT",
+            "PAYLOAD_TOO_LARGE",
+            "PAYMENT_REQUIRED",
+            "PERMANENT_REDIRECT",
+            "PRECONDITION_FAILED",
+            "PRECONDITION_REQUIRED",
+            "PROCESSING",
+            "PROXY_AUTHENTICATION_REQUIRED",
+            "REQUESTED_RANGE_NOT_SATISFIABLE",
+            "REQUEST_ENTITY_TOO_LARGE",
+            "REQUEST_HEADER_FIELDS_TOO_LARGE",
+            "REQUEST_TIMEOUT",
+            "REQUEST_URI_TOO_LONG",
+            "RESET_CONTENT",
+            "SEE_OTHER",
+            "SERVICE_UNAVAILABLE",
+            "SWITCHING_PROTOCOLS",
+            "TEMPORARY_REDIRECT",
+            "TOO_EARLY",
+            "TOO_MANY_REQUESTS",
+            "UNAUTHORIZED",
+            "UNAVAILABLE_FOR_LEGAL_REASONS",
+            "UNPROCESSABLE_ENTITY",
+            "UNSUPPORTED_MEDIA_TYPE",
+            "UPGRADE_REQUIRED",
+            "URI_TOO_LONG",
+            "USE_PROXY",
+            "VARIANT_ALSO_NEGOTIATES"
+          ]
+        },
+        "view": { "$ref": "#/definitions/View" },
+        "viewName": { "type": "string" }
+      },
+      "title": "ModelAndView"
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": { "type": "string" },
+        "firstName": { "type": "string" },
+        "id": { "type": "integer", "format": "int64" },
+        "lastName": { "type": "string" },
+        "password": { "type": "string" },
+        "username": { "type": "string" }
+      },
+      "title": "User"
+    },
+    "View": {
+      "type": "object",
+      "properties": { "contentType": { "type": "string" } },
+      "title": "View"
+    }
+  }
+}
