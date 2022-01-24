@@ -5,6 +5,7 @@ import { Button, Input, Text } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
+import { UserService } from "../app/services/UserService";
 
 
 type FormData = {
@@ -14,6 +15,11 @@ type FormData = {
     password: string;
     confirmPassword: string;
 };
+
+interface CreateAccountScreenProps {
+    registerCallback: () => void,
+    userService: UserService
+}
 
 
 const schema: yup.SchemaOf<FormData> = yup.object({
@@ -31,13 +37,22 @@ const schema: yup.SchemaOf<FormData> = yup.object({
 }).required();
 
 
-export const CreateAccountScreen = (props: { registerCallback: () => void }) => {
+export const CreateAccountScreen = (props: CreateAccountScreenProps) => {
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: yupResolver(schema)
     });
 
     const onSubmit = (data: FormData) => {
         console.log(data);
+        props.userService.createUser({
+            username: data.email,
+            password: data.password,
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName
+        }).then(response => console.log(response))
+            .catch(error => console.error(error));
+
         props.registerCallback();
     }
 

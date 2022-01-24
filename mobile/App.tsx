@@ -4,6 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { LoginScreen } from './components/LoginScreen';
 import { CreateAccountScreen } from './components/CreateAccountScreen';
+import { BookingsControllerApi, Configuration } from './app/api';
+import { UserService } from './app/services/UserService';
+import { AuthProvider } from './hooks/Auth';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'CountriesScreen'>;
 
@@ -34,9 +37,12 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+
 const App = () => {
   return (
-    <LoginScreen></LoginScreen>
+    <AuthProvider>
+      <LoginScreen userService={new UserService()}></LoginScreen>
+    </AuthProvider>
     // <NavigationContainer>
     //   <Stack.Navigator>
     //     <Stack.Screen name="CountriesScreen" component={CountriesScreen} options={{ title: 'Countries' }} />

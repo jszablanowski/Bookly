@@ -7,6 +7,8 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CreateAccountScreen } from "./CreateAccountScreen";
 import * as yup from "yup";
+import { UserService } from "../app/services/UserService";
+import { useAuth } from "../hooks/Auth";
 
 
 type FormData = {
@@ -14,24 +16,34 @@ type FormData = {
     password: string
 }
 
+interface LoginScreenProps {
+    userService: UserService
+}
+
 const schema: yup.SchemaOf<FormData> = yup.object({
     login: yup.string().email("Must be a valid email").required("Email is required").max(30, "Email must have at most 30 characters."),
     password: yup.string().required("Password is required")
 }).required();
 
-export const LoginScreen = () => {
+export const LoginScreen = (props: LoginScreenProps) => {
     const [registerUserMode, setRegisterUserMode] = useState(false);
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>({
         resolver: yupResolver(schema)
     });
 
+    const { setToken } = useAuth();
+
     const onSubmit = (data: FormData) => {
-        console.log(data);
+        props.userService.login(data.login, data.password)
+            .then(response => {
+                setToken("Bearer " + response.jwttoken)
+            });
     }
 
     return (
         <>
-            {registerUserMode ? <CreateAccountScreen registerCallback={() => setRegisterUserMode(false)}></CreateAccountScreen> :
+            {registerUserMode ? <CreateAccountScreen registerCallback={() => setRegisterUserMode(false)}
+                userService={props.userService}></CreateAccountScreen> :
                 <KeyboardAwareScrollView>
                     <View style={styles.container}>
                         <Text h1 style={styles.header}>Bookly</Text>
