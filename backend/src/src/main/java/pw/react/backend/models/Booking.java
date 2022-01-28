@@ -30,6 +30,9 @@ public class Booking {
     @Column(name = "itemId")
     private String itemId;
 
+    @Column(name = "externalBookingId")
+    private int externalBookingId;
+
     @Enumerated(EnumType.STRING)
     private ItemType itemType;
 

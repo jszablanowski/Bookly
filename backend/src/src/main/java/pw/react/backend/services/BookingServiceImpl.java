@@ -3,13 +3,14 @@ package pw.react.backend.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pw.react.backend.dao.BookingRepository;
-import pw.react.backend.dto.AddBookingDto;
-import pw.react.backend.enums.ItemType;
 import pw.react.backend.exceptions.ResourceNotFoundException;
+import pw.react.backend.externalApi.ExternalApiHandlerResolver;
 import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BookingResponse;
 
 import java.util.ArrayList;
+
+import static java.lang.Integer.parseInt;
 
 @Service
 public class BookingServiceImpl implements BookingService {
@@ -60,7 +61,14 @@ public class BookingServiceImpl implements BookingService {
     public boolean deleteBooking(long bookingId) throws ResourceNotFoundException {
         try
         {
-            repository.deleteById(bookingId);
+            var booking = repository.findById(bookingId);
+            if (!booking.isPresent())
+                return false;
+            var result = itemService.releaseItem(parseInt(booking.get().getItemId()), booking.get().getItemType(),
+                    booking.get().getExternalBookingId());
+            if (result == true)
+                repository.deleteById(bookingId);
+            else return false;
         }
         catch(Exception e)
         {
@@ -71,7 +79,12 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public void addBooking(Booking booking) {
-        repository.save(booking);
+        var result = itemService.bookItem(booking.getUser(), booking.getStartDateTime(), parseInt(booking.getItemId()),
+                booking.getItemType());
+        if (result != -1) {
+            booking.setExternalBookingId(result);
+            repository.save(booking);
+        }
     }
 
     @Override

@@ -85,21 +85,18 @@ public class BookingsController {
 
 
     @GetMapping(path = "/{bookingId}")
-    public ResponseEntity<BookingResponse> getBooking(@RequestHeader HttpHeaders headers,
-                                                      @PathVariable long bookingId)
+    public ResponseEntity<BookingResponse> getBooking(@PathVariable long bookingId)
     {
         var booking = bookingService.getBooking(bookingId);
         return ResponseEntity.ok(booking);
     }
 
     @DeleteMapping(path = "/{bookingId}")
-    public ResponseEntity<String> deleteBooking(@RequestHeader HttpHeaders headers,
-                                                      @PathVariable long bookingId)
+    public ResponseEntity<String> deleteBooking(@PathVariable long bookingId)
     {
         var result = bookingService.deleteBooking(bookingId);
         return result ? ResponseEntity.ok("Booking deleted")
                 : ResponseEntity.ok("Error when deleting booking");
         // tu powinnismy jeszcze jakis badRequest jak nie ma bookingu zwracac ale tego nie ma w spec.
-        return response;
     }
 }
