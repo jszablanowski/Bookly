@@ -49,10 +49,32 @@ public class CarlyApiHandler implements ExternalApiHandler {
     @Override
     public GetItemsResponse getItems(GetItemsBaseDto getItemsBaseDto) {
 
-        var flatlyDto = (CarlyGetItemsDto)getItemsBaseDto;
+        var carlyDto = (CarlyGetItemsDto)getItemsBaseDto;
         try {
-            var uri = UriComponentsBuilder.fromHttpUrl(baseUri + "/cars")
-                    .queryParam("date_sort", "asc")
+            var uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUri + "/cars")
+                    .queryParam("page", carlyDto.page - 1)
+                    .queryParam("per_page", carlyDto.pageSize);
+
+            if (carlyDto.model != null)
+                uriBuilder = uriBuilder
+                        .queryParam("model", carlyDto.model);
+            if (carlyDto.location != null)
+                uriBuilder = uriBuilder
+                        .queryParam("location", carlyDto.location);
+            if (carlyDto.searchText != null)
+                uriBuilder = uriBuilder
+                        .queryParam("search_text", carlyDto.searchText);
+            if (carlyDto.dateSort != null)
+                uriBuilder = uriBuilder
+                        .queryParam("date_sort", carlyDto.dateSort);
+            if (carlyDto.priceSort != null)
+                uriBuilder = uriBuilder
+                        .queryParam("price_sort", carlyDto.priceSort);
+            if (carlyDto.dateSort != null)
+                uriBuilder = uriBuilder
+                        .queryParam("date-sort", carlyDto.dateSort);
+
+            var uri = uriBuilder
                     .encode()
                     .toUriString();
 

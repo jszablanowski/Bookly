@@ -32,15 +32,19 @@ public class ItemsController {
     }
 
     @GetMapping(path = "/flat")
-    public ResponseEntity<GetItemsResponse> getFlatItems(@RequestParam(name = "active", required=false) boolean activeParam,
-                                                       @RequestParam(name = "page", required=false) int pageParam,
-                                                       @RequestParam(name = "sort", required=false) SortType sortTypeParam)
+    public ResponseEntity<GetItemsResponse> getFlatItems(@RequestParam(name = "page") int pageParam,
+                                                       @RequestParam(name = "sorted", required=false) Boolean sortedParam,
+                                                         @RequestParam(name = "text", required=false) String searchTextParam,
+                                                         @RequestParam(name = "city", required = false) String cityParam,
+                                                         @RequestParam(name = "street", required = false) String streetParam)
     {
         var flats = itemService.getItems(new FlatlyGetItemsDto(){{
             itemType = ItemType.ROOM;
-            active = activeParam;
+            sorted = sortedParam;
             page = pageParam;
-            sortType = sortTypeParam;
+            searchText = searchTextParam;
+            city = cityParam;
+            street = streetParam;
         }});
         return ResponseEntity.ok(flats);
     }

@@ -55,10 +55,21 @@ public class FlatlyApiHandler implements ExternalApiHandler {
     {
         var flatlyDto = (FlatlyGetItemsDto)baseDto;
         try {
-            var uri = UriComponentsBuilder.fromHttpUrl(baseUri + "/flats")
-                    .queryParam("active", flatlyDto.active)
-                    .queryParam("page", flatlyDto.page)
-                    .queryParam("sorted", 1) //TODO
+            var uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUri + "/flats")
+                    .queryParam("page", flatlyDto.page);
+            if (flatlyDto.sorted != null)
+                uriBuilder = uriBuilder
+                        .queryParam("sorted", flatlyDto.sorted);
+            if (flatlyDto.searchText != null)
+                uriBuilder = uriBuilder
+                        .queryParam("search", flatlyDto.searchText);
+            if (flatlyDto.city != null)
+                uriBuilder = uriBuilder
+                        .queryParam("city", flatlyDto.city);
+            if (flatlyDto.street != null)
+                uriBuilder = uriBuilder
+                        .queryParam("street", flatlyDto.street);
+            var uri = uriBuilder
                     .encode()
                     .toUriString();
 
