@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import pw.react.backend.dto.AddBookingDto;
 import pw.react.backend.dto.UpdateBookingDto;
 import pw.react.backend.enums.ItemType;
+import pw.react.backend.enums.SortType;
 import pw.react.backend.models.Booking;
 import pw.react.backend.dto.AddBookingDto;
 import pw.react.backend.requests.BookingResponse;
@@ -36,10 +37,11 @@ public class BookingsController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<ArrayList<BookingResponse>> getUserBookings() {
+    public ResponseEntity<ArrayList<BookingResponse>> getUserBookings(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size, @RequestParam(required = false) SortType sort) {
+
         var userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.getByUserName(userName);
-        var bookings = bookingService.getUserBookings(user.getId());
+        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort);
         return ResponseEntity.ok(bookings);
     }
     @PutMapping(path = "/{bookingId}")

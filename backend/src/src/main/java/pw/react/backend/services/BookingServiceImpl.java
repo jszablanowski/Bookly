@@ -1,15 +1,20 @@
 package pw.react.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pw.react.backend.dao.BookingRepository;
+import pw.react.backend.dto.AddBookingDto;
+import pw.react.backend.enums.ItemType;
+import pw.react.backend.enums.SortType;
 import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.externalApi.ExternalApiHandlerResolver;
 import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BookingResponse;
 
 import java.util.ArrayList;
-
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -26,10 +31,60 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public ArrayList<BookingResponse> getUserBookings(long userId){
+    public ArrayList<BookingResponse> getUserBookings(long userId, Integer page, Integer size, SortType sort) {
 
         var responseList = new ArrayList<BookingResponse>();
-        var userBookings = repository.findBookingsByUserId((userId));
+        ArrayList<Booking> userBookings;
+
+        if (page != null || sort != null)
+        {
+            if(size == null)
+                size = 10; //default page size
+
+            if (page != null)
+            {
+                Pageable pageable;
+
+                if(sort != null)
+                {
+                    if (sort == SortType.DESCENDING) {
+                        pageable = PageRequest.of(page, size, Sort.by("startDateTime").descending());
+                    }
+                    else if(sort == SortType.ASCENDING)
+                    {
+                        pageable = PageRequest.of(page, size, Sort.by("startDateTime"));
+                    }
+                    else
+                    {
+                        pageable = PageRequest.of(page, size);
+                    }
+                }
+                else
+                {
+                    pageable = PageRequest.of(page, size);
+                }
+                userBookings = repository.findBookingsByUserId(userId, pageable);
+            }
+            else
+            {
+                if (sort == SortType.DESCENDING) {
+                    userBookings = repository.findBookingsByUserId(userId, Sort.by("startDateTime").descending());
+                }
+                else if(sort == SortType.ASCENDING)
+                {
+                    userBookings = repository.findBookingsByUserId(userId, Sort.by("startDateTime"));
+                }
+                else
+                {
+                    userBookings = repository.findBookingsByUserId(userId);
+                }
+            }
+        }
+        else // without pagination
+        {
+            userBookings = repository.findBookingsByUserId(userId);
+        }
+
         for (var bookingEntry: userBookings)
         {
             var bookingItem = itemService.getItem(bookingEntry.getItemId(), bookingEntry.getItemType());
