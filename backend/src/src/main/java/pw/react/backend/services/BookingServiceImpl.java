@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import pw.react.backend.dao.BookingRepository;
 import pw.react.backend.dto.AddBookingDto;
 import pw.react.backend.dto.UpdateBookingDto;
+import pw.react.backend.enums.FilteringType;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.exceptions.ResourceNotFoundException;
@@ -32,7 +33,8 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public ArrayList<BookingResponse> getUserBookings(long userId, Integer page, Integer size, SortType sort) {
+    public ArrayList<BookingResponse> getUserBookings(long userId, Integer page, Integer size, SortType sort,
+                                                      FilteringType filter) {
 
         var responseList = new ArrayList<BookingResponse>();
         ArrayList<Booking> userBookings;
@@ -75,6 +77,14 @@ public class BookingServiceImpl implements BookingService {
         else // without pagination
         {
             userBookings = repository.findBookingsByUserId(userId);
+        }
+
+        if(filter == FilteringType.active) {
+            userBookings.removeIf(s -> s.isActive() == false);
+        }
+        else if(filter == FilteringType.inactive){
+            userBookings.removeIf(s -> s.isActive() == true);
+
         }
 
         for (var bookingEntry: userBookings)
