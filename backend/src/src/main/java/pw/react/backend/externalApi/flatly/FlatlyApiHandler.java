@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import pw.react.backend.dto.GetItemsResponse;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.externalApi.ExternalApiHandler;
 import pw.react.backend.externalApi.GetItemsBaseDto;
@@ -28,6 +29,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 @Service
 public class FlatlyApiHandler implements ExternalApiHandler {
@@ -48,7 +51,7 @@ public class FlatlyApiHandler implements ExternalApiHandler {
     }
 
     @Override
-    public List<ItemBase> getItems(GetItemsBaseDto baseDto)
+    public GetItemsResponse getItems(GetItemsBaseDto baseDto)
     {
         var flatlyDto = (FlatlyGetItemsDto)baseDto;
         try {
@@ -65,15 +68,21 @@ public class FlatlyApiHandler implements ExternalApiHandler {
             var objJsonObject = new JSONObject(response.getBody());
 
             var responseData = objJsonObject.getJSONArray("data");
-            var items = new ArrayList<ItemBase>();
+            var responseItems = new ArrayList<ItemBase>();
              responseData.forEach(item -> {
                 try {
-                    items.add(mapper.readValue(item.toString(), FlatItem.class));
+                    responseItems.add(mapper.readValue(item.toString(), FlatItem.class));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             });
-            return items;
+
+             var pagination = objJsonObject.getJSONObject("pagination");
+             return new GetItemsResponse(){{
+                 items = responseItems;
+                 page = parseInt(pagination.get("page").toString());
+                 totalPages = parseInt(pagination.get("totalPages").toString());
+             }};
         }
 
         catch (Exception e) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pw.react.backend.dto.GetItemsResponse;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.externalApi.carly.models.CarlyGetItemsDto;
@@ -31,7 +32,7 @@ public class ItemsController {
     }
 
     @GetMapping(path = "/flat")
-    public ResponseEntity<List<ItemBase>> getFlatItems(@RequestParam(name = "active", required=false) boolean activeParam,
+    public ResponseEntity<GetItemsResponse> getFlatItems(@RequestParam(name = "active", required=false) boolean activeParam,
                                                        @RequestParam(name = "page", required=false) int pageParam,
                                                        @RequestParam(name = "sort", required=false) SortType sortTypeParam)
     {
@@ -45,7 +46,7 @@ public class ItemsController {
     }
 
     @GetMapping(path = "/car")
-    public ResponseEntity<List<ItemBase>> getCarItems(@RequestParam(name = "model", required=false) String modelParam,
+    public ResponseEntity<GetItemsResponse> getCarItems(@RequestParam(name = "model", required=false) String modelParam,
                                                       @RequestParam(name = "location", required=false) String locationParam,
                                                       @RequestParam(name = "text", required=false) String searchTextParam,
                                                       @RequestParam(name = "dateSort", required=false) SortType dateSortParam,
@@ -67,19 +68,13 @@ public class ItemsController {
     }
 
     @GetMapping(path = "/parking")
-    public ResponseEntity<List<ItemBase>> getParkingItems(@RequestParam(name = "city", required=false) String cityParam,
-                                                          @RequestParam(name = "street", required=false) String streetParam,
-                                                          @RequestParam(name = "parking-name", required=false) String parkingNameParam,
-                                                          @RequestParam(name = "active", required=false) boolean activeParam,
-                                                          @RequestParam(name = "page") int pageParam,
-                                                          @RequestParam(name = "pageSize") int pageSizeParam)
+    public ResponseEntity<GetItemsResponse> getParkingItems(@RequestParam(name = "active", required=false) Boolean activeParam,
+                                                            @RequestParam(name = "page") int pageParam,
+                                                            @RequestParam(name = "pageSize") int pageSizeParam)
     {
         var parkings = itemService.getItems(new ParklyGetItemsDto(){{
             itemType = ItemType.PARKING;
-            city = cityParam;
-            street = streetParam;
-            parkingName = parkingNameParam;
-            booked = !activeParam;
+            active = activeParam;
             page = pageParam;
             pageSize = pageSizeParam;
         }});

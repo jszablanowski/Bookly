@@ -2,6 +2,7 @@ package pw.react.backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pw.react.backend.dto.GetItemsResponse;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.externalApi.ExternalApiHandlerResolver;
 import pw.react.backend.externalApi.GetItemsBaseDto;
@@ -21,7 +22,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public List<ItemBase> getItems(GetItemsBaseDto dto) {
+    public GetItemsResponse getItems(GetItemsBaseDto dto) {
         var apiHandler = apiResolver.resolveApiHandler(dto.itemType);
         return apiHandler.getItems(dto);
     }

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.externalApi.carly.CarlyApiHandler;
 import pw.react.backend.externalApi.flatly.FlatlyApiHandler;
+import pw.react.backend.externalApi.parkly.ParklyApiHandler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,13 @@ public class ExternalApiHandlerResolverImpl implements ExternalApiHandlerResolve
 
     private final List<ExternalApiHandler> apiHandlers;
 
-    public ExternalApiHandlerResolverImpl(FlatlyApiHandler flatlyApiHandler, CarlyApiHandler carlyApiHandler)
+    public ExternalApiHandlerResolverImpl(FlatlyApiHandler flatlyApiHandler, CarlyApiHandler carlyApiHandler,
+                                          ParklyApiHandler parklyApiHandler)
     {
         apiHandlers = new ArrayList<ExternalApiHandler>();
         apiHandlers.add(flatlyApiHandler);
         apiHandlers.add(carlyApiHandler);
+        apiHandlers.add(parklyApiHandler);
 
     }
     @Override
@@ -26,6 +29,8 @@ public class ExternalApiHandlerResolverImpl implements ExternalApiHandlerResolve
             return apiHandlers.get(0);
         else if (itemType == ItemType.CAR)
             return apiHandlers.get(1);
+        else if (itemType == ItemType.PARKING)
+            return apiHandlers.get(2);
         else return null;
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
+import pw.react.backend.dto.GetItemsResponse;
 import pw.react.backend.externalApi.ExternalApiHandler;
 import pw.react.backend.externalApi.GetItemsBaseDto;
 import pw.react.backend.externalApi.carly.models.CarlyBookRequest;
@@ -46,7 +47,7 @@ public class CarlyApiHandler implements ExternalApiHandler {
         updateAuthorization();
     }
     @Override
-    public List<ItemBase> getItems(GetItemsBaseDto getItemsBaseDto) {
+    public GetItemsResponse getItems(GetItemsBaseDto getItemsBaseDto) {
 
         var flatlyDto = (CarlyGetItemsDto)getItemsBaseDto;
         try {
@@ -61,15 +62,19 @@ public class CarlyApiHandler implements ExternalApiHandler {
             var objJsonObject = new JSONObject(response.getBody());
 
             var responseData = objJsonObject.getJSONArray("data");
-            var items = new ArrayList<ItemBase>();
+            var responseItems = new ArrayList<ItemBase>();
             responseData.forEach(item -> {
                 try {
-                    items.add(mapper.readValue(item.toString(), CarItem.class));
+                    responseItems.add(mapper.readValue(item.toString(), CarItem.class));
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
             });
-            return items;
+            return new GetItemsResponse(){{
+                items = responseItems;
+                page = objJsonObject.getInt("pageNo") + 1;
+                totalPages = objJsonObject.getInt("pageCount");
+            }};
         }
 
         catch (Exception e) {
