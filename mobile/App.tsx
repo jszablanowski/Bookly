@@ -6,7 +6,8 @@ import { CreateAccountScreen } from './screens/CreateAccountScreen'
 import { UserService } from './app/services/UserService';
 import { AuthProvider } from './hooks/Auth';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Header, Icon } from 'react-native-elements';
+import { Header } from 'react-native-elements';
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome5';
 import React, { useState } from 'react';
 import { SearchScreen } from './screens/SearchScreen';
 
@@ -54,24 +55,14 @@ const App = () => {
 
       <NavigationContainer>
         <Header
-          leftComponent={{
-            icon: 'menu',
-            color: '#fff',
-          }}
           rightComponent={
             <View style={styles.headerRight}>
               <TouchableOpacity >
-                <Icon name="description" color="white" tvParallaxProperties={undefined} />
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={{ marginLeft: 10 }}
-
-              >
-                <Icon type="antdesign" name="rocket1" color="white" tvParallaxProperties={undefined} />
+                <IconFontAwesome name="user-alt" color="white" size={24} />
               </TouchableOpacity>
             </View>
           }
-          centerComponent={{ text: 'Header', style: styles.heading }}
+          leftComponent={{ text: 'Bookly', style: styles.heading }}
         />
 
         <SearchScreen></SearchScreen>

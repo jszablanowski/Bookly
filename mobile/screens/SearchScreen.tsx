@@ -2,7 +2,9 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { ParklySearchScreen } from './ParklySearchScreen';
 import { CarlySearchScreen } from './CarlySearchScreen';
 import { FlatlySearchScreen } from './FlatlySearchScreen';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icon } from "react-native-elements"
+import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 const Tab = createBottomTabNavigator();
@@ -13,25 +15,25 @@ export const SearchScreen = () => {
         <Tab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
-                    let iconName;
+                    let icon;
 
                     if (route.name === 'Flats') {
-                        iconName = focused
-                            ? 'information-circle'
-                            : 'information-circle-outline';
+                        icon = <IconFontAwesome name="home" size={26} color={color} />
                     } else if (route.name === 'Cars') {
-                        iconName = 'list';
+                        icon = <IconFontAwesome name="car" size={24} color={color} />
+                    } else if (route.name === 'Parkings') {
+                        icon = <IconMaterial name="parking" size={26} color={color} />
                     }
-                    // You can return any component that you like here!
-                    return <Ionicons name={iconName ?? ""} size={size} color={color} />;
+
+                    return icon;
                 },
-                tabBarActiveTintColor: 'blue',
+                tabBarActiveTintColor: '#0090f0',
                 tabBarInactiveTintColor: 'gray',
             })}
         >
-            <Tab.Screen name="Flats" component={FlatlySearchScreen} options={{ headerShown: false }} />
-            <Tab.Screen name="Cars" component={CarlySearchScreen} options={{ headerShown: false }} />
-            <Tab.Screen name="Parkings" component={ParklySearchScreen} options={{ headerShown: false }} />
+            <Tab.Screen name="Flats" component={FlatlySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
+            <Tab.Screen name="Cars" component={CarlySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
+            <Tab.Screen name="Parkings" component={ParklySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
         </Tab.Navigator>
     )
 }
