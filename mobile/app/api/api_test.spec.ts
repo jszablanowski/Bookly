@@ -50,6 +50,10 @@ describe("BookingsControllerApi", () => {
     instance = new api.BookingsControllerApi(config)
   });
 
+  test("addBookingUsingPOST", () => {
+    const body: api.AddBookingDto = undefined
+    return expect(instance.addBookingUsingPOST(body, {})).resolves.toBe(null)
+  })
   test("deleteBookingUsingDELETE", () => {
     const bookingId: number = 789
     return expect(instance.deleteBookingUsingDELETE(bookingId, {})).resolves.toBe(null)
@@ -59,7 +63,44 @@ describe("BookingsControllerApi", () => {
     return expect(instance.getBookingUsingGET(bookingId, {})).resolves.toBe(null)
   })
   test("getUserBookingsUsingGET", () => {
-    return expect(instance.getUserBookingsUsingGET({})).resolves.toBe(null)
+    const page: number = 56
+    const size: number = 56
+    const sort: string = "sort_example"
+    return expect(instance.getUserBookingsUsingGET(page, size, sort, {})).resolves.toBe(null)
+  })
+  test("updateBookingUsingPUT", () => {
+    const body: api.UpdateBookingDto = undefined
+    const bookingId: number = 789
+    return expect(instance.updateBookingUsingPUT(body, bookingId, {})).resolves.toBe(null)
+  })
+})
+
+describe("ItemsControllerApi", () => {
+  let instance: api.ItemsControllerApi
+  beforeEach(function() {
+    instance = new api.ItemsControllerApi(config)
+  });
+
+  test("getCarItemsUsingGET", () => {
+    const active: boolean = true
+    const page: number = 56
+    const sortType: string = "sortType_example"
+    return expect(instance.getCarItemsUsingGET(active, page, sortType, {})).resolves.toBe(null)
+  })
+  test("getFlatItemsUsingGET", () => {
+    const active: boolean = true
+    const page: number = 56
+    const sort: string = "sort_example"
+    return expect(instance.getFlatItemsUsingGET(active, page, sort, {})).resolves.toBe(null)
+  })
+  test("getParkingItemsUsingGET", () => {
+    const page: number = 56
+    const pageSize: number = 56
+    const active: boolean = true
+    const city: string = "city_example"
+    const parkingName: string = "parkingName_example"
+    const street: string = "street_example"
+    return expect(instance.getParkingItemsUsingGET(page, pageSize, active, city, parkingName, street, {})).resolves.toBe(null)
   })
 })
 

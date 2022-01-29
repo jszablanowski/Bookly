@@ -43,7 +43,6 @@ export const CreateAccountScreen = (props: CreateAccountScreenProps) => {
     });
 
     const onSubmit = (data: FormData) => {
-        console.log(data);
         props.userService.createUser({
             username: data.email,
             password: data.password,
@@ -59,7 +58,6 @@ export const CreateAccountScreen = (props: CreateAccountScreenProps) => {
     return (
         <KeyboardAwareScrollView>
             <View style={styles.container}>
-                <Text h4 style={styles.header}>Register new account</Text>
                 <View style={styles.registerForm}>
                     {errors.email && <Text style={styles.error}>{errors.email.message}</Text>}
                     <Controller
@@ -162,20 +160,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         justifyContent: "center",
         alignItems: 'center',
-        marginHorizontal: 10
+        marginHorizontal: 10,
     },
     button: {
         paddingVertical: 20,
     },
-    header: {
-        paddingTop: 100,
-        paddingBottom: 60
-    },
+
     registerForm: {
         alignSelf: "stretch",
         justifyContent: "center",
         flex: 1,
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        paddingTop: 100
     },
     error: {
         color: "red",

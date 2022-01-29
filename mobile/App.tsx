@@ -1,54 +1,89 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator, NativeStackScreenProps } from '@react-navigation/native-stack';
-import { LoginScreen } from './components/LoginScreen';
-import { CreateAccountScreen } from './components/CreateAccountScreen';
-import { BookingsControllerApi, Configuration } from './app/api';
+import { LoginScreen } from './screens/LoginScreen';
+import { CreateAccountScreen } from './screens/CreateAccountScreen'
 import { UserService } from './app/services/UserService';
 import { AuthProvider } from './hooks/Auth';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Header, Icon } from 'react-native-elements';
+import React, { useState } from 'react';
+import { SearchScreen } from './screens/SearchScreen';
 
-type Props = NativeStackScreenProps<RootStackParamList, 'CountriesScreen'>;
 
-const CountriesScreen = ({ route, navigation }: Props) => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.content}>This is a MASTER screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('CountryDetailsScreen')}
-      />
-    </View>
-  );
-}
+type Props = NativeStackScreenProps<RootStackParamList, 'LoginScreen'>;
 
-const CountryDetailsScreen = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.content}>This is a DETAIL screen</Text>
-    </View>
-  );
-}
+const CreateAccountScreenWrapper = () => (
+  <CreateAccountScreen registerCallback={() => { }}
+    userService={new UserService()}></CreateAccountScreen>
+);
+
 
 type RootStackParamList = {
-  CountriesScreen: undefined;
-  CountryDetailsScreen: undefined;
+  LoginScreen: undefined;
+  RegisterScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
-
 const App = () => {
+
+  const LoginScreenWrapper = ({ navigation }: Props) => (
+    <LoginScreen userService={new UserService()} createAccountCallback={() => { navigation.navigate("RegisterScreen") }}
+      loginUserCallback={() => {
+        setAuthorized(true);
+      }} ></LoginScreen>
+  );
+
+  const [authorized, setAuthorized] = useState(false);
+
+  let element;
+  if (authorized === false) {
+    element = <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{ contentStyle: { backgroundColor: "#fff" } }}
+        initialRouteName='LoginScreen'>
+        <Stack.Screen name="LoginScreen" component={LoginScreenWrapper} options={{ headerShown: false }} />
+        <Stack.Screen name="RegisterScreen" component={CreateAccountScreenWrapper} options={{ title: 'Register new account' }} />
+      </Stack.Navigator>
+
+    </NavigationContainer>;
+  }
+  else {
+    element =
+
+      <NavigationContainer>
+        <Header
+          leftComponent={{
+            icon: 'menu',
+            color: '#fff',
+          }}
+          rightComponent={
+            <View style={styles.headerRight}>
+              <TouchableOpacity >
+                <Icon name="description" color="white" tvParallaxProperties={undefined} />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={{ marginLeft: 10 }}
+
+              >
+                <Icon type="antdesign" name="rocket1" color="white" tvParallaxProperties={undefined} />
+              </TouchableOpacity>
+            </View>
+          }
+          centerComponent={{ text: 'Header', style: styles.heading }}
+        />
+
+        <SearchScreen></SearchScreen>
+      </NavigationContainer>
+  }
+
   return (
-    <AuthProvider>
-      <LoginScreen userService={new UserService()}></LoginScreen>
-    </AuthProvider>
-    // <NavigationContainer>
-    //   <Stack.Navigator>
-    //     <Stack.Screen name="CountriesScreen" component={CountriesScreen} options={{ title: 'Countries' }} />
-    //     <Stack.Screen name="CountryDetailsScreen" component={CountryDetailsScreen} options={{ title: 'Country Details' }} />
-    //   </Stack.Navigator>
-    // </NavigationContainer>
+    <SafeAreaProvider>
+      <AuthProvider>
+        {element}
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }
 
@@ -62,8 +97,33 @@ const styles = StyleSheet.create({
   content: {
     margin: 20,
     fontSize: 18,
-  }
+  },
+  headerContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#397af8',
+    marginBottom: 20,
+    width: '100%',
+    paddingVertical: 15,
+  },
+  heading: {
+    color: 'white',
+    fontSize: 22,
+    fontWeight: 'bold',
+  },
+  headerRight: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: 5,
+  },
+  subheaderText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
+
+
 
 
 export default App;

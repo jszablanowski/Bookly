@@ -11,7 +11,7 @@
       "url": "http://www.apache.org/licenses/LICENSE-2.0"
     }
   },
-  "host": "localhost:8090",
+  "host": "localhost:6200",
   "basePath": "/",
   "tags": [
     {
@@ -19,6 +19,7 @@
       "description": "Basic Error Controller"
     },
     { "name": "bookings-controller", "description": "Bookings Controller" },
+    { "name": "items-controller", "description": "Items Controller" },
     {
       "name": "jwt-authentication-controller",
       "description": "Jwt Authentication Controller"
@@ -274,6 +275,32 @@
         "summary": "getUserBookings",
         "operationId": "getUserBookingsUsingGET",
         "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "size",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sort",
+            "required": false,
+            "type": "string",
+            "enum": ["ASCENDING", "DESCENDING"]
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK",
@@ -282,6 +309,33 @@
               "items": { "$ref": "#/definitions/BookingResponse" }
             }
           },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "post": {
+        "tags": ["bookings-controller"],
+        "summary": "addBooking",
+        "operationId": "addBookingUsingPOST",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "addBookingDto",
+            "description": "addBookingDto",
+            "required": true,
+            "schema": { "$ref": "#/definitions/AddBookingDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Booking" }
+          },
+          "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
@@ -310,6 +364,41 @@
             "description": "OK",
             "schema": { "$ref": "#/definitions/BookingResponse" }
           },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      },
+      "put": {
+        "tags": ["bookings-controller"],
+        "summary": "updateBooking",
+        "operationId": "updateBookingUsingPUT",
+        "consumes": ["application/json"],
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "bookingId",
+            "in": "path",
+            "description": "bookingId",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "in": "body",
+            "name": "updateBookingDto",
+            "description": "updateBookingDto",
+            "required": true,
+            "schema": { "$ref": "#/definitions/UpdateBookingDto" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": { "$ref": "#/definitions/Booking" }
+          },
+          "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
           "404": { "description": "Not Found" }
@@ -461,6 +550,165 @@
         "security": [{ "JWT": ["global"] }]
       }
     },
+    "/items/car": {
+      "get": {
+        "tags": ["items-controller"],
+        "summary": "getCarItems",
+        "operationId": "getCarItemsUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "active",
+            "in": "query",
+            "description": "active",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sortType",
+            "in": "query",
+            "description": "sortType",
+            "required": false,
+            "type": "string",
+            "enum": ["ASCENDING", "DESCENDING"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ItemBase" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/items/flat": {
+      "get": {
+        "tags": ["items-controller"],
+        "summary": "getFlatItems",
+        "operationId": "getFlatItemsUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "active",
+            "in": "query",
+            "description": "active",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "sort",
+            "in": "query",
+            "description": "sort",
+            "required": false,
+            "type": "string",
+            "enum": ["ASCENDING", "DESCENDING"]
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ItemBase" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
+    "/items/parking": {
+      "get": {
+        "tags": ["items-controller"],
+        "summary": "getParkingItems",
+        "operationId": "getParkingItemsUsingGET",
+        "produces": ["*/*"],
+        "parameters": [
+          {
+            "name": "active",
+            "in": "query",
+            "description": "active",
+            "required": false,
+            "type": "boolean"
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "city",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "page",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "page-size",
+            "in": "query",
+            "description": "page-size",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "parking-name",
+            "in": "query",
+            "description": "parking-name",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "street",
+            "in": "query",
+            "description": "street",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": { "$ref": "#/definitions/ItemBase" }
+            }
+          },
+          "401": { "description": "Unauthorized" },
+          "403": { "description": "Forbidden" },
+          "404": { "description": "Not Found" }
+        },
+        "security": [{ "JWT": ["global"] }]
+      }
+    },
     "/users": {
       "post": {
         "tags": ["jwt-user-controller"],
@@ -495,10 +743,20 @@
     "JWT": { "type": "apiKey", "name": "Authorization", "in": "header" }
   },
   "definitions": {
+    "AddBookingDto": {
+      "type": "object",
+      "properties": {
+        "itemId": { "type": "string" },
+        "itemType": { "type": "string" },
+        "startDateTime": { "type": "string", "format": "date-time" }
+      },
+      "title": "AddBookingDto"
+    },
     "Booking": {
       "type": "object",
       "properties": {
         "active": { "type": "boolean" },
+        "externalBookingId": { "type": "integer", "format": "int32" },
         "id": { "type": "integer", "format": "int64" },
         "itemId": { "type": "string" },
         "itemType": { "type": "string", "enum": ["CAR", "PARKING", "ROOM"] },
@@ -520,6 +778,7 @@
       "properties": {
         "active": { "type": "boolean" },
         "endDateTime": { "type": "string", "format": "date-time" },
+        "id": { "type": "string" },
         "name": { "type": "string" },
         "startDateTime": { "type": "string", "format": "date-time" }
       },
@@ -628,6 +887,16 @@
         "viewName": { "type": "string" }
       },
       "title": "ModelAndView"
+    },
+    "UpdateBookingDto": {
+      "type": "object",
+      "properties": {
+        "Active": { "type": "boolean" },
+        "itemId": { "type": "string" },
+        "itemType": { "type": "string" },
+        "startDateTime": { "type": "string", "format": "date-time" }
+      },
+      "title": "UpdateBookingDto"
     },
     "User": {
       "type": "object",
