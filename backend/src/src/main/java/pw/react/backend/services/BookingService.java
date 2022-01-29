@@ -1,6 +1,7 @@
 package pw.react.backend.services;
 
 import pw.react.backend.dto.AddBookingDto;
+import pw.react.backend.dto.UpdateBookingDto;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.models.Booking;
@@ -13,5 +14,5 @@ public interface BookingService {
     BookingResponse getBooking(long bookingId) throws ResourceNotFoundException;
     boolean deleteBooking(long bookingId) throws ResourceNotFoundException;
     void addBooking(Booking booking);
-    void updateBooking(Booking booking);
+    Booking updateBooking(UpdateBookingDto updateBookingDto, long bookingId) throws ResourceNotFoundException;
 }

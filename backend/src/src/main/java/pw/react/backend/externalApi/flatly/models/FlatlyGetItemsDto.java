@@ -6,5 +6,4 @@ import pw.react.backend.externalApi.GetItemsBaseDto;
 public class FlatlyGetItemsDto extends GetItemsBaseDto {
     public boolean active;
     public SortType sortType;
-    public int page;
 }

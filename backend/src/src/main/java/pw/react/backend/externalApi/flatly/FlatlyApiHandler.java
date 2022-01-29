@@ -83,9 +83,12 @@ public class FlatlyApiHandler implements ExternalApiHandler {
 
     @Override
     public ItemBase getItem(String itemId) {
-        ItemBase item;
         try {
-            var response = restTemplate.getForEntity(baseUri + "/bookings", FlatItem.class);
+
+            var request = new HttpEntity<>(buildHeaders());
+
+            var response = restTemplate.exchange(baseUri + "/flats/" + itemId, HttpMethod.GET, request,
+                    FlatItem.class);
 
             return response.getBody();
         }
@@ -131,8 +134,10 @@ public class FlatlyApiHandler implements ExternalApiHandler {
     @Override
     public boolean releaseBooking(int itemId, int externalBookingId) {
         try {
-            var response = restTemplate.exchange(baseUri + "/bookings/" + externalBookingId,
-                    HttpMethod.DELETE, null, String.class);
+            var request = new HttpEntity<>(buildHeaders());
+
+            var response = restTemplate.exchange(baseUri + "/bookings/" + externalBookingId, HttpMethod.DELETE, request,
+                    String.class);
         }
 
         catch (Exception e)

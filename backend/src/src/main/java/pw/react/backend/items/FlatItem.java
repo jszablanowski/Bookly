@@ -1,10 +1,14 @@
 package pw.react.backend.items;
 
+import java.util.Date;
 import java.util.List;
 
 public class FlatItem extends ItemBase{
     public int rooms;
     public int numberOfGuests;
+    public String name;
+    public Date startDateTime;
+    public Date endDateTime;
     public int area;
     public String description;
     public FlatAddress address;

@@ -7,6 +7,4 @@ public class ParklyGetItemsDto extends GetItemsBaseDto {
     public String street;
     public String parkingName;
     public boolean booked;
-    public int pageNumber;
-    public int pageSize;
 }

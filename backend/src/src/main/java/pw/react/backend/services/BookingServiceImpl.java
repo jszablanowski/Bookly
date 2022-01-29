@@ -7,6 +7,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pw.react.backend.dao.BookingRepository;
 import pw.react.backend.dto.AddBookingDto;
+import pw.react.backend.dto.UpdateBookingDto;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.exceptions.ResourceNotFoundException;
@@ -35,6 +36,11 @@ public class BookingServiceImpl implements BookingService {
 
         var responseList = new ArrayList<BookingResponse>();
         ArrayList<Booking> userBookings;
+        Sort sortMode = null;
+        if (sort == SortType.desc)
+            sortMode = Sort.by("startDateTime").descending();
+        else if (sort == SortType.asc)
+            sortMode = Sort.by("startDateTime").ascending();
 
         if (page != null || sort != null)
         {
@@ -47,17 +53,7 @@ public class BookingServiceImpl implements BookingService {
 
                 if(sort != null)
                 {
-                    if (sort == SortType.DESCENDING) {
-                        pageable = PageRequest.of(page, size, Sort.by("startDateTime").descending());
-                    }
-                    else if(sort == SortType.ASCENDING)
-                    {
-                        pageable = PageRequest.of(page, size, Sort.by("startDateTime"));
-                    }
-                    else
-                    {
-                        pageable = PageRequest.of(page, size);
-                    }
+                    pageable = PageRequest.of(page, size, sortMode);
                 }
                 else
                 {
@@ -67,12 +63,8 @@ public class BookingServiceImpl implements BookingService {
             }
             else
             {
-                if (sort == SortType.DESCENDING) {
-                    userBookings = repository.findBookingsByUserId(userId, Sort.by("startDateTime").descending());
-                }
-                else if(sort == SortType.ASCENDING)
-                {
-                    userBookings = repository.findBookingsByUserId(userId, Sort.by("startDateTime"));
+                if (sort != null) {
+                    userBookings = repository.findBookingsByUserId(userId, sortMode);
                 }
                 else
                 {
@@ -91,7 +83,9 @@ public class BookingServiceImpl implements BookingService {
 
             responseList.add( new BookingResponse()
             {{
-                booking = bookingEntry;
+                active = bookingEntry.isActive();
+                startDate = bookingEntry.getStartDateTime();
+                itemType = bookingEntry.getItemType();
                 item = bookingItem;
             }});
         }
@@ -106,8 +100,11 @@ public class BookingServiceImpl implements BookingService {
             throw new ResourceNotFoundException("Booking not found");
 
         var itemBase = itemService.getItem(bookingEntry.get().getItemId(), bookingEntry.get().getItemType());
+        var booking = bookingEntry.get();
         return new BookingResponse(){{
-            booking =  bookingEntry.get();
+            active = booking.isActive();
+            startDate = booking.getStartDateTime();
+            itemType = booking.getItemType();
             item = itemBase;
         }};
     }
@@ -143,7 +140,32 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public void updateBooking(Booking booking)  {
+    public Booking updateBooking(UpdateBookingDto updateBookingDto, long bookingId) throws ResourceNotFoundException {
+        var bookingEntry = repository.findById(bookingId);
+
+        if (!bookingEntry.isPresent())
+            throw new ResourceNotFoundException("Booking not found");
+
+        var booking = bookingEntry.get();
+
+        if(updateBookingDto.itemType != null)
+        {
+            var itemTypeEnum = ItemType.valueOf(updateBookingDto.itemType);
+            booking.setItemType(itemTypeEnum);
+        }
+
+        if(updateBookingDto.itemId != null)
+        {
+            booking.setItemId(updateBookingDto.itemId);
+        }
+
+        if(updateBookingDto.startDateTime != null)
+        {
+            booking.setStartDateTime(updateBookingDto.startDateTime);
+        }
+
+        booking.setActive(updateBookingDto.active);
         repository.save(booking);
+        return booking;
     }
 }

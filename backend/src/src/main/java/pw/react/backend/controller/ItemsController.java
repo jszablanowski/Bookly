@@ -45,12 +45,23 @@ public class ItemsController {
     }
 
     @GetMapping(path = "/car")
-    public ResponseEntity<List<ItemBase>> getCarItems(@RequestParam(required=false) boolean active,
-                                                      @RequestParam(required=false) int page,
-                                                      @RequestParam(required=false) SortType sortType)
+    public ResponseEntity<List<ItemBase>> getCarItems(@RequestParam(name = "model", required=false) String modelParam,
+                                                      @RequestParam(name = "location", required=false) String locationParam,
+                                                      @RequestParam(name = "text", required=false) String searchTextParam,
+                                                      @RequestParam(name = "dateSort", required=false) SortType dateSortParam,
+                                                      @RequestParam(name = "priceSort", required=false) SortType priceSortParam,
+                                                      @RequestParam(name = "page") int pageParam,
+                                                      @RequestParam(name = "pageSize") int pageSizeParam)
     {
         var cars = itemService.getItems(new CarlyGetItemsDto(){{
             itemType = ItemType.CAR;
+            model = modelParam;
+            location = locationParam;
+            searchText = searchTextParam;
+            dateSort = dateSortParam;
+            priceSort = priceSortParam;
+            page = pageParam;
+            pageSize = pageSizeParam;
         }});
         return ResponseEntity.ok(cars);
     }
@@ -61,7 +72,7 @@ public class ItemsController {
                                                           @RequestParam(name = "parking-name", required=false) String parkingNameParam,
                                                           @RequestParam(name = "active", required=false) boolean activeParam,
                                                           @RequestParam(name = "page") int pageParam,
-                                                          @RequestParam(name = "page-size") int pageSizeParam)
+                                                          @RequestParam(name = "pageSize") int pageSizeParam)
     {
         var parkings = itemService.getItems(new ParklyGetItemsDto(){{
             itemType = ItemType.PARKING;
@@ -69,7 +80,7 @@ public class ItemsController {
             street = streetParam;
             parkingName = parkingNameParam;
             booked = !activeParam;
-            pageNumber = pageParam;
+            page = pageParam;
             pageSize = pageSizeParam;
         }});
         return ResponseEntity.ok(parkings);

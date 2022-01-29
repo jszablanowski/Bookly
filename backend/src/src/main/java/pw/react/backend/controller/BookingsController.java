@@ -47,28 +47,7 @@ public class BookingsController {
     @PutMapping(path = "/{bookingId}")
     public ResponseEntity<Booking> updateBooking(@RequestBody UpdateBookingDto updateBookingDto, @PathVariable long bookingId)
     {
-
-        var booking = bookingService.getBooking(bookingId).booking;
-
-        if(updateBookingDto.itemType != null)
-        {
-            var itemTypeEnum = ItemType.valueOf(updateBookingDto.itemType);
-            booking.setItemType(itemTypeEnum);
-        }
-
-        if(updateBookingDto.itemId != null)
-        {
-            booking.setItemId(updateBookingDto.itemId);
-        }
-
-        if(updateBookingDto.startDateTime != null)
-        {
-            booking.setStartDateTime(updateBookingDto.startDateTime);
-        }
-
-        booking.setActive(updateBookingDto.Active);
-
-        bookingService.updateBooking(booking);
+        var booking = bookingService.updateBooking(updateBookingDto, bookingId);
         return ResponseEntity.ok(booking);
     }
 
