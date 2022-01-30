@@ -4,8 +4,10 @@ import { Button, ButtonGroup, CheckBox } from "react-native-elements"
 
 
 export enum SortMode {
-    dateSort,
-    priceSort
+    dateSortAsc,
+    dateSortDesc,
+    priceSortAsc,
+    priceSortDesc
 }
 
 interface CarlySortScreenProps {
@@ -22,18 +24,36 @@ export const CarlySortScreen = (props: CarlySortScreenProps) => {
         <View style={{ flex: 1 }}>
             <View style={{ marginTop: 20, marginHorizontal: 15 }}>
                 <View style={{ marginBottom: 16 }}>
-                    <Button title="Sort by date" type={sortMode === SortMode.dateSort ? "solid" : "outline"} onPress={() => {
-                        if (sortMode !== SortMode.dateSort) {
-                            setSortMode(SortMode.dateSort);
+                    <Button title="Sort by date ascending" type={sortMode === SortMode.dateSortAsc ? "solid" : "outline"} onPress={() => {
+                        if (sortMode !== SortMode.dateSortAsc) {
+                            setSortMode(SortMode.dateSortAsc);
+                        } else {
+                            setSortMode(undefined);
+                        }
+                    }}></Button>
+                </View>
+                <View style={{ marginBottom: 16 }}>
+                    <Button title="Sort by date descending" type={sortMode === SortMode.dateSortDesc ? "solid" : "outline"} onPress={() => {
+                        if (sortMode !== SortMode.dateSortDesc) {
+                            setSortMode(SortMode.dateSortDesc);
+                        } else {
+                            setSortMode(undefined);
+                        }
+                    }}></Button>
+                </View>
+                <View style={{ marginBottom: 16 }}>
+                    <Button title="Sort by price ascending" type={sortMode === SortMode.priceSortAsc ? "solid" : "outline"} onPress={() => {
+                        if (sortMode !== SortMode.priceSortAsc) {
+                            setSortMode(SortMode.priceSortAsc);
                         } else {
                             setSortMode(undefined);
                         }
                     }}></Button>
                 </View>
                 <View>
-                    <Button title="Sort by price" type={sortMode === SortMode.priceSort ? "solid" : "outline"} onPress={() => {
-                        if (sortMode !== SortMode.priceSort) {
-                            setSortMode(SortMode.priceSort);
+                    <Button title="Sort by price descending" type={sortMode === SortMode.priceSortDesc ? "solid" : "outline"} onPress={() => {
+                        if (sortMode !== SortMode.priceSortDesc) {
+                            setSortMode(SortMode.priceSortDesc);
                         } else {
                             setSortMode(undefined);
                         }

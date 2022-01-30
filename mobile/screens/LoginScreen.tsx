@@ -82,6 +82,7 @@ export const LoginScreen = (props: LoginScreenProps) => {
                                     leftIcon={{ type: 'font-awesome', name: 'lock' }}
                                     secureTextEntry={true}
                                     placeholder='Password...'
+                                    autoCapitalize="none"
                                 />
                             )}
                             name="password"

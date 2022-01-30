@@ -1,7 +1,7 @@
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, TouchableOpacity, View } from "react-native"
-import { Button, Text } from "react-native-elements"
+import { Button, Divider, Text } from "react-native-elements"
 import { IItemsService } from "../../app/services/ItemsService";
 import { CarItem, CarItemDetails } from "../../components/CarItem";
 import { FlatItemDetails } from "../../components/FlatItem";
@@ -26,29 +26,31 @@ interface CarlyScreenProps {
 
 export const CarlyScreen = (props: CarlyScreenProps) => {
 
-    // const data: Array<CarItemDetails> = [{
-    //     brand: "Audi",
-    //     model: "A6",
-    //     engine: "140 HP",
-    //     id: "11",
-    //     location: "Warsaw",
-    //     price: 120,
-    //     year: 2016
-    // },
-    // {
-    //     brand: "Audi",
-    //     model: "A8",
-    //     engine: "140 HP",
-    //     id: "12",
-    //     location: "Warsaw",
-    //     price: 120,
-    //     year: 2016
-    // }];
-
     const { token } = useAuth();
+    const [carlyFilters, setCarlyFilters] = useState<CarlyFilters>({ model: "", location: "", text: "" });
+    const [sortMode, setSortMode] = useState<SortMode | undefined>(undefined);
+    const [loading, setLoading] = useState(true);
+    const [itemsCount, setItemsCount] = useState<number>(0);
 
-    useEffect(() => {
-        props.itemsService.getCarItems(token, 1, 100)
+
+
+    const fetchData = () => {
+        setLoading(true);
+        let dateSort: string | undefined;
+        let priceSort: string | undefined;
+        if (sortMode === SortMode.dateSortAsc) {
+            dateSort = "asc";
+        }
+        else if (sortMode === SortMode.dateSortDesc) {
+            dateSort = "desc";
+        }
+        else if (sortMode === SortMode.priceSortAsc) {
+            priceSort = "asc";
+        }
+        else if (sortMode === SortMode.priceSortDesc) {
+            priceSort = "desc";
+        }
+        props.itemsService.getCarItems(token, 1, 100, dateSort, carlyFilters.location, carlyFilters.model, priceSort, carlyFilters.text)
             .then(response => {
                 let carItemsDetails = response.items?.map(i => ({
                     brand: i.brand,
@@ -60,9 +62,20 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
                     year: i.year
                 }));
                 setCarItems(carItemsDetails);
+                if (response.totalPages && response.items) {
+                    setItemsCount(response.totalPages * response.items.length);
+                } else {
+                    setItemsCount(0);
+                }
+            }).finally(() => {
+                setLoading(false);
             });
+    }
 
-    }, []);
+    useEffect(() => {
+        fetchData()
+    }, [carlyFilters, sortMode]);
+
 
     const [carItems, setCarItems] = useState<Array<CarItemDetails> | undefined>(undefined);
 
@@ -72,31 +85,48 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
         </TouchableOpacity>
     );
 
-    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => (
-        carItems === undefined ? <ActivityIndicator size="large" color="#0090f0" style={{ marginTop: 100 }} /> :
+
+    const onRefresh = () => {
+        setLoading(true);
+        setCarlyFilters({ model: "", location: "", text: "" });
+        setSortMode(undefined);
+    };
+
+    const itemsCountHeader = () => {
+        return (
             <View>
-                <View style={{ alignSelf: "stretch" }}>
-                    <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
-                        <View style={{ flex: 1, marginHorizontal: 4 }}>
-                            <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
-                        </View>
-                        <View style={{ flex: 1, marginHorizontal: 4 }}>
-                            <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
-                        </View>
+                <Text style={{ marginLeft: 10 }}>
+                    Found {itemsCount} {itemsCount > 1 ? "results" : "result"}
+                </Text>
+                <Divider orientation="vertical"></Divider>
+            </View>
+        );
+    };
+
+    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => (
+        <View>
+            <View style={{ alignSelf: "stretch" }}>
+                <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
+                    <View style={{ flex: 1, marginHorizontal: 4 }}>
+                        <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
+                    </View>
+                    <View style={{ flex: 1, marginHorizontal: 4 }}>
+                        <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
                     </View>
                 </View>
-                <FlatList
-                    data={carItems}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    onRefresh={() => { }}
-                    refreshing={false}
-                    style={{ alignSelf: "stretch", marginBottom: 60 }}
-                />
             </View>
+            <FlatList
+                data={carItems}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id}
+                onRefresh={() => onRefresh()}
+                refreshing={loading}
+                style={{ alignSelf: "stretch", marginBottom: 60 }}
+                ListHeaderComponent={itemsCountHeader}
+            />
+        </View>
     )
 
-    const [carlyFilters, setCarlyFilters] = useState<CarlyFilters>({ model: "", location: "", text: "" });
     const FilterScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'FilterScreen'>) => (
         <CarlyFilterScreen onChange={val => {
             setCarlyFilters(val);
@@ -105,7 +135,6 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
     )
 
 
-    const [sortMode, setSortMode] = useState<SortMode | undefined>(undefined);
     const SortScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'SortScreen'>) => (
         <CarlySortScreen sortMode={sortMode} onChange={(val) => {
             setSortMode(val);

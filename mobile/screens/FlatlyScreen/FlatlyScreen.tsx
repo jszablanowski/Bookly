@@ -1,7 +1,7 @@
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, ListRenderItem, TouchableOpacity, View } from "react-native"
-import { Button, Input, Text } from "react-native-elements";
+import { Button, Divider, Input, Text } from "react-native-elements";
 import { FlatItem, FlatItemDetails } from "../../components/FlatItem";
 import { FlatlyFilters, FlatlyFilterScreen } from "./FlatlyFilterScreen";
 import { HeaderBookly } from "../../components/HeaderBookly";
@@ -25,64 +25,20 @@ interface FlatlyScreenProps {
 
 export const FlatlyScreen = (props: FlatlyScreenProps) => {
 
-    const data: Array<FlatItemDetails> = [{
-        address: {
-            city: "city",
-            houseNumber: "12",
-            id: 1,
-            localNumber: "11",
-            postalCode: "33",
-            street: "street"
-        },
-        area: 120,
-        description: "description",
-        facilities: [{
-            id: 1,
-            name: "Gym"
-        },
-        {
-            id: 2,
-            name: "Shop mall"
-        }],
-        id: "11",
-        images: [{
-            id: 20,
-            path: "https://backend.flatly.online/api/v1/flatsStock/inside2.jpg"
-        }],
-        name: "flat",
-        numberOfGuests: 12,
-        rooms: 3
-    },
-    {
-        address: {
-            city: "city",
-            houseNumber: "12",
-            id: 1,
-            localNumber: "11",
-            postalCode: "33",
-            street: "street"
-        },
-        area: 120,
-        description: "description",
-        facilities: [{
-            id: 1,
-            name: "Cinema"
-        }],
-        id: "13",
-        images: [{
-            id: 20,
-            path: "https://backend.flatly.online/api/v1/flatsStock/inside2.jpg"
-        }],
-        name: "flat2",
-        numberOfGuests: 12,
-        rooms: 3
-    }];
-
-
     const { token } = useAuth();
+    const [flatlyFilters, setFlatlyFilters] = useState<FlatlyFilters>({ city: "", street: "", text: "" });
+    const [flatlySort, setFlatlySort] = useState<boolean>(false);
+    const [loading, setLoading] = useState(true);
+    const [itemsCount, setItemsCount] = useState<number>(0);
 
     useEffect(() => {
-        props.itemsService.getFlatItems(token, 1)
+        fetchData();
+    }, [flatlyFilters, flatlySort]);
+
+
+    const fetchData = () => {
+        setLoading(true);
+        props.itemsService.getFlatItems(token, 1, flatlyFilters.city, flatlySort, flatlyFilters.street, flatlyFilters.text)
             .then(response => {
                 let flatItemsDetails = response.items?.map(i => ({
                     address: i.address,
@@ -96,9 +52,16 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
                     rooms: i.rooms
                 }));
                 setFlatItems(flatItemsDetails);
+                if (response.totalPages && response.items) {
+                    setItemsCount(response.totalPages * response.items.length);
+                }
+                else {
+                    setItemsCount(0);
+                }
+            }).finally(() => {
+                setLoading(false);
             });
-
-    }, []);
+    }
 
 
     const [flatItems, setFlatItems] = useState<Array<FlatItemDetails> | undefined>(undefined);
@@ -109,33 +72,47 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
         </TouchableOpacity>
     );
 
+    const onRefresh = () => {
+        setLoading(true);
+        setFlatlyFilters({ city: "", street: "", text: "" });
+        setFlatlySort(false);
+    };
 
+    const itemsCountHeader = () => {
+        return (
+            <View>
+                <Text style={{ marginLeft: 10 }}>
+                    Found {itemsCount} {itemsCount > 1 ? "results" : "result"}
+                </Text>
+                <Divider orientation="vertical"></Divider>
+            </View>
+        );
+    };
 
     const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => (
-        flatItems === undefined ? <ActivityIndicator size="large" color="#0090f0" style={{ marginTop: 100 }} /> :
-            <View>
-                <View style={{ alignSelf: "stretch" }}>
-                    <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
-                        <View style={{ flex: 1, marginHorizontal: 4 }}>
-                            <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
-                        </View>
-                        <View style={{ flex: 1, marginHorizontal: 4 }}>
-                            <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
-                        </View>
+        <View>
+            <View style={{ alignSelf: "stretch" }}>
+                <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
+                    <View style={{ flex: 1, marginHorizontal: 4 }}>
+                        <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
+                    </View>
+                    <View style={{ flex: 1, marginHorizontal: 4 }}>
+                        <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
                     </View>
                 </View>
-                <FlatList
-                    data={flatItems}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    onRefresh={() => { }}
-                    refreshing={false}
-                    style={{ alignSelf: "stretch", marginBottom: 60 }}
-                />
             </View>
+            <FlatList
+                data={flatItems}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.id.toString()}
+                style={{ alignSelf: "stretch", marginBottom: 60 }}
+                onRefresh={() => onRefresh()}
+                refreshing={loading}
+                ListHeaderComponent={itemsCountHeader}
+            />
+        </View>
     )
 
-    const [flatlyFilters, setFlatlyFilters] = useState<FlatlyFilters>({ city: "", street: "", text: "" });
     const FilterScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'FilterScreen'>) => (
         <FlatlyFilterScreen onChange={val => {
             setFlatlyFilters(val);
@@ -144,7 +121,6 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
     )
 
 
-    const [flatlySort, setFlatlySort] = useState<boolean>(false);
     const SortScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'SortScreen'>) => (
         <FlatlySortScreen sorted={flatlySort} onChange={(val) => {
             setFlatlySort(val);
