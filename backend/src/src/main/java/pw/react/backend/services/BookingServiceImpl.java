@@ -18,7 +18,9 @@ import pw.react.backend.requests.BaseBookingResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import static java.lang.Integer.min;
 import static java.lang.Integer.parseInt;
 
 @Service
@@ -38,13 +40,15 @@ public class BookingServiceImpl implements BookingService {
     public BaseBookingResponse getUserBookings(long userId, Integer page, Integer size, SortType sort,
                                                 FilteringType filter, ItemType itemType) {
 
-        var response = new BaseBookingResponse();
+        var response = new BaseBookingResponse(){{
+            items = new ArrayList<BaseBooking>();
+        }};
         var userBookings = repository.findBookingsByUserId(userId);
         userBookings.removeIf(x -> x.getItemType() != itemType);
 
         var filteredBookings = filterBookings(userBookings, filter, sort);
 
-        var pagedBookings = pageBookings(filteredBookings, page, size);
+        var pagedBookings = pageBookings(filteredBookings, page.intValue(), size.intValue());
 
         for (var bookingEntry: pagedBookings)
         {
@@ -83,7 +87,9 @@ public class BookingServiceImpl implements BookingService {
     public BaseBookingResponse getAllBookings(Integer page, Integer size, SortType sort, FilteringType filter,
                                                      ItemType itemType)
     {
-        var response = new BaseBookingResponse();
+        var response = new BaseBookingResponse(){{
+            items = new ArrayList<BaseBooking>();
+        }};
         ArrayList<Booking> userBookings = new ArrayList<Booking>();
         var allBookings = repository.findBookingsByItemType(itemType);
         var filteredBookings = filterBookings(allBookings, filter, sort);
@@ -201,7 +207,8 @@ public class BookingServiceImpl implements BookingService {
 
     private ArrayList<Booking> pageBookings(ArrayList<Booking> bookings, int page, int pageSize)
     {
-        var fromIdx = (page-10) * 10;
-        return new ArrayList<Booking>(bookings.subList(fromIdx, fromIdx + pageSize));
+        var fromIdx = (page-1) * 10;
+        var toIdx = min(fromIdx + 1 + pageSize, bookings.size());
+        return new ArrayList<Booking>(bookings.subList(fromIdx, toIdx));
     }
 }
