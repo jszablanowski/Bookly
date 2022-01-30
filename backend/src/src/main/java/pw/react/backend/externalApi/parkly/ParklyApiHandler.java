@@ -169,11 +169,11 @@ public class ParklyApiHandler implements ExternalApiHandler {
 
             var objJsonObject = new JSONObject(response.getBody());
 
-            authenticationHeaderValue = "Bearer +" + objJsonObject.getString("jwttoken");
+            authenticationHeaderValue = "Bearer " + objJsonObject.getString("jwttoken");
         }
 
         catch(Exception e) {
-            System.out.println(e.toString());
+
         }
 
     }
