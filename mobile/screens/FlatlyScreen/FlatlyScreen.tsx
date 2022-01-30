@@ -1,11 +1,13 @@
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react"
-import { FlatList, ListRenderItem, TouchableOpacity, View } from "react-native"
+import React, { useEffect, useState } from "react"
+import { ActivityIndicator, FlatList, ListRenderItem, TouchableOpacity, View } from "react-native"
 import { Button, Input, Text } from "react-native-elements";
 import { FlatItem, FlatItemDetails } from "../../components/FlatItem";
 import { FlatlyFilters, FlatlyFilterScreen } from "./FlatlyFilterScreen";
 import { HeaderBookly } from "../../components/HeaderBookly";
 import { FlatlySortScreen } from "./FlatlySortScreen";
+import { useAuth } from "../../hooks/Auth";
+import { IItemsService } from "../../app/services/ItemsService";
 
 
 
@@ -17,9 +19,11 @@ type RootStackParamList = {
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
+interface FlatlyScreenProps {
+    itemsService: IItemsService;
+}
 
-
-export const FlatlySearchScreen = () => {
+export const FlatlyScreen = (props: FlatlyScreenProps) => {
 
     const data: Array<FlatItemDetails> = [{
         address: {
@@ -40,14 +44,14 @@ export const FlatlySearchScreen = () => {
             id: 2,
             name: "Shop mall"
         }],
-        id: 11,
+        id: "11",
         images: [{
             id: 20,
             path: "https://backend.flatly.online/api/v1/flatsStock/inside2.jpg"
         }],
         name: "flat",
         numberOfGuests: 12,
-        rooms: "3"
+        rooms: 3
     },
     {
         address: {
@@ -64,16 +68,40 @@ export const FlatlySearchScreen = () => {
             id: 1,
             name: "Cinema"
         }],
-        id: 13,
+        id: "13",
         images: [{
             id: 20,
             path: "https://backend.flatly.online/api/v1/flatsStock/inside2.jpg"
         }],
         name: "flat2",
         numberOfGuests: 12,
-        rooms: "3"
+        rooms: 3
     }];
 
+
+    const { token } = useAuth();
+
+    useEffect(() => {
+        props.itemsService.getFlatItems(token, 1)
+            .then(response => {
+                let flatItemsDetails = response.items?.map(i => ({
+                    address: i.address,
+                    area: i.area,
+                    description: i.description,
+                    facilities: i.facilities,
+                    id: i.id ?? "",
+                    images: i.images,
+                    name: i.name,
+                    numberOfGuests: i.numberOfGuests,
+                    rooms: i.rooms
+                }));
+                setFlatItems(flatItemsDetails);
+            });
+
+    }, []);
+
+
+    const [flatItems, setFlatItems] = useState<Array<FlatItemDetails> | undefined>(undefined);
 
     const renderItem = ({ item }: { item: FlatItemDetails }) => (
         <TouchableOpacity onPress={() => { }} >
@@ -84,26 +112,27 @@ export const FlatlySearchScreen = () => {
 
 
     const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => (
-        <View>
-            <View style={{ alignSelf: "stretch" }}>
-                <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
-                    <View style={{ flex: 1, marginHorizontal: 4 }}>
-                        <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
-                    </View>
-                    <View style={{ flex: 1, marginHorizontal: 4 }}>
-                        <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
+        flatItems === undefined ? <ActivityIndicator size="large" color="#0090f0" style={{ marginTop: 100 }} /> :
+            <View>
+                <View style={{ alignSelf: "stretch" }}>
+                    <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
+                        <View style={{ flex: 1, marginHorizontal: 4 }}>
+                            <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
+                        </View>
+                        <View style={{ flex: 1, marginHorizontal: 4 }}>
+                            <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
+                        </View>
                     </View>
                 </View>
+                <FlatList
+                    data={flatItems}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                    onRefresh={() => { }}
+                    refreshing={false}
+                    style={{ alignSelf: "stretch", marginBottom: 60 }}
+                />
             </View>
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
-                onRefresh={() => { }}
-                refreshing={false}
-                style={{ alignSelf: "stretch" }}
-            />
-        </View>
     )
 
     const [flatlyFilters, setFlatlyFilters] = useState<FlatlyFilters>({ city: "", street: "", text: "" });

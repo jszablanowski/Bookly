@@ -440,16 +440,13 @@
     "/error": {
       "get": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingGET",
-        "produces": ["*/*"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingGET",
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
@@ -459,17 +456,14 @@
       },
       "head": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingHEAD",
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingHEAD",
         "consumes": ["application/json"],
-        "produces": ["*/*"],
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -479,17 +473,14 @@
       },
       "post": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingPOST",
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingPOST",
         "consumes": ["application/json"],
-        "produces": ["*/*"],
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
@@ -500,17 +491,14 @@
       },
       "put": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingPUT",
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingPUT",
         "consumes": ["application/json"],
-        "produces": ["*/*"],
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
@@ -521,16 +509,13 @@
       },
       "delete": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingDELETE",
-        "produces": ["*/*"],
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingDELETE",
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -540,17 +525,14 @@
       },
       "options": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingOPTIONS",
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingOPTIONS",
         "consumes": ["application/json"],
-        "produces": ["*/*"],
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -560,17 +542,14 @@
       },
       "patch": {
         "tags": ["basic-error-controller"],
-        "summary": "error",
-        "operationId": "errorUsingPATCH",
+        "summary": "errorHtml",
+        "operationId": "errorHtmlUsingPATCH",
         "consumes": ["application/json"],
-        "produces": ["*/*"],
+        "produces": ["text/html"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "object",
-              "additionalProperties": { "type": "object" }
-            }
+            "schema": { "$ref": "#/definitions/ModelAndView" }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },

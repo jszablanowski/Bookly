@@ -21,26 +21,26 @@ describe("BasicErrorControllerApi", () => {
     instance = new api.BasicErrorControllerApi(config)
   });
 
-  test("errorUsingDELETE", () => {
-    return expect(instance.errorUsingDELETE({})).resolves.toBe(null)
+  test("errorHtmlUsingDELETE", () => {
+    return expect(instance.errorHtmlUsingDELETE({})).resolves.toBe(null)
   })
-  test("errorUsingGET", () => {
-    return expect(instance.errorUsingGET({})).resolves.toBe(null)
+  test("errorHtmlUsingGET", () => {
+    return expect(instance.errorHtmlUsingGET({})).resolves.toBe(null)
   })
-  test("errorUsingHEAD", () => {
-    return expect(instance.errorUsingHEAD({})).resolves.toBe(null)
+  test("errorHtmlUsingHEAD", () => {
+    return expect(instance.errorHtmlUsingHEAD({})).resolves.toBe(null)
   })
-  test("errorUsingOPTIONS", () => {
-    return expect(instance.errorUsingOPTIONS({})).resolves.toBe(null)
+  test("errorHtmlUsingOPTIONS", () => {
+    return expect(instance.errorHtmlUsingOPTIONS({})).resolves.toBe(null)
   })
-  test("errorUsingPATCH", () => {
-    return expect(instance.errorUsingPATCH({})).resolves.toBe(null)
+  test("errorHtmlUsingPATCH", () => {
+    return expect(instance.errorHtmlUsingPATCH({})).resolves.toBe(null)
   })
-  test("errorUsingPOST", () => {
-    return expect(instance.errorUsingPOST({})).resolves.toBe(null)
+  test("errorHtmlUsingPOST", () => {
+    return expect(instance.errorHtmlUsingPOST({})).resolves.toBe(null)
   })
-  test("errorUsingPUT", () => {
-    return expect(instance.errorUsingPUT({})).resolves.toBe(null)
+  test("errorHtmlUsingPUT", () => {
+    return expect(instance.errorHtmlUsingPUT({})).resolves.toBe(null)
   })
 })
 

@@ -1,13 +1,26 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ParklySearchScreen } from './ParklySearchScreen/ParklySearchScreen';
-import { CarlySearchScreen } from './CarlySearchScreen/CarlySearchScreen';
-import { FlatlySearchScreen } from './FlatlySearchScreen/FlatlySearchScreen';
 import { Icon } from "react-native-elements"
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ItemsService } from '../app/services/ItemsService';
+import { CarlyScreen } from './CarlyScreen/CarlyScreen';
+import { FlatlyScreen } from './FlatlyScreen/FlatlyScreen';
+import { ParklyScreen } from './ParklyScreen/ParklyScreen';
 
 
 const Tab = createBottomTabNavigator();
+
+const CarlyScreenWrapper = () => (
+    <CarlyScreen itemsService={new ItemsService()}></CarlyScreen>
+)
+
+const FlatlyScreenWrapper = () => (
+    <FlatlyScreen itemsService={new ItemsService()}></FlatlyScreen>
+)
+
+const ParklyScreenWrapper = () => (
+    <ParklyScreen itemsService={new ItemsService()}></ParklyScreen>
+)
 
 
 export const SearchScreen = () => {
@@ -32,9 +45,9 @@ export const SearchScreen = () => {
                 contentStyle: { backgroundColor: "#fff" }
             })}
         >
-            <Tab.Screen name="Flats" component={FlatlySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
-            <Tab.Screen name="Cars" component={CarlySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
-            <Tab.Screen name="Parkings" component={ParklySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
+            <Tab.Screen name="Flats" component={FlatlyScreenWrapper} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
+            <Tab.Screen name="Cars" component={CarlyScreenWrapper} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
+            <Tab.Screen name="Parkings" component={ParklyScreenWrapper} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />
         </Tab.Navigator>
     )
 }

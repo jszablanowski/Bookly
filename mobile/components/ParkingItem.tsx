@@ -4,12 +4,12 @@ import { Icon, Image, Text } from "react-native-elements"
 
 export interface ParkingItemDetails {
     parkingName: string;
-    spotNumber: number;
-    city: string;
-    street: string;
-    streetTag: string;
-    pricePerHour: number;
-    imageLink: string;
+    spotNumber?: number;
+    city?: string;
+    street?: string;
+    streetTag?: string;
+    pricePerHour?: number;
+    imageLink?: string;
 }
 
 export const ParkingItem = (props: { details: ParkingItemDetails }) => {

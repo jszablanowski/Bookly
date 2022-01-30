@@ -4,13 +4,13 @@ import { Icon, Image, Text } from "react-native-elements"
 
 
 export interface CarItemDetails {
-    price: number;
-    brand: string;
-    model: string;
-    location: string;
-    engine: string;
-    year: number;
-    id: number;
+    price?: number;
+    brand?: string;
+    model?: string;
+    location?: string;
+    engine?: string;
+    year?: number;
+    id: string;
 }
 
 export const CarItem = (props: { details: CarItemDetails }) => {
