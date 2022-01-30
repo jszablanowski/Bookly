@@ -13,4 +13,5 @@ public interface BookingRepository extends PagingAndSortingRepository<Booking, L
     ArrayList<Booking> findBookingsByUserId(long userId);
     ArrayList<Booking> findBookingsByUserId(long userId, Pageable pageable);
     ArrayList<Booking> findBookingsByUserId(long userId, Sort pageable);
+    ArrayList<Booking> findAll(Pageable pageable);
 }

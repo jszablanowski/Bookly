@@ -14,6 +14,7 @@ public interface BookingService {
     ArrayList<BookingResponse> getUserBookings(long userId, Integer page, Integer size, SortType sort, FilteringType filter)
             throws ResourceNotFoundException;
     BookingResponse getBooking(long bookingId) throws ResourceNotFoundException;
+    ArrayList<BookingResponse> getAllBookings(Integer page, Integer size, SortType sort, FilteringType filter);
     boolean deleteBooking(long bookingId) throws ResourceNotFoundException;
     void addBooking(Booking booking);
     Booking updateBooking(UpdateBookingDto updateBookingDto, long bookingId) throws ResourceNotFoundException;

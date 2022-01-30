@@ -120,6 +120,75 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
+    public ArrayList<BookingResponse> getAllBookings(Integer page, Integer size, SortType sort, FilteringType filter)
+    {
+        var responseList = new ArrayList<BookingResponse>();
+        ArrayList<Booking> userBookings;
+        Sort sortMode = null;
+        if (sort == SortType.desc)
+            sortMode = Sort.by("startDateTime").descending();
+        else if (sort == SortType.asc)
+            sortMode = Sort.by("startDateTime").ascending();
+
+        if (page != null || sort != null)
+        {
+            if(size == null)
+                size = 10; //default page size
+
+            if (page != null)
+            {
+                Pageable pageable;
+
+                if(sort != null)
+                {
+                    pageable = PageRequest.of(page, size, sortMode);
+                }
+                else
+                {
+                    pageable = PageRequest.of(page, size);
+                }
+                userBookings = repository.findAll(pageable);
+            }
+            else
+            {
+                if (sort != null) {
+                    userBookings = repository.findAll(sortMode);
+                }
+                else
+                {
+                    userBookings = repository.findAll();
+                }
+            }
+        }
+        else // without pagination
+        {
+            userBookings = repository.findAll();
+        }
+
+        if(filter == FilteringType.active) {
+            userBookings.removeIf(s -> s.isActive() == false);
+        }
+        else if(filter == FilteringType.inactive){
+            userBookings.removeIf(s -> s.isActive() == true);
+
+        }
+
+        for (var bookingEntry: userBookings)
+        {
+            var bookingItem = itemService.getItem(bookingEntry.getItemId(), bookingEntry.getItemType());
+
+            responseList.add( new BookingResponse()
+            {{
+                active = bookingEntry.isActive();
+                startDate = bookingEntry.getStartDateTime();
+                itemType = bookingEntry.getItemType();
+                item = bookingItem;
+            }});
+        }
+        return responseList;
+    }
+
+    @Override
     public boolean deleteBooking(long bookingId) throws ResourceNotFoundException {
         try
         {
