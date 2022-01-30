@@ -8,13 +8,13 @@ import { FlatItemDetails } from "../../components/FlatItem";
 import { useAuth } from "../../hooks/Auth";
 import { CarlyFilters, CarlyFilterScreen } from "./CarlyFilterScreen";
 import { CarlySortScreen, SortMode } from "./CarlySortScreen";
-
-
+import {CarlyDetailsScreen } from "../CarlyDetailsScreen";
 
 type RootStackParamList = {
     FilterScreen: undefined;
     SortScreen: undefined;
     MainScreen: undefined;
+    DetailsScreen: CarItemDetails;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -79,13 +79,10 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
 
     const [carItems, setCarItems] = useState<Array<CarItemDetails> | undefined>(undefined);
 
-    const renderItem = ({ item }: { item: CarItemDetails }) => (
-        <TouchableOpacity onPress={() => { }} >
-            <CarItem details={item}></CarItem>
-        </TouchableOpacity>
-    );
-
-
+    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <CarlyDetailsScreen data= {route.params?? {id: "-1"} } ></CarlyDetailsScreen>
+    )
+    
     const onRefresh = () => {
         setLoading(true);
         setCarlyFilters({ model: "", location: "", text: "" });
@@ -103,7 +100,16 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
         );
     };
 
-    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => (
+
+    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => {
+        const renderItem = ({ item }: { item: CarItemDetails}) => (
+
+            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item ) }} >
+                <CarItem details={item}></CarItem>
+            </TouchableOpacity>
+        );
+
+        return (
         <View>
             <View style={{ alignSelf: "stretch" }}>
                 <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
@@ -125,7 +131,8 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
                 ListHeaderComponent={itemsCountHeader}
             />
         </View>
-    )
+        )
+}
 
     const FilterScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'FilterScreen'>) => (
         <CarlyFilterScreen onChange={val => {
@@ -147,6 +154,7 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
             <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="FilterScreen" component={FilterScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="SortScreen" component={SortScreen} options={{ headerShown: false, }} />
+            <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
         </Stack.Navigator>
     )
 }

@@ -1,13 +1,22 @@
+import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react"
 import { ActivityIndicator, FlatList, TouchableOpacity, View } from "react-native"
 import { Divider, Icon, Text } from "react-native-elements"
 import { IItemsService } from "../../app/services/ItemsService";
 import { ParkingItem, ParkingItemDetails } from "../../components/ParkingItem";
 import { useAuth } from "../../hooks/Auth";
+import { ParklyDetailsScreen } from "../ParklyDetailsScreen";
 
 interface ParklyScreenProps {
     itemsService: IItemsService;
 }
+
+type RootStackParamList = {
+    MainScreen: undefined;
+    DetailsScreen: ParkingItemDetails;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export const ParklyScreen = (props: ParklyScreenProps) => {
 
@@ -52,6 +61,12 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
 
     const [parkingItems, setParkingItems] = useState<Array<ParkingItemDetails> | undefined>(undefined);
 
+    
+    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <ParklyDetailsScreen data= {route.params?? {id: "-1"} } ></ParklyDetailsScreen>
+    )
+    
+
     const onRefresh = () => {
         setLoading(true);
     };
@@ -66,9 +81,16 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
             </View>
         );
     };
+    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => {
 
-    return (
-        <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+        const renderItem = ({ item }: { item: ParkingItemDetails}) => (
+            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item ) }} >
+                <ParkingItem details={item}></ParkingItem>
+            </TouchableOpacity>
+        );
+
+        return (
+            <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <FlatList
                 data={parkingItems}
                 renderItem={renderItem}
@@ -78,6 +100,14 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
                 style={{ alignSelf: "stretch" }}
                 ListHeaderComponent={itemsCountHeader}
             />
-        </View>
-    )
+            </View>
+        )
+}
+
+return (
+            <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ contentStyle: { backgroundColor: "#fff" } }} >
+                <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
+                <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
+            </Stack.Navigator>
+        )
 }

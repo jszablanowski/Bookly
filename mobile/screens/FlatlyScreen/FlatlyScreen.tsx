@@ -8,6 +8,7 @@ import { HeaderBookly } from "../../components/HeaderBookly";
 import { FlatlySortScreen } from "./FlatlySortScreen";
 import { useAuth } from "../../hooks/Auth";
 import { IItemsService } from "../../app/services/ItemsService";
+import { FlatlyDetailsScreen } from "../FlatlyDetailsScreen";
 
 
 
@@ -15,6 +16,7 @@ type RootStackParamList = {
     FilterScreen: undefined;
     SortScreen: undefined;
     MainScreen: undefined;
+    DetailsScreen: FlatItemDetails;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -66,11 +68,11 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
 
     const [flatItems, setFlatItems] = useState<Array<FlatItemDetails> | undefined>(undefined);
 
-    const renderItem = ({ item }: { item: FlatItemDetails }) => (
-        <TouchableOpacity onPress={() => { }} >
-            <FlatItem details={item}></FlatItem>
-        </TouchableOpacity>
-    );
+
+
+    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <FlatlyDetailsScreen data= {route.params?? {id: " " } } ></FlatlyDetailsScreen>
+    )
 
     const onRefresh = () => {
         setLoading(true);
@@ -89,8 +91,16 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
         );
     };
 
-    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => (
-        <View>
+    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => {
+
+        const renderItem = ({ item }: { item: FlatItemDetails }) => (
+            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item ) }} >
+             <FlatItem details={item}></FlatItem>
+            </TouchableOpacity>
+        );
+
+        return (
+            <View>
             <View style={{ alignSelf: "stretch" }}>
                 <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
                     <View style={{ flex: 1, marginHorizontal: 4 }}>
@@ -111,7 +121,9 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
                 ListHeaderComponent={itemsCountHeader}
             />
         </View>
-    )
+        )
+    }
+
 
     const FilterScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'FilterScreen'>) => (
         <FlatlyFilterScreen onChange={val => {
@@ -134,6 +146,7 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
             <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="FilterScreen" component={FilterScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="SortScreen" component={SortScreen} options={{ headerShown: false, }} />
+            <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
         </Stack.Navigator>
     )
 }

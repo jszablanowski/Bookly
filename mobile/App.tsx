@@ -8,6 +8,11 @@ import { AuthProvider } from './hooks/Auth';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import React, { useState } from 'react';
 import { SearchScreen } from './screens/SearchScreen';
+import { ParklySearchScreen } from './screens/ParklySearchScreen';
+import { ParklyDetailsScreen } from './screens/ParklyDetailsScreen';
+import { FlatDetails } from './components/FlatDetails';
+import { FlatlyDetailsScreen } from './screens/FlatlyDetailsScreen';
+import { CarlyDetailsScreen } from './screens/CarlyDetailsScreen';
 import { HeaderBookly } from './components/HeaderBookly';
 
 

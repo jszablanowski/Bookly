@@ -14,7 +14,7 @@ interface Address {
     city?: string;
 }
 
-interface Facility {
+export interface Facility {
     id?: number;
     name?: string;
 }
