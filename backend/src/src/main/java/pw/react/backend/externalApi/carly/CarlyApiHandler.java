@@ -96,6 +96,7 @@ public class CarlyApiHandler implements ExternalApiHandler {
                 items = responseItems;
                 page = objJsonObject.getInt("pageNo") + 1;
                 totalPages = objJsonObject.getInt("pageCount");
+                totalItems = responseItems.size();
             }};
         }
 

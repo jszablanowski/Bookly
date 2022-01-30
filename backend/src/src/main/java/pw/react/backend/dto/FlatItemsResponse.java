@@ -9,4 +9,5 @@ public class FlatItemsResponse {
     public int page;
     public List<FlatItem> items;
     public int totalPages;
+    public int totalItems;
 }

@@ -35,6 +35,9 @@ public class User implements UserDetails {
     @Column
     private String lastName;
 
+    @Column
+    private boolean active;
+
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {

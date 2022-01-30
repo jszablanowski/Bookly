@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +13,17 @@ import pw.react.backend.enums.FilteringType;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.models.Booking;
-import pw.react.backend.dto.AddBookingDto;
-import pw.react.backend.requests.BookingResponse;
+import pw.react.backend.requests.BaseBooking;
+import pw.react.backend.requests.carly.CarlyBooking;
+import pw.react.backend.requests.carly.CarlyBookingsResponse;
+import pw.react.backend.requests.flatly.FlatlyBooking;
+import pw.react.backend.requests.flatly.FlatlyBookingsResponse;
+import pw.react.backend.requests.parkly.ParklyBooking;
+import pw.react.backend.requests.parkly.ParklyBookingsResponse;
 import pw.react.backend.services.BookingService;
 import pw.react.backend.services.UserService;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/bookings")
@@ -37,17 +41,57 @@ public class BookingsController {
         this.userService = userService;
     }
 
-    @GetMapping(path = "")
-    public ResponseEntity<ArrayList<BookingResponse>> getUserBookings(@RequestParam(required = false) Integer page,
-                                                                      @RequestParam(required = false) Integer size,
-                                                                      @RequestParam(required = false) SortType sort,
-                                                                      @RequestParam(required = false) FilteringType filter) {
+    @GetMapping(path = "user/flats")
+    public ResponseEntity<FlatlyBookingsResponse> getUserFlats(@RequestParam Integer page,
+                                                                @RequestParam Integer size,
+                                                                @RequestParam(required = false) SortType sort,
+                                                                @RequestParam(required = false) FilteringType filter) {
 
         var userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.getByUserName(userName);
-        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter);
-        return ResponseEntity.ok(bookings);
+        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.ROOM);
+        var response = new FlatlyBookingsResponse(){{
+            items = (List<FlatlyBooking>)(Object)bookings.items;
+            page = bookings.page;
+            totalPages = bookings.totalPages;
+        }};
+        return ResponseEntity.ok(response);
     }
+
+    @GetMapping(path = "user/cars")
+    public ResponseEntity<CarlyBookingsResponse> getUserCars(@RequestParam Integer page,
+                                                                @RequestParam Integer size,
+                                                                @RequestParam(required = false) SortType sort,
+                                                                @RequestParam(required = false) FilteringType filter) {
+
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.getByUserName(userName);
+        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.ROOM);
+        var response = new CarlyBookingsResponse(){{
+            items = (List<CarlyBooking>)(Object)bookings.items;
+            page = bookings.page;
+            totalPages = bookings.totalPages;
+        }};
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "user/parkings")
+    public ResponseEntity<ParklyBookingsResponse> getUserParkings(@RequestParam Integer page,
+                                                                @RequestParam Integer size,
+                                                                @RequestParam(required = false) SortType sort,
+                                                                @RequestParam(required = false) FilteringType filter) {
+
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.getByUserName(userName);
+        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.ROOM);
+        var response = new ParklyBookingsResponse(){{
+            items = (List<ParklyBooking>)(Object)bookings.items;
+            page = bookings.page;
+            totalPages = bookings.totalPages;
+        }};
+        return ResponseEntity.ok(response);
+    }
+
     @PutMapping(path = "/{bookingId}")
     public ResponseEntity<Booking> updateBooking(@RequestBody UpdateBookingDto updateBookingDto, @PathVariable long bookingId)
     {
@@ -70,10 +114,55 @@ public class BookingsController {
 
 
     @GetMapping(path = "/{bookingId}")
-    public ResponseEntity<BookingResponse> getBooking(@PathVariable long bookingId)
+    public ResponseEntity<BaseBooking> getBooking(@PathVariable long bookingId)
     {
         var booking = bookingService.getBooking(bookingId);
         return ResponseEntity.ok(booking);
+    }
+
+    @GetMapping(path = "/all/flats")
+    public ResponseEntity<FlatlyBookingsResponse> getFlatsBookings(@RequestParam(required = false) Integer page,
+                                                                @RequestParam(required = false) Integer size,
+                                                                @RequestParam(required = false) SortType sort,
+                                                                @RequestParam(required = false) FilteringType filter)
+    {
+        var bookings = bookingService.getAllBookings(page, size, sort, filter, ItemType.ROOM);
+        var response = new FlatlyBookingsResponse(){{
+            items = (List<FlatlyBooking>)(Object)bookings.items;
+            page = bookings.page;
+            totalPages = bookings.totalPages;
+        }};
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/all/cars")
+    public ResponseEntity<CarlyBookingsResponse> getCarsBookings(@RequestParam(required = false) Integer page,
+                                                                     @RequestParam(required = false) Integer size,
+                                                                     @RequestParam(required = false) SortType sort,
+                                                                     @RequestParam(required = false) FilteringType filter)
+    {
+        var bookings = bookingService.getAllBookings(page, size, sort, filter, ItemType.CAR);
+        var response = new CarlyBookingsResponse(){{
+            items = (List<CarlyBooking>)(Object)bookings.items;
+            page = bookings.page;
+            totalPages = bookings.totalPages;
+        }};
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping(path = "/all/parkings")
+    public ResponseEntity<ParklyBookingsResponse> getParkingsBookings(@RequestParam(required = false) Integer page,
+                                                                     @RequestParam(required = false) Integer size,
+                                                                     @RequestParam(required = false) SortType sort,
+                                                                     @RequestParam(required = false) FilteringType filter)
+    {
+        var bookings = bookingService.getAllBookings(page, size, sort, filter, ItemType.PARKING);
+        var response = new ParklyBookingsResponse(){{
+            items = (List<ParklyBooking>)(Object)bookings.items;
+            page = bookings.page;
+            totalPages = bookings.totalPages;
+        }};
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping(path = "/{bookingId}")

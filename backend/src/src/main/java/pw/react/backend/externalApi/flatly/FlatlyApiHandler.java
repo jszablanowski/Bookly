@@ -93,6 +93,7 @@ public class FlatlyApiHandler implements ExternalApiHandler {
                  items = responseItems;
                  page = parseInt(pagination.get("page").toString());
                  totalPages = parseInt(pagination.get("totalPages").toString());
+                 totalItems = responseItems.size();
              }};
         }
 

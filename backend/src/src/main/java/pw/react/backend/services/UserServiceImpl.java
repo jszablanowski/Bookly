@@ -7,10 +7,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pw.react.backend.dao.CompanyRepository;
 import pw.react.backend.dao.UserRepository;
+import pw.react.backend.dto.UpdateUserDto;
 import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.exceptions.UserValidationException;
 import pw.react.backend.models.User;
 
+import javax.annotation.Resource;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -88,5 +90,51 @@ public class UserServiceImpl implements UserService {
     public User getByUserName(String userName) {
         return userRepository.findByUsername(userName)
                 .orElseThrow(() -> new ResourceNotFoundException("User with userName: " + userName + " not found."));
+    }
+
+    @Override
+    public void disableUser(long userId) throws ResourceNotFoundException{
+        var userEntry = userRepository.findById(userId);
+
+        if (!userEntry.isPresent())
+            throw new ResourceNotFoundException("User not found");
+
+        var user = userEntry.get();
+
+        user.setActive(false);
+
+        userRepository.save(user);
+
+    }
+
+    @Override
+    public User updateUser(long userId, UpdateUserDto updateUserDto) throws ResourceNotFoundException {
+        var userEntry = userRepository.findById(userId);
+
+        if (!userEntry.isPresent())
+            throw new ResourceNotFoundException("User not found");
+
+        var user = userEntry.get();
+
+        if (updateUserDto.username != null)
+            user.setUsername(updateUserDto.username);
+
+        if (updateUserDto.email != null)
+            user.setEmail(updateUserDto.email);
+
+        if (updateUserDto.firstName != null)
+            user.setFirstName(updateUserDto.firstName);
+
+        if (updateUserDto.lastName != null)
+            user.setLastName(updateUserDto.lastName);
+
+        if (updateUserDto.password != null)
+        {
+            var password = passwordEncoder.encode(updateUserDto.password);
+            user.setPassword(password);
+        }
+
+        userRepository.save(user);
+        return user;
     }
 }

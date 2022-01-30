@@ -9,4 +9,5 @@ public class ParkingItemsResponse {
     public int page;
     public List<ParkingItem> items;
     public int totalPages;
+    public int totalItems;
 }

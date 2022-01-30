@@ -58,6 +58,7 @@ public class ItemsController {
             page = flats.page;
             totalPages = flats.totalPages;
             items = (List<FlatItem>)(Object)flats.items;
+            totalItems = flats.totalPages;
         }};
         return ResponseEntity.ok(response);
     }
@@ -86,6 +87,7 @@ public class ItemsController {
             page = cars.page;
             totalPages = cars.totalPages;
             items = (List<CarItem>)(Object)cars.items;
+            totalItems = cars.totalPages;
         }};
         return ResponseEntity.ok(response);
     }
@@ -106,6 +108,7 @@ public class ItemsController {
             page = parkings.page;
             totalPages = parkings.totalPages;
             items = (List<ParkingItem>)(Object)parkings.items;
+            totalItems = parkings.totalPages;
         }};
         return ResponseEntity.ok(response);
     }

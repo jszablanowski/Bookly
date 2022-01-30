@@ -8,4 +8,5 @@ public class GetItemsResponse {
     public int page;
     public List<ItemBase> items;
     public int totalPages;
+    public int totalItems;
 }

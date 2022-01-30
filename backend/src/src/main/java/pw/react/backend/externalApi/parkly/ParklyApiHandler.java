@@ -16,8 +16,10 @@ import pw.react.backend.externalApi.ExternalApiHandler;
 import pw.react.backend.externalApi.GetItemsBaseDto;
 import pw.react.backend.externalApi.carly.models.CarlyBookRequest;
 import pw.react.backend.externalApi.carly.models.CarlyGetItemsDto;
+import pw.react.backend.externalApi.flatly.models.LoginRequest;
 import pw.react.backend.externalApi.parkly.models.ParklyBookRequest;
 import pw.react.backend.externalApi.parkly.models.ParklyGetItemsDto;
+import pw.react.backend.externalApi.parkly.models.ParklyLoginRequest;
 import pw.react.backend.items.CarItem;
 import pw.react.backend.items.ItemBase;
 import pw.react.backend.items.ParkingItem;
@@ -34,7 +36,7 @@ import static java.lang.Integer.parseInt;
 public class ParklyApiHandler implements ExternalApiHandler {
 
     private String baseUri = "https://parkly-backend.azurewebsites.net";
-    private String authenticationHeader = "Authentication";
+    private String authenticationHeader = "Authorization";
     private String authenticationHeaderValue;
     private RestTemplate restTemplate;
     private String DateFormat = "yyyy-MM-dd'T'HH:mm:ss";
@@ -80,6 +82,7 @@ public class ParklyApiHandler implements ExternalApiHandler {
                 items = responseItems;
                 page = objJsonObject.getInt("currentPage") + 1;
                 totalPages = objJsonObject.getInt("totalPages");
+                totalItems = responseItems.size();
             }};
         }
         catch (Exception e)
@@ -152,13 +155,33 @@ public class ParklyApiHandler implements ExternalApiHandler {
 
     @Override
     public void updateAuthorization() {
+        var dto = new ParklyLoginRequest(){{
+            username = "bookly";
+            password = "bookly";
+        }};
+        try {
+            var json = mapper.writeValueAsString(dto);
+
+            var request = new HttpEntity<>(json, buildHeaders());
+
+            var response = restTemplate.postForEntity(baseUri + "/authenticate", request,
+                    String.class);
+
+            var objJsonObject = new JSONObject(response.getBody());
+
+            authenticationHeaderValue = objJsonObject.getString("jwttoken");
+        }
+
+        catch(Exception e) {
+
+        }
 
     }
 
     private HttpHeaders buildHeaders()
     {
         var headers = new HttpHeaders();
-        //headers.add(authenticationHeader, authenticationHeaderValue);
+        headers.add(authenticationHeader, "Bearer " + authenticationHeaderValue);
         headers.add("Content-Type", "application/json");
         return headers;
     }

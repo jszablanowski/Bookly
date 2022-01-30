@@ -5,11 +5,11 @@ import pw.react.backend.items.ItemBase;
 import pw.react.backend.models.Booking;
 
 import java.util.Date;
+import java.util.List;
 
-public class BookingResponse{
-    public ItemBase item;
-    public Date startDate;
-    public boolean active;
-    public ItemType itemType;
+public class BaseBookingResponse{
+    public List<BaseBooking> items;
+    public int page;
+    public int totalPages;
 }
 

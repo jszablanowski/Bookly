@@ -1,8 +1,10 @@
 package pw.react.backend.dao;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import pw.react.backend.enums.ItemType;
 import pw.react.backend.models.Booking;
 
 import java.util.ArrayList;
@@ -13,4 +15,8 @@ public interface BookingRepository extends PagingAndSortingRepository<Booking, L
     ArrayList<Booking> findBookingsByUserId(long userId);
     ArrayList<Booking> findBookingsByUserId(long userId, Pageable pageable);
     ArrayList<Booking> findBookingsByUserId(long userId, Sort pageable);
+    ArrayList<Booking> findBookingsByItemType(ItemType itemType);
+    Page<Booking> findAll(Pageable pageable);
+    ArrayList<Booking> findAll();
+
 }

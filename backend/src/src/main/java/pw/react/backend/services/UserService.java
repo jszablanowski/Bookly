@@ -1,6 +1,7 @@
 package pw.react.backend.services;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import pw.react.backend.dto.UpdateUserDto;
 import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.models.User;
 
@@ -11,4 +12,6 @@ public interface UserService {
     User updatePassword(User user, String password);
     void setPasswordEncoder(PasswordEncoder passwordEncoder);
     User getByUserName(String userName);
+    void disableUser(long userId) throws ResourceNotFoundException;
+    User updateUser(long userId, UpdateUserDto updateUserDto) throws ResourceNotFoundException;
 }
