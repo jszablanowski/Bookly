@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { ParklySearchScreen } from './ParklySearchScreen';
-import { CarlySearchScreen } from './CarlySearchScreen';
-import { FlatlySearchScreen } from './FlatlySearchScreen';
+import { ParklySearchScreen } from './ParklySearchScreen/ParklySearchScreen';
+import { CarlySearchScreen } from './CarlySearchScreen/CarlySearchScreen';
+import { FlatlySearchScreen } from './FlatlySearchScreen/FlatlySearchScreen';
 import { Icon } from "react-native-elements"
 import IconFontAwesome from 'react-native-vector-icons/FontAwesome';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,6 +29,7 @@ export const SearchScreen = () => {
                 },
                 tabBarActiveTintColor: '#0090f0',
                 tabBarInactiveTintColor: 'gray',
+                contentStyle: { backgroundColor: "#fff" }
             })}
         >
             <Tab.Screen name="Flats" component={FlatlySearchScreen} options={{ headerShown: false, tabBarLabelStyle: { fontSize: 14 } }} />

@@ -277,6 +277,14 @@
         "produces": ["*/*"],
         "parameters": [
           {
+            "name": "filter",
+            "in": "query",
+            "description": "filter",
+            "required": false,
+            "type": "string",
+            "enum": ["active", "inactive"]
+          },
+          {
             "name": "page",
             "in": "query",
             "description": "page",
@@ -298,7 +306,7 @@
             "description": "sort",
             "required": false,
             "type": "string",
-            "enum": ["ASCENDING", "DESCENDING"]
+            "enum": ["asc", "desc"]
           }
         ],
         "responses": {
@@ -432,13 +440,16 @@
     "/error": {
       "get": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingGET",
-        "produces": ["text/html"],
+        "summary": "error",
+        "operationId": "errorUsingGET",
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
@@ -448,14 +459,17 @@
       },
       "head": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingHEAD",
+        "summary": "error",
+        "operationId": "errorUsingHEAD",
         "consumes": ["application/json"],
-        "produces": ["text/html"],
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -465,14 +479,17 @@
       },
       "post": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingPOST",
+        "summary": "error",
+        "operationId": "errorUsingPOST",
         "consumes": ["application/json"],
-        "produces": ["text/html"],
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
@@ -483,14 +500,17 @@
       },
       "put": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingPUT",
+        "summary": "error",
+        "operationId": "errorUsingPUT",
         "consumes": ["application/json"],
-        "produces": ["text/html"],
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "201": { "description": "Created" },
           "401": { "description": "Unauthorized" },
@@ -501,13 +521,16 @@
       },
       "delete": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingDELETE",
-        "produces": ["text/html"],
+        "summary": "error",
+        "operationId": "errorUsingDELETE",
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -517,14 +540,17 @@
       },
       "options": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingOPTIONS",
+        "summary": "error",
+        "operationId": "errorUsingOPTIONS",
         "consumes": ["application/json"],
-        "produces": ["text/html"],
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -534,14 +560,17 @@
       },
       "patch": {
         "tags": ["basic-error-controller"],
-        "summary": "errorHtml",
-        "operationId": "errorHtmlUsingPATCH",
+        "summary": "error",
+        "operationId": "errorUsingPATCH",
         "consumes": ["application/json"],
-        "produces": ["text/html"],
+        "produces": ["*/*"],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": { "$ref": "#/definitions/ModelAndView" }
+            "schema": {
+              "type": "object",
+              "additionalProperties": { "type": "object" }
+            }
           },
           "204": { "description": "No Content" },
           "401": { "description": "Unauthorized" },
@@ -558,36 +587,63 @@
         "produces": ["*/*"],
         "parameters": [
           {
-            "name": "active",
+            "name": "dateSort",
             "in": "query",
-            "description": "active",
+            "description": "dateSort",
             "required": false,
-            "type": "boolean"
+            "type": "string",
+            "enum": ["asc", "desc"]
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "description": "location",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "model",
+            "in": "query",
+            "description": "model",
+            "required": false,
+            "type": "string"
           },
           {
             "name": "page",
             "in": "query",
             "description": "page",
-            "required": false,
+            "required": true,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "sortType",
+            "name": "pageSize",
             "in": "query",
-            "description": "sortType",
+            "description": "pageSize",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "priceSort",
+            "in": "query",
+            "description": "priceSort",
             "required": false,
             "type": "string",
-            "enum": ["ASCENDING", "DESCENDING"]
+            "enum": ["asc", "desc"]
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "text",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": { "$ref": "#/definitions/ItemBase" }
-            }
+            "schema": { "$ref": "#/definitions/CarItemsResponse" }
           },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
@@ -604,36 +660,46 @@
         "produces": ["*/*"],
         "parameters": [
           {
-            "name": "active",
+            "name": "city",
             "in": "query",
-            "description": "active",
+            "description": "city",
             "required": false,
-            "type": "boolean"
+            "type": "string"
           },
           {
             "name": "page",
             "in": "query",
             "description": "page",
-            "required": false,
+            "required": true,
             "type": "integer",
             "format": "int32"
           },
           {
-            "name": "sort",
+            "name": "sorted",
             "in": "query",
-            "description": "sort",
+            "description": "sorted",
             "required": false,
-            "type": "string",
-            "enum": ["ASCENDING", "DESCENDING"]
+            "type": "boolean"
+          },
+          {
+            "name": "street",
+            "in": "query",
+            "description": "street",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "text",
+            "in": "query",
+            "description": "text",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": { "$ref": "#/definitions/ItemBase" }
-            }
+            "schema": { "$ref": "#/definitions/FlatItemsResponse" }
           },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
@@ -657,13 +723,6 @@
             "type": "boolean"
           },
           {
-            "name": "city",
-            "in": "query",
-            "description": "city",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "page",
             "in": "query",
             "description": "page",
@@ -672,35 +731,18 @@
             "format": "int32"
           },
           {
-            "name": "page-size",
+            "name": "pageSize",
             "in": "query",
-            "description": "page-size",
+            "description": "pageSize",
             "required": true,
             "type": "integer",
             "format": "int32"
-          },
-          {
-            "name": "parking-name",
-            "in": "query",
-            "description": "parking-name",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "street",
-            "in": "query",
-            "description": "street",
-            "required": false,
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": { "$ref": "#/definitions/ItemBase" }
-            }
+            "schema": { "$ref": "#/definitions/ParkingItemsResponse" }
           },
           "401": { "description": "Unauthorized" },
           "403": { "description": "Forbidden" },
@@ -768,19 +810,110 @@
     "BookingResponse": {
       "type": "object",
       "properties": {
-        "booking": { "$ref": "#/definitions/Booking" },
-        "item": { "$ref": "#/definitions/ItemBase" }
+        "active": { "type": "boolean" },
+        "item": { "$ref": "#/definitions/ItemBase" },
+        "itemType": { "type": "string", "enum": ["CAR", "PARKING", "ROOM"] },
+        "startDate": { "type": "string", "format": "date-time" }
       },
       "title": "BookingResponse"
+    },
+    "CarItem": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "brand": { "type": "string" },
+        "endDate": { "type": "string", "format": "date-time" },
+        "engine": { "type": "string" },
+        "id": { "type": "string" },
+        "location": { "type": "string" },
+        "model": { "type": "string" },
+        "price": { "type": "integer", "format": "int32" },
+        "startDate": { "type": "string", "format": "date-time" },
+        "year": { "type": "integer", "format": "int32" }
+      },
+      "title": "CarItem"
+    },
+    "CarItemsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/CarItem" }
+        },
+        "page": { "type": "integer", "format": "int32" },
+        "totalPages": { "type": "integer", "format": "int32" }
+      },
+      "title": "CarItemsResponse"
+    },
+    "FlatAddress": {
+      "type": "object",
+      "properties": {
+        "city": { "type": "string" },
+        "houseNumber": { "type": "string" },
+        "id": { "type": "integer", "format": "int32" },
+        "localNumber": { "type": "string" },
+        "postalCode": { "type": "string" },
+        "streetName": { "type": "string" }
+      },
+      "title": "FlatAddress"
+    },
+    "FlatFacility": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "name": { "type": "string" }
+      },
+      "title": "FlatFacility"
+    },
+    "FlatImage": {
+      "type": "object",
+      "properties": {
+        "id": { "type": "integer", "format": "int32" },
+        "path": { "type": "string" }
+      },
+      "title": "FlatImage"
+    },
+    "FlatItem": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "address": { "$ref": "#/definitions/FlatAddress" },
+        "area": { "type": "integer", "format": "int32" },
+        "description": { "type": "string" },
+        "endDateTime": { "type": "string", "format": "date-time" },
+        "facilities": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FlatFacility" }
+        },
+        "id": { "type": "string" },
+        "images": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FlatImage" }
+        },
+        "name": { "type": "string" },
+        "numberOfGuests": { "type": "integer", "format": "int32" },
+        "rooms": { "type": "integer", "format": "int32" },
+        "startDateTime": { "type": "string", "format": "date-time" }
+      },
+      "title": "FlatItem"
+    },
+    "FlatItemsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/FlatItem" }
+        },
+        "page": { "type": "integer", "format": "int32" },
+        "totalPages": { "type": "integer", "format": "int32" }
+      },
+      "title": "FlatItemsResponse"
     },
     "ItemBase": {
       "type": "object",
       "properties": {
         "active": { "type": "boolean" },
-        "endDateTime": { "type": "string", "format": "date-time" },
-        "id": { "type": "string" },
-        "name": { "type": "string" },
-        "startDateTime": { "type": "string", "format": "date-time" }
+        "id": { "type": "string" }
       },
       "title": "ItemBase"
     },
@@ -888,10 +1021,38 @@
       },
       "title": "ModelAndView"
     },
+    "ParkingItem": {
+      "type": "object",
+      "properties": {
+        "active": { "type": "boolean" },
+        "booked": { "type": "boolean" },
+        "city": { "type": "string" },
+        "id": { "type": "string" },
+        "imageLink": { "type": "string" },
+        "parkingName": { "type": "string" },
+        "pricePerHour": { "type": "integer", "format": "int32" },
+        "spotNumber": { "type": "integer", "format": "int32" },
+        "street": { "type": "string" },
+        "streetTag": { "type": "string" }
+      },
+      "title": "ParkingItem"
+    },
+    "ParkingItemsResponse": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ParkingItem" }
+        },
+        "page": { "type": "integer", "format": "int32" },
+        "totalPages": { "type": "integer", "format": "int32" }
+      },
+      "title": "ParkingItemsResponse"
+    },
     "UpdateBookingDto": {
       "type": "object",
       "properties": {
-        "Active": { "type": "boolean" },
+        "active": { "type": "boolean" },
         "itemId": { "type": "string" },
         "itemType": { "type": "string" },
         "startDateTime": { "type": "string", "format": "date-time" }

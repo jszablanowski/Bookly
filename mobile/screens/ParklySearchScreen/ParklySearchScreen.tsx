@@ -1,7 +1,7 @@
 import React from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
 import { Text } from "react-native-elements"
-import { ParkingItem, ParkingItemDetails } from "../components/ParkingItem";
+import { ParkingItem, ParkingItemDetails } from "../../components/ParkingItem";
 
 
 

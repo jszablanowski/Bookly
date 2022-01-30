@@ -175,16 +175,69 @@ export namespace Booking {
 export interface BookingResponse {
     /**
      * 
-     * @type {Booking}
+     * @type {boolean}
      * @memberof BookingResponse
      */
-    booking?: Booking;
+    active?: boolean;
     /**
      * 
      * @type {ItemBase}
      * @memberof BookingResponse
      */
     item?: ItemBase;
+    /**
+     * 
+     * @type {string}
+     * @memberof BookingResponse
+     */
+    itemType?: BookingResponse.ItemTypeEnum;
+    /**
+     * 
+     * @type {Date}
+     * @memberof BookingResponse
+     */
+    startDate?: Date;
+}
+
+/**
+ * @export
+ * @namespace BookingResponse
+ */
+export namespace BookingResponse {
+    /**
+     * @export
+     * @enum {string}
+     */
+    export enum ItemTypeEnum {
+        CAR = <any> 'CAR',
+        PARKING = <any> 'PARKING',
+        ROOM = <any> 'ROOM'
+    }
+}
+/**
+ * 
+ * @export
+ * @interface GetItemsResponse
+ */
+export interface GetItemsResponse {
+    /**
+     * 
+     * @type {Array<ItemBase>}
+     * @memberof GetItemsResponse
+     */
+    items?: Array<ItemBase>;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetItemsResponse
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof GetItemsResponse
+     */
+    totalPages?: number;
 }
 /**
  * 
@@ -200,28 +253,10 @@ export interface ItemBase {
     active?: boolean;
     /**
      * 
-     * @type {Date}
-     * @memberof ItemBase
-     */
-    endDateTime?: Date;
-    /**
-     * 
      * @type {string}
      * @memberof ItemBase
      */
     id?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof ItemBase
-     */
-    name?: string;
-    /**
-     * 
-     * @type {Date}
-     * @memberof ItemBase
-     */
-    startDateTime?: Date;
 }
 /**
  * 
@@ -486,11 +521,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
     return {
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingDELETE(options: any = {}): FetchArgs {
+        errorUsingDELETE(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
@@ -517,11 +552,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingGET(options: any = {}): FetchArgs {
+        errorUsingGET(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -548,11 +583,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingHEAD(options: any = {}): FetchArgs {
+        errorUsingHEAD(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'HEAD' }, options);
@@ -579,11 +614,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingOPTIONS(options: any = {}): FetchArgs {
+        errorUsingOPTIONS(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'OPTIONS' }, options);
@@ -610,11 +645,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPATCH(options: any = {}): FetchArgs {
+        errorUsingPATCH(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PATCH' }, options);
@@ -641,11 +676,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPOST(options: any = {}): FetchArgs {
+        errorUsingPOST(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'POST' }, options);
@@ -672,11 +707,11 @@ export const BasicErrorControllerApiFetchParamCreator = function (configuration?
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPUT(options: any = {}): FetchArgs {
+        errorUsingPUT(options: any = {}): FetchArgs {
             const localVarPath = `/error`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
@@ -712,12 +747,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
     return {
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingDELETE(options);
+        errorUsingDELETE(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingDELETE(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -730,12 +765,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingGET(options);
+        errorUsingGET(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingGET(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -748,12 +783,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingHEAD(options);
+        errorUsingHEAD(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingHEAD(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -766,12 +801,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingOPTIONS(options);
+        errorUsingOPTIONS(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingOPTIONS(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -784,12 +819,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPATCH(options);
+        errorUsingPATCH(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPATCH(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -802,12 +837,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPOST(options);
+        errorUsingPOST(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPOST(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -820,12 +855,12 @@ export const BasicErrorControllerApiFp = function(configuration?: Configuration)
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ModelAndView> {
-            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorHtmlUsingPUT(options);
+        errorUsingPUT(options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<{ [key: string]: any; }> {
+            const localVarFetchArgs = BasicErrorControllerApiFetchParamCreator(configuration).errorUsingPUT(options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -847,66 +882,66 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
     return {
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingDELETE(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingDELETE(options)(fetch, basePath);
+        errorUsingDELETE(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingDELETE(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingGET(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingGET(options)(fetch, basePath);
+        errorUsingGET(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingGET(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingHEAD(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingHEAD(options)(fetch, basePath);
+        errorUsingHEAD(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingHEAD(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingOPTIONS(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingOPTIONS(options)(fetch, basePath);
+        errorUsingOPTIONS(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingOPTIONS(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPATCH(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPATCH(options)(fetch, basePath);
+        errorUsingPATCH(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingPATCH(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPOST(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPOST(options)(fetch, basePath);
+        errorUsingPOST(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingPOST(options)(fetch, basePath);
         },
         /**
          * 
-         * @summary errorHtml
+         * @summary error
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        errorHtmlUsingPUT(options?: any) {
-            return BasicErrorControllerApiFp(configuration).errorHtmlUsingPUT(options)(fetch, basePath);
+        errorUsingPUT(options?: any) {
+            return BasicErrorControllerApiFp(configuration).errorUsingPUT(options)(fetch, basePath);
         },
     };
 };
@@ -920,79 +955,79 @@ export const BasicErrorControllerApiFactory = function (configuration?: Configur
 export class BasicErrorControllerApi extends BaseAPI {
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingDELETE(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingDELETE(options)(this.fetch, this.basePath);
+    public errorUsingDELETE(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingDELETE(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingGET(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingGET(options)(this.fetch, this.basePath);
+    public errorUsingGET(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingGET(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingHEAD(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingHEAD(options)(this.fetch, this.basePath);
+    public errorUsingHEAD(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingHEAD(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingOPTIONS(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingOPTIONS(options)(this.fetch, this.basePath);
+    public errorUsingOPTIONS(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingOPTIONS(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingPATCH(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPATCH(options)(this.fetch, this.basePath);
+    public errorUsingPATCH(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingPATCH(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingPOST(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPOST(options)(this.fetch, this.basePath);
+    public errorUsingPOST(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingPOST(options)(this.fetch, this.basePath);
     }
 
     /**
      * 
-     * @summary errorHtml
+     * @summary error
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof BasicErrorControllerApi
      */
-    public errorHtmlUsingPUT(options?: any) {
-        return BasicErrorControllerApiFp(this.configuration).errorHtmlUsingPUT(options)(this.fetch, this.basePath);
+    public errorUsingPUT(options?: any) {
+        return BasicErrorControllerApiFp(this.configuration).errorUsingPUT(options)(this.fetch, this.basePath);
     }
 
 }
@@ -1119,13 +1154,14 @@ export const BookingsControllerApiFetchParamCreator = function (configuration?: 
         /**
          * 
          * @summary getUserBookings
+         * @param {string} [filter] filter
          * @param {number} [page] page
          * @param {number} [size] size
          * @param {string} [sort] sort
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserBookingsUsingGET(page?: number, size?: number, sort?: string, options: any = {}): FetchArgs {
+        getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options: any = {}): FetchArgs {
             const localVarPath = `/bookings`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -1138,6 +1174,10 @@ export const BookingsControllerApiFetchParamCreator = function (configuration?: 
 					? configuration.apiKey("Authorization")
 					: configuration.apiKey;
                 localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
             }
 
             if (page !== undefined) {
@@ -1277,14 +1317,15 @@ export const BookingsControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary getUserBookings
+         * @param {string} [filter] filter
          * @param {number} [page] page
          * @param {number} [size] size
          * @param {string} [sort] sort
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserBookingsUsingGET(page?: number, size?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<BookingResponse>> {
-            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getUserBookingsUsingGET(page, size, sort, options);
+        getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<BookingResponse>> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getUserBookingsUsingGET(filter, page, size, sort, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1357,14 +1398,15 @@ export const BookingsControllerApiFactory = function (configuration?: Configurat
         /**
          * 
          * @summary getUserBookings
+         * @param {string} [filter] filter
          * @param {number} [page] page
          * @param {number} [size] size
          * @param {string} [sort] sort
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserBookingsUsingGET(page?: number, size?: number, sort?: string, options?: any) {
-            return BookingsControllerApiFp(configuration).getUserBookingsUsingGET(page, size, sort, options)(fetch, basePath);
+        getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getUserBookingsUsingGET(filter, page, size, sort, options)(fetch, basePath);
         },
         /**
          * 
@@ -1426,6 +1468,7 @@ export class BookingsControllerApi extends BaseAPI {
     /**
      * 
      * @summary getUserBookings
+     * @param {string} [filter] filter
      * @param {number} [page] page
      * @param {number} [size] size
      * @param {string} [sort] sort
@@ -1433,8 +1476,8 @@ export class BookingsControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof BookingsControllerApi
      */
-    public getUserBookingsUsingGET(page?: number, size?: number, sort?: string, options?: any) {
-        return BookingsControllerApiFp(this.configuration).getUserBookingsUsingGET(page, size, sort, options)(this.fetch, this.basePath);
+    public getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getUserBookingsUsingGET(filter, page, size, sort, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -1460,13 +1503,25 @@ export const ItemsControllerApiFetchParamCreator = function (configuration?: Con
         /**
          * 
          * @summary getCarItems
-         * @param {boolean} [active] active
-         * @param {number} [page] page
-         * @param {string} [sortType] sortType
+         * @param {number} page page
+         * @param {number} pageSize pageSize
+         * @param {string} [dateSort] dateSort
+         * @param {string} [location] location
+         * @param {string} [model] model
+         * @param {string} [priceSort] priceSort
+         * @param {string} [text] text
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCarItemsUsingGET(active?: boolean, page?: number, sortType?: string, options: any = {}): FetchArgs {
+        getCarItemsUsingGET(page: number, pageSize: number, dateSort?: string, location?: string, model?: string, priceSort?: string, text?: string, options: any = {}): FetchArgs {
+            // verify required parameter 'page' is not null or undefined
+            if (page === null || page === undefined) {
+                throw new RequiredError('page','Required parameter page was null or undefined when calling getCarItemsUsingGET.');
+            }
+            // verify required parameter 'pageSize' is not null or undefined
+            if (pageSize === null || pageSize === undefined) {
+                throw new RequiredError('pageSize','Required parameter pageSize was null or undefined when calling getCarItemsUsingGET.');
+            }
             const localVarPath = `/items/car`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -1481,16 +1536,32 @@ export const ItemsControllerApiFetchParamCreator = function (configuration?: Con
                 localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
             }
 
-            if (active !== undefined) {
-                localVarQueryParameter['active'] = active;
+            if (dateSort !== undefined) {
+                localVarQueryParameter['dateSort'] = dateSort;
+            }
+
+            if (location !== undefined) {
+                localVarQueryParameter['location'] = location;
+            }
+
+            if (model !== undefined) {
+                localVarQueryParameter['model'] = model;
             }
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
             }
 
-            if (sortType !== undefined) {
-                localVarQueryParameter['sortType'] = sortType;
+            if (pageSize !== undefined) {
+                localVarQueryParameter['pageSize'] = pageSize;
+            }
+
+            if (priceSort !== undefined) {
+                localVarQueryParameter['priceSort'] = priceSort;
+            }
+
+            if (text !== undefined) {
+                localVarQueryParameter['text'] = text;
             }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
@@ -1506,13 +1577,19 @@ export const ItemsControllerApiFetchParamCreator = function (configuration?: Con
         /**
          * 
          * @summary getFlatItems
-         * @param {boolean} [active] active
-         * @param {number} [page] page
-         * @param {string} [sort] sort
+         * @param {number} page page
+         * @param {string} [city] city
+         * @param {boolean} [sorted] sorted
+         * @param {string} [street] street
+         * @param {string} [text] text
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFlatItemsUsingGET(active?: boolean, page?: number, sort?: string, options: any = {}): FetchArgs {
+        getFlatItemsUsingGET(page: number, city?: string, sorted?: boolean, street?: string, text?: string, options: any = {}): FetchArgs {
+            // verify required parameter 'page' is not null or undefined
+            if (page === null || page === undefined) {
+                throw new RequiredError('page','Required parameter page was null or undefined when calling getFlatItemsUsingGET.');
+            }
             const localVarPath = `/items/flat`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
@@ -1527,16 +1604,24 @@ export const ItemsControllerApiFetchParamCreator = function (configuration?: Con
                 localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
             }
 
-            if (active !== undefined) {
-                localVarQueryParameter['active'] = active;
+            if (city !== undefined) {
+                localVarQueryParameter['city'] = city;
             }
 
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
             }
 
-            if (sort !== undefined) {
-                localVarQueryParameter['sort'] = sort;
+            if (sorted !== undefined) {
+                localVarQueryParameter['sorted'] = sorted;
+            }
+
+            if (street !== undefined) {
+                localVarQueryParameter['street'] = street;
+            }
+
+            if (text !== undefined) {
+                localVarQueryParameter['text'] = text;
             }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
@@ -1553,15 +1638,12 @@ export const ItemsControllerApiFetchParamCreator = function (configuration?: Con
          * 
          * @summary getParkingItems
          * @param {number} page page
-         * @param {number} pageSize page-size
+         * @param {number} pageSize pageSize
          * @param {boolean} [active] active
-         * @param {string} [city] city
-         * @param {string} [parkingName] parking-name
-         * @param {string} [street] street
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, city?: string, parkingName?: string, street?: string, options: any = {}): FetchArgs {
+        getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, options: any = {}): FetchArgs {
             // verify required parameter 'page' is not null or undefined
             if (page === null || page === undefined) {
                 throw new RequiredError('page','Required parameter page was null or undefined when calling getParkingItemsUsingGET.');
@@ -1588,24 +1670,12 @@ export const ItemsControllerApiFetchParamCreator = function (configuration?: Con
                 localVarQueryParameter['active'] = active;
             }
 
-            if (city !== undefined) {
-                localVarQueryParameter['city'] = city;
-            }
-
             if (page !== undefined) {
                 localVarQueryParameter['page'] = page;
             }
 
             if (pageSize !== undefined) {
-                localVarQueryParameter['page-size'] = pageSize;
-            }
-
-            if (parkingName !== undefined) {
-                localVarQueryParameter['parking-name'] = parkingName;
-            }
-
-            if (street !== undefined) {
-                localVarQueryParameter['street'] = street;
+                localVarQueryParameter['pageSize'] = pageSize;
             }
 
             localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
@@ -1630,14 +1700,18 @@ export const ItemsControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary getCarItems
-         * @param {boolean} [active] active
-         * @param {number} [page] page
-         * @param {string} [sortType] sortType
+         * @param {number} page page
+         * @param {number} pageSize pageSize
+         * @param {string} [dateSort] dateSort
+         * @param {string} [location] location
+         * @param {string} [model] model
+         * @param {string} [priceSort] priceSort
+         * @param {string} [text] text
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCarItemsUsingGET(active?: boolean, page?: number, sortType?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<ItemBase>> {
-            const localVarFetchArgs = ItemsControllerApiFetchParamCreator(configuration).getCarItemsUsingGET(active, page, sortType, options);
+        getCarItemsUsingGET(page: number, pageSize: number, dateSort?: string, location?: string, model?: string, priceSort?: string, text?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<GetItemsResponse> {
+            const localVarFetchArgs = ItemsControllerApiFetchParamCreator(configuration).getCarItemsUsingGET(page, pageSize, dateSort, location, model, priceSort, text, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1651,14 +1725,16 @@ export const ItemsControllerApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @summary getFlatItems
-         * @param {boolean} [active] active
-         * @param {number} [page] page
-         * @param {string} [sort] sort
+         * @param {number} page page
+         * @param {string} [city] city
+         * @param {boolean} [sorted] sorted
+         * @param {string} [street] street
+         * @param {string} [text] text
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFlatItemsUsingGET(active?: boolean, page?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<ItemBase>> {
-            const localVarFetchArgs = ItemsControllerApiFetchParamCreator(configuration).getFlatItemsUsingGET(active, page, sort, options);
+        getFlatItemsUsingGET(page: number, city?: string, sorted?: boolean, street?: string, text?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<GetItemsResponse> {
+            const localVarFetchArgs = ItemsControllerApiFetchParamCreator(configuration).getFlatItemsUsingGET(page, city, sorted, street, text, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1673,16 +1749,13 @@ export const ItemsControllerApiFp = function(configuration?: Configuration) {
          * 
          * @summary getParkingItems
          * @param {number} page page
-         * @param {number} pageSize page-size
+         * @param {number} pageSize pageSize
          * @param {boolean} [active] active
-         * @param {string} [city] city
-         * @param {string} [parkingName] parking-name
-         * @param {string} [street] street
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, city?: string, parkingName?: string, street?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<ItemBase>> {
-            const localVarFetchArgs = ItemsControllerApiFetchParamCreator(configuration).getParkingItemsUsingGET(page, pageSize, active, city, parkingName, street, options);
+        getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<GetItemsResponse> {
+            const localVarFetchArgs = ItemsControllerApiFetchParamCreator(configuration).getParkingItemsUsingGET(page, pageSize, active, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1705,41 +1778,44 @@ export const ItemsControllerApiFactory = function (configuration?: Configuration
         /**
          * 
          * @summary getCarItems
-         * @param {boolean} [active] active
-         * @param {number} [page] page
-         * @param {string} [sortType] sortType
+         * @param {number} page page
+         * @param {number} pageSize pageSize
+         * @param {string} [dateSort] dateSort
+         * @param {string} [location] location
+         * @param {string} [model] model
+         * @param {string} [priceSort] priceSort
+         * @param {string} [text] text
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getCarItemsUsingGET(active?: boolean, page?: number, sortType?: string, options?: any) {
-            return ItemsControllerApiFp(configuration).getCarItemsUsingGET(active, page, sortType, options)(fetch, basePath);
+        getCarItemsUsingGET(page: number, pageSize: number, dateSort?: string, location?: string, model?: string, priceSort?: string, text?: string, options?: any) {
+            return ItemsControllerApiFp(configuration).getCarItemsUsingGET(page, pageSize, dateSort, location, model, priceSort, text, options)(fetch, basePath);
         },
         /**
          * 
          * @summary getFlatItems
-         * @param {boolean} [active] active
-         * @param {number} [page] page
-         * @param {string} [sort] sort
+         * @param {number} page page
+         * @param {string} [city] city
+         * @param {boolean} [sorted] sorted
+         * @param {string} [street] street
+         * @param {string} [text] text
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getFlatItemsUsingGET(active?: boolean, page?: number, sort?: string, options?: any) {
-            return ItemsControllerApiFp(configuration).getFlatItemsUsingGET(active, page, sort, options)(fetch, basePath);
+        getFlatItemsUsingGET(page: number, city?: string, sorted?: boolean, street?: string, text?: string, options?: any) {
+            return ItemsControllerApiFp(configuration).getFlatItemsUsingGET(page, city, sorted, street, text, options)(fetch, basePath);
         },
         /**
          * 
          * @summary getParkingItems
          * @param {number} page page
-         * @param {number} pageSize page-size
+         * @param {number} pageSize pageSize
          * @param {boolean} [active] active
-         * @param {string} [city] city
-         * @param {string} [parkingName] parking-name
-         * @param {string} [street] street
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, city?: string, parkingName?: string, street?: string, options?: any) {
-            return ItemsControllerApiFp(configuration).getParkingItemsUsingGET(page, pageSize, active, city, parkingName, street, options)(fetch, basePath);
+        getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, options?: any) {
+            return ItemsControllerApiFp(configuration).getParkingItemsUsingGET(page, pageSize, active, options)(fetch, basePath);
         },
     };
 };
@@ -1754,46 +1830,49 @@ export class ItemsControllerApi extends BaseAPI {
     /**
      * 
      * @summary getCarItems
-     * @param {boolean} [active] active
-     * @param {number} [page] page
-     * @param {string} [sortType] sortType
+     * @param {number} page page
+     * @param {number} pageSize pageSize
+     * @param {string} [dateSort] dateSort
+     * @param {string} [location] location
+     * @param {string} [model] model
+     * @param {string} [priceSort] priceSort
+     * @param {string} [text] text
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ItemsControllerApi
      */
-    public getCarItemsUsingGET(active?: boolean, page?: number, sortType?: string, options?: any) {
-        return ItemsControllerApiFp(this.configuration).getCarItemsUsingGET(active, page, sortType, options)(this.fetch, this.basePath);
+    public getCarItemsUsingGET(page: number, pageSize: number, dateSort?: string, location?: string, model?: string, priceSort?: string, text?: string, options?: any) {
+        return ItemsControllerApiFp(this.configuration).getCarItemsUsingGET(page, pageSize, dateSort, location, model, priceSort, text, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @summary getFlatItems
-     * @param {boolean} [active] active
-     * @param {number} [page] page
-     * @param {string} [sort] sort
+     * @param {number} page page
+     * @param {string} [city] city
+     * @param {boolean} [sorted] sorted
+     * @param {string} [street] street
+     * @param {string} [text] text
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ItemsControllerApi
      */
-    public getFlatItemsUsingGET(active?: boolean, page?: number, sort?: string, options?: any) {
-        return ItemsControllerApiFp(this.configuration).getFlatItemsUsingGET(active, page, sort, options)(this.fetch, this.basePath);
+    public getFlatItemsUsingGET(page: number, city?: string, sorted?: boolean, street?: string, text?: string, options?: any) {
+        return ItemsControllerApiFp(this.configuration).getFlatItemsUsingGET(page, city, sorted, street, text, options)(this.fetch, this.basePath);
     }
 
     /**
      * 
      * @summary getParkingItems
      * @param {number} page page
-     * @param {number} pageSize page-size
+     * @param {number} pageSize pageSize
      * @param {boolean} [active] active
-     * @param {string} [city] city
-     * @param {string} [parkingName] parking-name
-     * @param {string} [street] street
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof ItemsControllerApi
      */
-    public getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, city?: string, parkingName?: string, street?: string, options?: any) {
-        return ItemsControllerApiFp(this.configuration).getParkingItemsUsingGET(page, pageSize, active, city, parkingName, street, options)(this.fetch, this.basePath);
+    public getParkingItemsUsingGET(page: number, pageSize: number, active?: boolean, options?: any) {
+        return ItemsControllerApiFp(this.configuration).getParkingItemsUsingGET(page, pageSize, active, options)(this.fetch, this.basePath);
     }
 
 }

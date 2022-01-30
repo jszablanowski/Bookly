@@ -21,26 +21,26 @@ describe("BasicErrorControllerApi", () => {
     instance = new api.BasicErrorControllerApi(config)
   });
 
-  test("errorHtmlUsingDELETE", () => {
-    return expect(instance.errorHtmlUsingDELETE({})).resolves.toBe(null)
+  test("errorUsingDELETE", () => {
+    return expect(instance.errorUsingDELETE({})).resolves.toBe(null)
   })
-  test("errorHtmlUsingGET", () => {
-    return expect(instance.errorHtmlUsingGET({})).resolves.toBe(null)
+  test("errorUsingGET", () => {
+    return expect(instance.errorUsingGET({})).resolves.toBe(null)
   })
-  test("errorHtmlUsingHEAD", () => {
-    return expect(instance.errorHtmlUsingHEAD({})).resolves.toBe(null)
+  test("errorUsingHEAD", () => {
+    return expect(instance.errorUsingHEAD({})).resolves.toBe(null)
   })
-  test("errorHtmlUsingOPTIONS", () => {
-    return expect(instance.errorHtmlUsingOPTIONS({})).resolves.toBe(null)
+  test("errorUsingOPTIONS", () => {
+    return expect(instance.errorUsingOPTIONS({})).resolves.toBe(null)
   })
-  test("errorHtmlUsingPATCH", () => {
-    return expect(instance.errorHtmlUsingPATCH({})).resolves.toBe(null)
+  test("errorUsingPATCH", () => {
+    return expect(instance.errorUsingPATCH({})).resolves.toBe(null)
   })
-  test("errorHtmlUsingPOST", () => {
-    return expect(instance.errorHtmlUsingPOST({})).resolves.toBe(null)
+  test("errorUsingPOST", () => {
+    return expect(instance.errorUsingPOST({})).resolves.toBe(null)
   })
-  test("errorHtmlUsingPUT", () => {
-    return expect(instance.errorHtmlUsingPUT({})).resolves.toBe(null)
+  test("errorUsingPUT", () => {
+    return expect(instance.errorUsingPUT({})).resolves.toBe(null)
   })
 })
 
@@ -63,10 +63,11 @@ describe("BookingsControllerApi", () => {
     return expect(instance.getBookingUsingGET(bookingId, {})).resolves.toBe(null)
   })
   test("getUserBookingsUsingGET", () => {
+    const filter: string = "filter_example"
     const page: number = 56
     const size: number = 56
     const sort: string = "sort_example"
-    return expect(instance.getUserBookingsUsingGET(page, size, sort, {})).resolves.toBe(null)
+    return expect(instance.getUserBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
   })
   test("updateBookingUsingPUT", () => {
     const body: api.UpdateBookingDto = undefined
@@ -82,25 +83,28 @@ describe("ItemsControllerApi", () => {
   });
 
   test("getCarItemsUsingGET", () => {
-    const active: boolean = true
     const page: number = 56
-    const sortType: string = "sortType_example"
-    return expect(instance.getCarItemsUsingGET(active, page, sortType, {})).resolves.toBe(null)
+    const pageSize: number = 56
+    const dateSort: string = "dateSort_example"
+    const location: string = "location_example"
+    const model: string = "model_example"
+    const priceSort: string = "priceSort_example"
+    const text: string = "text_example"
+    return expect(instance.getCarItemsUsingGET(page, pageSize, dateSort, location, model, priceSort, text, {})).resolves.toBe(null)
   })
   test("getFlatItemsUsingGET", () => {
-    const active: boolean = true
     const page: number = 56
-    const sort: string = "sort_example"
-    return expect(instance.getFlatItemsUsingGET(active, page, sort, {})).resolves.toBe(null)
+    const city: string = "city_example"
+    const sorted: boolean = true
+    const street: string = "street_example"
+    const text: string = "text_example"
+    return expect(instance.getFlatItemsUsingGET(page, city, sorted, street, text, {})).resolves.toBe(null)
   })
   test("getParkingItemsUsingGET", () => {
     const page: number = 56
     const pageSize: number = 56
     const active: boolean = true
-    const city: string = "city_example"
-    const parkingName: string = "parkingName_example"
-    const street: string = "street_example"
-    return expect(instance.getParkingItemsUsingGET(page, pageSize, active, city, parkingName, street, {})).resolves.toBe(null)
+    return expect(instance.getParkingItemsUsingGET(page, pageSize, active, {})).resolves.toBe(null)
   })
 })
 
