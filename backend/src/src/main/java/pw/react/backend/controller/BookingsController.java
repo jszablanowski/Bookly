@@ -76,16 +76,6 @@ public class BookingsController {
         return ResponseEntity.ok(booking);
     }
 
-    @GetMapping(path = "/all")
-    public ResponseEntity<ArrayList<BookingResponse>> getAllBookings(@RequestParam(required = false) Integer page,
-                                                                     @RequestParam(required = false) Integer size,
-                                                                     @RequestParam(required = false) SortType sort,
-                                                                     @RequestParam(required = false) FilteringType filter)
-    {
-        var bookings = bookingService.getAllBookings(page, size, sort, filter);
-        return ResponseEntity.ok(bookings);
-    }
-
     @DeleteMapping(path = "/{bookingId}")
     public ResponseEntity<String> deleteBooking(@PathVariable long bookingId)
     {
