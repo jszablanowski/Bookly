@@ -4,6 +4,7 @@ import { Table, Space, Button, Input, Row, Modal, Form } from 'antd';
 import exampleUsers from "../../exampleData/users.json";
 import {Typography} from "antd"
 import { UserForm } from './UserForm';
+import { User } from './User';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -12,18 +13,13 @@ interface Props {
     visible : boolean,
     onCancel : Function,
     onConfirm  : Function,
+    editeduser: User | null;
 }
 
 
-export const AddUser: React.FC<Props> = (props: Props) => {
-    const [user, setUser] = useState();
-    const [form] = Form.useForm();
-
-    const passwordValidate = (password : String) => {
-        return password.match(/^(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/);
-    }
+export const EditUser: React.FC<Props> = (props: Props) => {
 
     return (
-        <UserForm modalTitle="Add new user" visible={props.visible} onCancel={props.onCancel} onConfirm={props.onConfirm} editeduser={null} />
+        <UserForm modalTitle="Edit user" visible={props.visible} onCancel={props.onCancel} onConfirm={props.onConfirm} editeduser={props.editeduser} />
     );
 }

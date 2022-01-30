@@ -14,7 +14,6 @@ interface FlatlyProps {
 }
 
 const ParkingSpotsBookingsView: React.FC<FlatlyProps> = (props: FlatlyProps) => {
-
     function filterResultsHandler() {
         console.log("Filtered Booked Parking Slots Results");
     }
@@ -26,7 +25,7 @@ const ParkingSpotsBookingsView: React.FC<FlatlyProps> = (props: FlatlyProps) => 
             <Row>
                 <Col flex="400px">
                     <Card>
-                        <Title level={2}><FilterOutlined /> Filter results</Title>
+                        <Title level={2}><FilterOutlined /> Filter results </Title>
                         <ParkingSpotsFilter filterResultsHandler={(e : any) => filterResultsHandler()} />
                     </Card>
                 </Col>

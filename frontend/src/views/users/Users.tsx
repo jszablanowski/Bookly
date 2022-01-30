@@ -4,25 +4,35 @@ import { Table, Space, Button, Input, Row, message } from 'antd';
 import exampleUsers from "../../exampleData/users.json";
 import {Typography} from "antd"
 import { AddUser } from './AddUser';
+import { EditUser } from './EditUser';
 import { User } from './User';
+import { UserService } from '../../app/services/UserService'
+
 
 const { Title } = Typography;
 const { Search } = Input;
 
 interface State {
-  addingUser : boolean,
+  addingUser : boolean
+  editingUser : boolean
+  toEditUser : User | null
   searchedPhrase : string
-  carList : User[]
+  userList : User[]
 }
-export class Users extends Component<any, State> {
-  static displayName = Users.name;
-  
+
+interface Props {
+  userService : UserService
+}
+
+export class Users extends Component<Props, State> {
   constructor(props : any){
       super(props);
       this.state={
           addingUser: false,
+          editingUser: false,
+          toEditUser: null,
           searchedPhrase: "",
-          carList : exampleUsers
+          userList : exampleUsers,
       }
   }
 
@@ -37,19 +47,43 @@ export class Users extends Component<any, State> {
     console.log("Adding user has been canceled");
   }
   addUserConfirmHandler = (user : User) => {
-    user.userid = "6996"
-    this.setState(prevState => ({
-      addingUser: false,
-      carList: [...prevState.carList, user]
-    }))
-    this.displaySuccessMessage();
+    this.props.userService.createUser({
+      username: user.email,
+      password: user.password,
+      email: user.email,
+      firstName: user.firstname,
+      lastName: user.lastname
+    }).then(response => {
+      console.log(response)
+      this.setState({addingUser: false})
+      this.displayAddingSuccessMessage();
+    })
+      .catch(error => console.error(error));
+
+   
   }
-  displaySuccessMessage = () => {
+  displayAddingSuccessMessage = () => {
     message.success('New user added succesfully!');
+  };
+  displayEditingSuccessMessage = () => {
+    message.success('User edited succesfully!');
   };
   displayErrorMessage = () => {
     message.error('Operation failed!');
   };
+
+  editUserHandler = (record :  any) => {
+    this.setState({toEditUser : record, editingUser : true} );
+  }
+  editUserCancelHandler = () => {
+    this.setState({editingUser: false});
+    console.log("Editing user has been canceled");
+  }
+  editUserConfirmHandler = (user : User) => {
+    this.setState({editingUser: false});
+    console.log("Editing " + user.userid + "new data: " + user)
+    this.displayEditingSuccessMessage();
+  }
 
   columns = [
     {
@@ -58,9 +92,9 @@ export class Users extends Component<any, State> {
       key: 'userid',
     },
     {
-      title: 'Username',
-      dataIndex: 'username',
-      key: 'username'
+      title: 'Email',
+      dataIndex: 'email',
+      key: 'email'
     },
     {
       title: 'First Name',
@@ -75,9 +109,9 @@ export class Users extends Component<any, State> {
     {
       title: 'Action',
       key: 'action',
-      render: (_text: any, record: { firstname: string; lastname: string; }) => (
+      render: (_text: any, record: { userid : string, email : string; firstname: string; lastname: string; }) => (
         <Space size="middle">
-            <Button>Edit</Button>
+            <Button onClick={(e) => this.editUserHandler(record)}>Edit {record.firstname}</Button>
             <Button>Delete</Button>
         </Space>
       ),
@@ -94,11 +128,12 @@ export class Users extends Component<any, State> {
             <Button onClick={this.addUserHandler} style={{ width: 150}} >Add user</Button>
           </Row>
           
-          <Table columns={this.columns} dataSource={this.state.carList.filter((user) => (
-            user.username.toUpperCase().includes(this.state.searchedPhrase.toUpperCase())
+          <Table columns={this.columns} dataSource={this.state.userList.filter((user) => (
+            user.email.toUpperCase().includes(this.state.searchedPhrase.toUpperCase())
            ))} />
 
-          <AddUser visible={this.state.addingUser} onCancel={this.addUserCancelHandler} onAdd={this.addUserConfirmHandler} />
+          <AddUser visible={this.state.addingUser} onCancel={this.addUserCancelHandler} onConfirm={this.addUserConfirmHandler} />
+          <EditUser visible={this.state.editingUser} onCancel={this.editUserCancelHandler} onConfirm={this.editUserConfirmHandler} editeduser={this.state.toEditUser} />
         </div>
     );
   }
