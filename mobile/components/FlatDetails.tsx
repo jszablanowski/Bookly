@@ -2,15 +2,24 @@ import React from "react";
 import { StyleSheet, View, FlatList, TouchableOpacity, SafeAreaView, ScrollView } from "react-native";
 import { Button, Icon, Image, Text } from "react-native-elements"
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+import { BookingService, IBookingsService } from "../app/services/BookingsService";
+import { useAuth } from "../hooks/Auth";
 import { Facility, FlatItemDetails } from "./FlatItem";
 
-export const FlatDetails = (props: { details: FlatItemDetails }) => {
-
+export const FlatDetails = (props: { details: FlatItemDetails, onChange: () =>void,  service: IBookingsService}) => {
+    
+    const { token } = useAuth();
+    
     const renderItem = ({ item }: { item: Facility }) => (
         <View>
              <FacilityItem name={item}></FacilityItem>
         </View>
-);
+    );
+
+    const bookItem = () =>{
+        console.log(token + " " + +props.details.id );
+        props.service.bookItem(token, +props.details.id, "ROOM").then(() => {props.onChange()});
+    }
 
     return (
         <KeyboardAwareScrollView>
@@ -59,7 +68,7 @@ export const FlatDetails = (props: { details: FlatItemDetails }) => {
                     <Text style={{ fontWeight: "400", fontSize: 50,textAlign: "center", marginLeft:"auto", marginRight:5}}>234 zl</Text>
             </View>
             <View style={{ margin: 4}}>
-                    <Button title="Book" onPress={() => {}}></Button>
+                    <Button title="Book" onPress={() => {bookItem()}}></Button>
                 </View>
         </View>
         </KeyboardAwareScrollView>

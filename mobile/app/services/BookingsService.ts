@@ -1,9 +1,5 @@
-import {
-  BookingsControllerApi,
-  CarlyBookingsResponse,
-  FlatlyBookingsResponse,
-  ParklyBookingsResponse,
-} from "../api";
+import { date } from "yup/lib/locale";
+import { Booking, BookingsControllerApi, CarlyBookingsResponse, FlatlyBookingsResponse, ParklyBookingsResponse } from "../api";
 import { BASE_URL } from "../apiConfig";
 
 export interface IBookingsService {
@@ -30,6 +26,8 @@ export interface IBookingsService {
     sortType: string,
     filteringType: string
   ) => Promise<FlatlyBookingsResponse>;
+  
+  bookItem: (token: string, id :number, itemType: string ) => Promise<Booking>;
 }
 
 export class BookingService implements IBookingsService {
@@ -81,5 +79,17 @@ export class BookingService implements IBookingsService {
       filteringType,
       sortType
     );
+  }
+
+  bookItem(token: string,id :number, itemType: string )
+  {
+    let client = new BookingsControllerApi({
+      basePath: BASE_URL,
+      apiKey: token,
+    });
+
+    let now = new Date(Date.now());
+    console.log("date: " + now);
+    return client.addBookingUsingPOST({itemId: id.toString(), itemType: itemType, startDateTime: now });
   }
 }

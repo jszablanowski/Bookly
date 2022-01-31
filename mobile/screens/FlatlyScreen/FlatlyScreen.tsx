@@ -9,6 +9,8 @@ import { FlatlySortScreen } from "./FlatlySortScreen";
 import { useAuth } from "../../hooks/Auth";
 import { IItemsService } from "../../app/services/ItemsService";
 import { FlatlyDetailsScreen } from "../FlatlyDetailsScreen";
+import { SuccessfullyBookedScreen } from "../SuccessfullyBookedScreen";
+import { BookingService } from "../../app/services/BookingsService";
 
 
 
@@ -17,6 +19,7 @@ type RootStackParamList = {
     SortScreen: undefined;
     MainScreen: undefined;
     DetailsScreen: FlatItemDetails;
+    SuccessfullScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -67,12 +70,6 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
 
 
     const [flatItems, setFlatItems] = useState<Array<FlatItemDetails> | undefined>(undefined);
-
-
-
-    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
-        <FlatlyDetailsScreen data= {route.params?? {id: " " } } ></FlatlyDetailsScreen>
-    )
 
     const onRefresh = () => {
         setLoading(true);
@@ -125,6 +122,14 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
     }
 
 
+    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <FlatlyDetailsScreen data= {route.params?? {id: " " }} onChange={() => {navigation.navigate("SuccessfullScreen");}} ></FlatlyDetailsScreen>
+    )
+
+    const SuccessfullScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
+        <SuccessfullyBookedScreen onClick = {() => {navigation.navigate("MainScreen");} }></SuccessfullyBookedScreen>
+    )
+
     const FilterScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'FilterScreen'>) => (
         <FlatlyFilterScreen onChange={val => {
             setFlatlyFilters(val);
@@ -147,6 +152,7 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
             <Stack.Screen name="FilterScreen" component={FilterScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="SortScreen" component={SortScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
+            <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{headerTitle: ""}} /> 
         </Stack.Navigator>
     )
 }

@@ -1,10 +1,19 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Icon, Image, Text } from "react-native-elements"
+import { BookingService, IBookingsService } from "../app/services/BookingsService";
+import { useAuth } from "../hooks/Auth";
 import { ParkingItemDetails } from "./ParkingItem";
 
-export const ParkingDetails = (props: { details: ParkingItemDetails }) => {
+export const ParkingDetails = (props: { details: ParkingItemDetails, onChange: () =>void,  service: IBookingsService }) => {
     
+    const { token } = useAuth();
+
+    const bookItem = () =>{
+        console.log(token + " " + +props.details.parkingName );
+        props.service.bookItem(token, +props.details.parkingName, "PARKING").then(() => {props.onChange()});
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ display: "flex", flexDirection: "row", marginHorizontal: 4, marginVertical: 4 }}>
@@ -27,7 +36,7 @@ export const ParkingDetails = (props: { details: ParkingItemDetails }) => {
             </View>
 
             <View style={{ marginTop: "auto"}}>
-                    <Button title="Book" onPress={() => {}}></Button>
+                    <Button title="Book" onPress={() => {bookItem()}}></Button>
                 </View>
         </View>
     )

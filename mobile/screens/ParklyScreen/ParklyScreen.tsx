@@ -6,6 +6,7 @@ import { IItemsService } from "../../app/services/ItemsService";
 import { ParkingItem, ParkingItemDetails } from "../../components/ParkingItem";
 import { useAuth } from "../../hooks/Auth";
 import { ParklyDetailsScreen } from "../ParklyDetailsScreen";
+import { SuccessfullyBookedScreen } from "../SuccessfullyBookedScreen";
 
 interface ParklyScreenProps {
     itemsService: IItemsService;
@@ -14,6 +15,7 @@ interface ParklyScreenProps {
 type RootStackParamList = {
     MainScreen: undefined;
     DetailsScreen: ParkingItemDetails;
+    SuccessfullScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -63,9 +65,12 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
 
     
     const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
-        <ParklyDetailsScreen data= {route.params?? {id: "-1"} } ></ParklyDetailsScreen>
+        <ParklyDetailsScreen data= {route.params?? {id: "-1"} } onChange={() => {navigation.navigate("SuccessfullScreen");}}></ParklyDetailsScreen>
     )
     
+    const SuccessfullScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
+        <SuccessfullyBookedScreen onClick = {() => {navigation.navigate("MainScreen");} }></SuccessfullyBookedScreen>
+    )
 
     const onRefresh = () => {
         setLoading(true);
@@ -108,6 +113,8 @@ return (
             <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ contentStyle: { backgroundColor: "#fff" } }} >
                 <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
                 <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
+                <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{headerTitle: ""}} /> 
+
             </Stack.Navigator>
         )
 }

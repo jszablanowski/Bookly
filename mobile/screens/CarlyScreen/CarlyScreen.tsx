@@ -9,12 +9,14 @@ import { useAuth } from "../../hooks/Auth";
 import { CarlyFilters, CarlyFilterScreen } from "./CarlyFilterScreen";
 import { CarlySortScreen, SortMode } from "./CarlySortScreen";
 import {CarlyDetailsScreen } from "../CarlyDetailsScreen";
+import { SuccessfullyBookedScreen } from "../SuccessfullyBookedScreen";
 
 type RootStackParamList = {
     FilterScreen: undefined;
     SortScreen: undefined;
     MainScreen: undefined;
     DetailsScreen: CarItemDetails;
+    SuccessfullScreen: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -80,7 +82,10 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
     const [carItems, setCarItems] = useState<Array<CarItemDetails> | undefined>(undefined);
 
     const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
-        <CarlyDetailsScreen data= {route.params?? {id: "-1"} } ></CarlyDetailsScreen>
+        <CarlyDetailsScreen data= {route.params?? {id: "-1"} } onChange={() => {navigation.navigate("SuccessfullScreen");}} ></CarlyDetailsScreen>
+    )
+    const SuccessfullScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
+        <SuccessfullyBookedScreen onClick = {() => {navigation.navigate("MainScreen");} }></SuccessfullyBookedScreen>
     )
     
     const onRefresh = () => {
@@ -155,6 +160,7 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
             <Stack.Screen name="FilterScreen" component={FilterScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="SortScreen" component={SortScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
+            <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{headerTitle: ""}} /> 
         </Stack.Navigator>
     )
 }
