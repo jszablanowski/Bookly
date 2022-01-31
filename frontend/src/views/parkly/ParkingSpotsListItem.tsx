@@ -27,11 +27,11 @@ const ParkingSpotsListItem: React.FC<ParkingProps> = (props: ParkingProps) => {
                     </Col>
 
                     <Col>
-                    <Row>
-                            User: xyz
+                        <Row>
+                            User: {props.booking.user.email}
                         </Row>
                         <Row>
-                            UserIs: 1234
+                            UserId: {props.booking.user.userid}
                         </Row>
                         <Row>
                             Start date: {props.booking.startDate}

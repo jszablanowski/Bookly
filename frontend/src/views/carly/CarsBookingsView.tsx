@@ -52,13 +52,11 @@ const CarsBookingsView: React.FC<CarlyProps> = (props: CarlyProps) => {
                   })),
                 startDate: booking.startDate,
                 active: booking.active,
-                bookingId: booking.bookingId
+                bookingId: booking.bookingId,
+                user: booking.user
             }))
             let cars = bookings.map((booking : any) => booking.item)
 
-            console.log(response);
-            console.log(bookings);
-            console.log(cars);
             setBookingsList(bookings);
             setTotalPages(response.totalPages === undefined ? 1 : response.totalPages);
             setCarList(cars);

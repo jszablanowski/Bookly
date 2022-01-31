@@ -2,5 +2,12 @@
     "item": null, 
     "startDate": "2021-12-20T00:00:00.000+00:00",
     "active": true,
-    "bookingId": 4
+    "bookingId": 4,
+    "user": {
+        "email": "abc@gmail.com",
+        "userid": 4,
+        "firstname": "Jan",
+        "lastname": "Kowalski",
+        "password": "abc"
+    }
 }

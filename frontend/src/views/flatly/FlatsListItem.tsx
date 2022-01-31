@@ -43,10 +43,10 @@ const FlatsListItem: React.FC<Props> = (props: Props) => {
 
                     <Col>
                         <Row>
-                            User: xyz
+                            User: {props.booking.user.email}
                         </Row>
                         <Row>
-                            UserIs: 1234
+                            UserId: {props.booking.user.userid}
                         </Row>
                         <Row>
                             Start date: {props.booking.startDate}

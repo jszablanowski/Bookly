@@ -51,13 +51,11 @@ const FlatsBookingsView: React.FC<FlatlyProps> = (props: FlatlyProps) => {
                   })),
                 startDate: booking.startDate,
                 active: booking.active,
-                bookingId: booking.bookingId
+                bookingId: booking.bookingId,
+                user: booking.user
             }))
             let flats = bookings.map((booking : any) => booking.item)
 
-            console.log(response);
-            console.log(bookings);
-            console.log(flats);
             setBookingsList(bookings);
             setFlatsList(flats);
             setTotalPages(response.totalPages === undefined ? 1 : response.totalPages);
