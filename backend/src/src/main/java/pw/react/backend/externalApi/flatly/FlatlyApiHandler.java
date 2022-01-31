@@ -82,7 +82,9 @@ public class FlatlyApiHandler implements ExternalApiHandler {
             var responseItems = new ArrayList<ItemBase>();
              responseData.forEach(item -> {
                 try {
-                    responseItems.add(mapper.readValue(item.toString(), FlatItem.class));
+                    var readItem = mapper.readValue(item.toString(), FlatItem.class);
+                    if (readItem.active == true)
+                        responseItems.add(readItem);
                 } catch (JsonProcessingException e) {
                     e.printStackTrace();
                 }
