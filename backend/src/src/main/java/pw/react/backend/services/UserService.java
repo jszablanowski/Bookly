@@ -14,4 +14,5 @@ public interface UserService {
     User getByUserName(String userName);
     void disableUser(long userId) throws ResourceNotFoundException;
     User updateUser(long userId, UpdateUserDto updateUserDto) throws ResourceNotFoundException;
+    boolean hasAdminPermissions(User user);
 }

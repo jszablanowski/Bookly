@@ -137,4 +137,12 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return user;
     }
+
+    @Override
+    public boolean hasAdminPermissions(User user)
+    {
+        if (user.isAdmin())
+            return true;
+        else return false;
+    }
 }

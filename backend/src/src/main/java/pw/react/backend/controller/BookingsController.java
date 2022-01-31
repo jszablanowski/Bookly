@@ -121,8 +121,8 @@ public class BookingsController {
     }
 
     @GetMapping(path = "/all/flats")
-    public ResponseEntity<FlatlyBookingsResponse> getFlatsBookings(@RequestParam(required = false) Integer page,
-                                                                @RequestParam(required = false) Integer size,
+    public ResponseEntity<FlatlyBookingsResponse> getFlatsBookings(@RequestParam Integer page,
+                                                                @RequestParam Integer size,
                                                                 @RequestParam(required = false) SortType sort,
                                                                 @RequestParam(required = false) FilteringType filter)
     {
@@ -136,8 +136,8 @@ public class BookingsController {
     }
 
     @GetMapping(path = "/all/cars")
-    public ResponseEntity<CarlyBookingsResponse> getCarsBookings(@RequestParam(required = false) Integer page,
-                                                                     @RequestParam(required = false) Integer size,
+    public ResponseEntity<CarlyBookingsResponse> getCarsBookings(@RequestParam Integer page,
+                                                                     @RequestParam Integer size,
                                                                      @RequestParam(required = false) SortType sort,
                                                                      @RequestParam(required = false) FilteringType filter)
     {
@@ -151,8 +151,8 @@ public class BookingsController {
     }
 
     @GetMapping(path = "/all/parkings")
-    public ResponseEntity<ParklyBookingsResponse> getParkingsBookings(@RequestParam(required = false) Integer page,
-                                                                     @RequestParam(required = false) Integer size,
+    public ResponseEntity<ParklyBookingsResponse> getParkingsBookings(@RequestParam Integer page,
+                                                                     @RequestParam Integer size,
                                                                      @RequestParam(required = false) SortType sort,
                                                                      @RequestParam(required = false) FilteringType filter)
     {
@@ -171,6 +171,5 @@ public class BookingsController {
         var result = bookingService.deleteBooking(bookingId);
         return result ? ResponseEntity.ok("Booking deleted")
                 : ResponseEntity.ok("Error when deleting booking");
-        // tu powinnismy jeszcze jakis badRequest jak nie ma bookingu zwracac ale tego nie ma w spec.
     }
 }

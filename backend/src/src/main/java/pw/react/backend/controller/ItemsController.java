@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pw.react.backend.dto.CarItemsResponse;
 import pw.react.backend.dto.FlatItemsResponse;
-import pw.react.backend.dto.GetItemsResponse;
 import pw.react.backend.dto.ParkingItemsResponse;
 import pw.react.backend.enums.ItemType;
 import pw.react.backend.enums.SortType;
@@ -17,11 +16,9 @@ import pw.react.backend.externalApi.flatly.models.FlatlyGetItemsDto;
 import pw.react.backend.externalApi.parkly.models.ParklyGetItemsDto;
 import pw.react.backend.items.CarItem;
 import pw.react.backend.items.FlatItem;
-import pw.react.backend.items.ItemBase;
 import pw.react.backend.items.ParkingItem;
 import pw.react.backend.services.ItemService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

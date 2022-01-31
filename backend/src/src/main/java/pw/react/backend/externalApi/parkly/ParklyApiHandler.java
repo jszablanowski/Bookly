@@ -43,7 +43,8 @@ public class ParklyApiHandler implements ExternalApiHandler {
     private ObjectMapper mapper;
 
     @Autowired
-    public ParklyApiHandler(RestTemplate restTemplate) {
+    public ParklyApiHandler(RestTemplate restTemplate)
+    {
         this.restTemplate = restTemplate;
         mapper = new ObjectMapper();
         updateAuthorization();
@@ -113,12 +114,10 @@ public class ParklyApiHandler implements ExternalApiHandler {
     public int bookItem(User user, Date startDateTime, int itemId) {
         int booking;
 
-        var dto = new ParklyBookRequest() {
-            {
-                ownerName = user.getFirstName() + user.getLastName();
-                ownerId = user.getId().intValue();
-            }
-        };
+        var dto = new ParklyBookRequest(){{
+            ownerName = user.getFirstName() + user.getLastName();
+            ownerId = user.getId().intValue();
+        }};
 
         try {
             var json = mapper.writeValueAsString(dto);
@@ -143,7 +142,7 @@ public class ParklyApiHandler implements ExternalApiHandler {
             var request = new HttpEntity<>(buildHeaders());
 
             var response = restTemplate.exchange(baseUri + "/parking-spots/" + externalBookingId +
-                    "/release", HttpMethod.POST, request, String.class);
+                            "/release", HttpMethod.POST, request, String.class);
         }
 
         catch (Exception e) {
@@ -155,12 +154,10 @@ public class ParklyApiHandler implements ExternalApiHandler {
 
     @Override
     public void updateAuthorization() {
-        var dto = new ParklyLoginRequest() {
-            {
-                username = "bookly";
-                password = "bookly";
-            }
-        };
+        var dto = new ParklyLoginRequest(){{
+            username = "bookly";
+            password = "bookly";
+        }};
         try {
             var json = mapper.writeValueAsString(dto);
 
