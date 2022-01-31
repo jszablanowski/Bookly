@@ -29,11 +29,11 @@ export const CarDetails = (props: {
             button = <Button title="Cancel booking" onPress={() => { cancelBooking() }}></Button>
         }
         else {
-            button = <Button title="Book" onPress={() => { bookItem() }}></Button>
+            button = <View></View>
         }
     }
     else {
-        button = <View></View>
+        button = <Button title="Book" onPress={() => { bookItem() }}></Button>
     }
 
     return (
