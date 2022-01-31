@@ -16,10 +16,16 @@ import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BaseBooking;
 import pw.react.backend.requests.carly.CarlyBooking;
 import pw.react.backend.requests.carly.CarlyBookingsResponse;
+import pw.react.backend.requests.carly.CarlyUserBooking;
+import pw.react.backend.requests.carly.CarlyUserBookingsResponse;
 import pw.react.backend.requests.flatly.FlatlyBooking;
 import pw.react.backend.requests.flatly.FlatlyBookingsResponse;
+import pw.react.backend.requests.flatly.FlatlyUserBooking;
+import pw.react.backend.requests.flatly.FlatlyUserBookingsResponse;
 import pw.react.backend.requests.parkly.ParklyBooking;
 import pw.react.backend.requests.parkly.ParklyBookingsResponse;
+import pw.react.backend.requests.parkly.ParklyUserBooking;
+import pw.react.backend.requests.parkly.ParklyUserBookingsResponse;
 import pw.react.backend.services.BookingService;
 import pw.react.backend.services.UserService;
 
@@ -121,14 +127,14 @@ public class BookingsController {
     }
 
     @GetMapping(path = "/all/flats")
-    public ResponseEntity<FlatlyBookingsResponse> getFlatsBookings(@RequestParam Integer page,
-                                                                @RequestParam Integer size,
-                                                                @RequestParam(required = false) SortType sort,
-                                                                @RequestParam(required = false) FilteringType filter)
+    public ResponseEntity<FlatlyUserBookingsResponse> getFlatsBookings(@RequestParam Integer page,
+                                                                       @RequestParam Integer size,
+                                                                       @RequestParam(required = false) SortType sort,
+                                                                       @RequestParam(required = false) FilteringType filter)
     {
         var bookings = bookingService.getAllBookings(page, size, sort, filter, ItemType.ROOM);
-        var response = new FlatlyBookingsResponse(){{
-            items = (List<FlatlyBooking>)(Object)bookings.items;
+        var response = new FlatlyUserBookingsResponse(){{
+            items = (List<FlatlyUserBooking>)(Object)bookings.items;
             page = bookings.page;
             totalPages = bookings.totalPages;
         }};
@@ -136,14 +142,14 @@ public class BookingsController {
     }
 
     @GetMapping(path = "/all/cars")
-    public ResponseEntity<CarlyBookingsResponse> getCarsBookings(@RequestParam Integer page,
+    public ResponseEntity<CarlyUserBookingsResponse> getCarsBookings(@RequestParam Integer page,
                                                                      @RequestParam Integer size,
                                                                      @RequestParam(required = false) SortType sort,
                                                                      @RequestParam(required = false) FilteringType filter)
     {
         var bookings = bookingService.getAllBookings(page, size, sort, filter, ItemType.CAR);
-        var response = new CarlyBookingsResponse(){{
-            items = (List<CarlyBooking>)(Object)bookings.items;
+        var response = new CarlyUserBookingsResponse(){{
+            items = (List<CarlyUserBooking>)(Object)bookings.items;
             page = bookings.page;
             totalPages = bookings.totalPages;
         }};
@@ -151,14 +157,14 @@ public class BookingsController {
     }
 
     @GetMapping(path = "/all/parkings")
-    public ResponseEntity<ParklyBookingsResponse> getParkingsBookings(@RequestParam Integer page,
-                                                                     @RequestParam Integer size,
-                                                                     @RequestParam(required = false) SortType sort,
-                                                                     @RequestParam(required = false) FilteringType filter)
+    public ResponseEntity<ParklyUserBookingsResponse> getParkingsBookings(@RequestParam Integer page,
+                                                                          @RequestParam Integer size,
+                                                                          @RequestParam(required = false) SortType sort,
+                                                                          @RequestParam(required = false) FilteringType filter)
     {
         var bookings = bookingService.getAllBookings(page, size, sort, filter, ItemType.PARKING);
-        var response = new ParklyBookingsResponse(){{
-            items = (List<ParklyBooking>)(Object)bookings.items;
+        var response = new ParklyUserBookingsResponse(){{
+            items = (List<ParklyUserBooking>)(Object)bookings.items;
             page = bookings.page;
             totalPages = bookings.totalPages;
         }};

@@ -12,6 +12,7 @@ import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.exceptions.UserValidationException;
 import pw.react.backend.models.Booking;
 import pw.react.backend.models.User;
+import pw.react.backend.requests.user.UsersResponse;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class UserServiceImpl implements UserService {
             if (dbUser.isPresent()) {
                 log.info("User already exists. Updating it.");
                 user.setId(dbUser.get().getId());
+                user.setActive(true);
             }
             user = userRepository.save(user);
             log.info("User was saved.");
@@ -142,19 +144,24 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public ArrayList<User> getUsers(int page, int size, Boolean active)
+    public UsersResponse getUsers(int pageNo, int size, Boolean active)
     {
-        var users = userRepository.findAll();
+        var usersDb = userRepository.findAll();
 
         if (active != null)
         {
-            users.removeIf(x -> x.isActive() != active);
+            usersDb.removeIf(x -> x.isActive() != active);
         }
-        users.removeIf(x -> x.isAdmin());
+        usersDb.removeIf(x -> x.isAdmin());
 
-        var fromIdx = (page - 1) * 10;
-        var toIdx = min(fromIdx + 1 + size, users.size());
-        return new ArrayList<User>(users.subList(fromIdx, toIdx));
+        var fromIdx = (pageNo - 1) * size;
+        var toIdx = min(fromIdx + size, usersDb.size());
+        var pages = (int)(Math.ceil((double)usersDb.size() / (double)size));
+        return new UsersResponse(){{
+            users = usersDb.subList(fromIdx, toIdx);
+            page = pageNo;
+            totalPages = pages;
+        }};
     }
 
 

@@ -15,6 +15,8 @@ import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BaseBooking;
 import pw.react.backend.requests.BaseBookingResponse;
+import pw.react.backend.requests.BaseUserBooking;
+import pw.react.backend.requests.BaseUserBookingsResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,7 +67,7 @@ public class BookingServiceImpl implements BookingService {
         }
 
         response.page = page;
-        response.totalPages = (int) (filteredBookings.size() / size) + 1;
+        response.totalPages = (int)(Math.ceil((double)filteredBookings.size() / (double)size));
         return response;
     }
 
@@ -88,14 +90,13 @@ public class BookingServiceImpl implements BookingService {
     }
 
     @Override
-    public BaseBookingResponse getAllBookings(Integer page, Integer size, SortType sort, FilteringType filter,
-            ItemType itemType) {
-        var response = new BaseBookingResponse() {
+    public BaseUserBookingsResponse getAllBookings(Integer page, Integer size, SortType sort, FilteringType filter,
+                                                   ItemType itemType) {
+        var response = new BaseUserBookingsResponse() {
             {
-                items = new ArrayList<BaseBooking>();
+                items = new ArrayList<BaseUserBooking>();
             }
         };
-        ArrayList<Booking> userBookings = new ArrayList<Booking>();
         var allBookings = repository.findBookingsByItemType(itemType);
         var filteredBookings = filterBookings(allBookings, filter, sort);
 
@@ -103,18 +104,20 @@ public class BookingServiceImpl implements BookingService {
 
         for (var bookingEntry : pagedBookings) {
             var bookingItem = itemService.getItem(bookingEntry.getItemId(), bookingEntry.getItemType());
+            var bookingUser = bookingEntry.getUser();
 
-            response.items.add(new BaseBooking() {
+            response.items.add(new BaseUserBooking() {
                 {
                     active = bookingEntry.isActive();
                     startDate = bookingEntry.getStartDateTime();
                     item = bookingItem;
+                    user = bookingUser;
                 }
             });
         }
 
         response.page = page;
-        response.totalPages = (int) (filteredBookings.size() / size) + 1;
+        response.totalPages = (int)(Math.ceil((double)filteredBookings.size() / (double)size));
         return response;
     }
 
@@ -126,8 +129,10 @@ public class BookingServiceImpl implements BookingService {
                 return false;
             var result = itemService.releaseItem(parseInt(booking.get().getItemId()), booking.get().getItemType(),
                     booking.get().getExternalBookingId());
-            if (result == true)
-                repository.deleteById(bookingId);
+            if (result == true) {
+                booking.get().setActive(false);
+                repository.save(booking.get());
+            }
             else
                 return false;
         } catch (Exception e) {
@@ -202,8 +207,8 @@ public class BookingServiceImpl implements BookingService {
     }
 
     private ArrayList<Booking> pageBookings(ArrayList<Booking> bookings, int page, int pageSize) {
-        var fromIdx = (page - 1) * 10;
-        var toIdx = min(fromIdx + 1 + pageSize, bookings.size());
+        var fromIdx = (page - 1) * pageSize;
+        var toIdx = min(fromIdx  + pageSize, bookings.size());
         return new ArrayList<Booking>(bookings.subList(fromIdx, toIdx));
     }
 }

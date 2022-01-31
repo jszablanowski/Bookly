@@ -8,6 +8,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pw.react.backend.dto.UpdateUserDto;
 import pw.react.backend.models.User;
+import pw.react.backend.requests.user.UsersResponse;
 import pw.react.backend.services.UserService;
 
 import java.util.ArrayList;
@@ -46,9 +47,9 @@ public class UsersController {
     }
 
     @GetMapping(path = "")
-    public ResponseEntity<ArrayList<User>> getUsers(@RequestParam int page,
-                                                    @RequestParam int size,
-                                                    @RequestParam(required = false) Boolean active)
+    public ResponseEntity<UsersResponse> getUsers(@RequestParam int page,
+                                                  @RequestParam int size,
+                                                  @RequestParam(required = false) Boolean active)
     {
         var userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.getByUserName(userName);
