@@ -33,7 +33,7 @@ public class UsersController {
     }
 
     @PutMapping(path = "/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable long userId, UpdateUserDto updateUserDto)
+    public ResponseEntity<User> updateUser(@PathVariable long userId, @RequestBody UpdateUserDto updateUserDto)
     {
         var userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.getByUserName(userName);

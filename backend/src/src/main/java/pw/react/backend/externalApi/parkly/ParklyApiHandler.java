@@ -141,7 +141,7 @@ public class ParklyApiHandler implements ExternalApiHandler {
         try {
             var request = new HttpEntity<>(buildHeaders());
 
-            var response = restTemplate.exchange(baseUri + "/parking-spots/" + externalBookingId +
+            var response = restTemplate.exchange(baseUri + "/parking-spots/" + itemId +
                             "/release", HttpMethod.POST, request, String.class);
         }
 
