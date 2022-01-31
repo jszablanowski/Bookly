@@ -24,8 +24,8 @@ export default function Login(props : Props) {
     const successfullLogIn = (user : any, token : string) => {
         setUserNotFound(false);
         dispatch({ type: 'AUTHENTICATE_USER', payload: true });
-        dispatch({ type: 'SET_USER', payload: user.email });
         dispatch({ type: 'SET_TOKEN', payload: token });
+        dispatch({ type: 'SET_USER', payload: user.email });
         message.success('Logged in succesfully!');
         navigate('/home', {replace: true});
     }

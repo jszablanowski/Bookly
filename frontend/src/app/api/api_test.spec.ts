@@ -62,11 +62,47 @@ describe("BookingsControllerApi", () => {
     const bookingId: number = 789
     return expect(instance.getBookingUsingGET(bookingId, {})).resolves.toBe(null)
   })
-  test("getUserBookingsUsingGET", () => {
+  test("getCarsBookingsUsingGET", () => {
     const page: number = 56
     const size: number = 56
+    const filter: string = "filter_example"
     const sort: string = "sort_example"
-    return expect(instance.getUserBookingsUsingGET(page, size, sort, {})).resolves.toBe(null)
+    return expect(instance.getCarsBookingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getFlatsBookingsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getFlatsBookingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getParkingsBookingsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getParkingsBookingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getUserCarsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getUserCarsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getUserFlatsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getUserFlatsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getUserParkingsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getUserParkingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
   })
   test("updateBookingUsingPUT", () => {
     const body: api.UpdateBookingDto = undefined
@@ -82,25 +118,28 @@ describe("ItemsControllerApi", () => {
   });
 
   test("getCarItemsUsingGET", () => {
-    const active: boolean = true
     const page: number = 56
-    const sortType: string = "sortType_example"
-    return expect(instance.getCarItemsUsingGET(active, page, sortType, {})).resolves.toBe(null)
+    const pageSize: number = 56
+    const dateSort: string = "dateSort_example"
+    const location: string = "location_example"
+    const model: string = "model_example"
+    const priceSort: string = "priceSort_example"
+    const text: string = "text_example"
+    return expect(instance.getCarItemsUsingGET(page, pageSize, dateSort, location, model, priceSort, text, {})).resolves.toBe(null)
   })
   test("getFlatItemsUsingGET", () => {
-    const active: boolean = true
     const page: number = 56
-    const sort: string = "sort_example"
-    return expect(instance.getFlatItemsUsingGET(active, page, sort, {})).resolves.toBe(null)
+    const city: string = "city_example"
+    const sorted: boolean = true
+    const street: string = "street_example"
+    const text: string = "text_example"
+    return expect(instance.getFlatItemsUsingGET(page, city, sorted, street, text, {})).resolves.toBe(null)
   })
   test("getParkingItemsUsingGET", () => {
     const page: number = 56
     const pageSize: number = 56
     const active: boolean = true
-    const city: string = "city_example"
-    const parkingName: string = "parkingName_example"
-    const street: string = "street_example"
-    return expect(instance.getParkingItemsUsingGET(page, pageSize, active, city, parkingName, street, {})).resolves.toBe(null)
+    return expect(instance.getParkingItemsUsingGET(page, pageSize, active, {})).resolves.toBe(null)
   })
 })
 
@@ -157,6 +196,29 @@ describe("OperationHandlerApi", () => {
   test("handleUsingPOST", () => {
     const body: { [key: string]: string; } = undefined
     return expect(instance.handleUsingPOST(body, {})).resolves.toBe(null)
+  })
+})
+
+describe("UsersControllerApi", () => {
+  let instance: api.UsersControllerApi
+  beforeEach(function() {
+    instance = new api.UsersControllerApi(config)
+  });
+
+  test("disableUserUsingDELETE", () => {
+    const userId: number = 789
+    return expect(instance.disableUserUsingDELETE(userId, {})).resolves.toBe(null)
+  })
+  test("getUsersUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const active: boolean = true
+    return expect(instance.getUsersUsingGET(page, size, active, {})).resolves.toBe(null)
+  })
+  test("updateUserUsingPUT", () => {
+    const body: api.UpdateUserDto = undefined
+    const userId: number = 789
+    return expect(instance.updateUserUsingPUT(body, userId, {})).resolves.toBe(null)
   })
 })
 

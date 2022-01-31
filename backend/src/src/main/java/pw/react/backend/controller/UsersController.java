@@ -13,7 +13,7 @@ import pw.react.backend.services.UserService;
 import java.util.ArrayList;
 
 @RestController
-@RequestMapping(path = "/users")
+@RequestMapping(path = "/user")
 @Profile({"jwt"})
 public class UsersController {
     private UserService userService;

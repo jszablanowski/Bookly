@@ -1,36 +1,49 @@
-import React from 'react';
-import { Card, Row, Col } from "antd";
+import React, { useState } from 'react';
+import { Card, Row, Col, Image } from "antd";
+import { ParkingItem } from '../../classes/ParkingItem';
+import { BookingItem } from '../../classes/BookingItem';
 
-interface Props {
+interface ParkingProps {
+    parkingItem: ParkingItem,
+    booking: BookingItem
 }
 
-const ParkingSpotsListItem: React.FC<Props> = (props: Props) => {
-
+const ParkingSpotsListItem: React.FC<ParkingProps> = (props: ParkingProps) => {
     return (
        <div className="space-align-block">
-            <Card title={"Underground parking"}>
+            <Card title={props.parkingItem.parkingName}>
                 <Row justify="space-between">
                     <Col>
-                        PHOTO
+                        <Image width={200} src={props.parkingItem.imageLink} />
                     </Col>
 
                     <Col>
                         <Row>
-                            ul. Marszałkowska, Warszawa
+                            {props.parkingItem.street} {props.parkingItem.streetTag}, {props.parkingItem.city}
+                        </Row>
+                        <Row>
+                            {props.parkingItem.spotNumber} spots available
                         </Row>
                     </Col>
 
                     <Col>
-                        <Row>
+                    <Row>
                             User: xyz
                         </Row>
                         <Row>
                             UserIs: 1234
                         </Row>
+                        <Row>
+                            Start date: {props.booking.startDate}
+                        </Row>
+                        <Row>
+                            {props.booking.active && "active"}
+                            {!props.booking.active && "not active"}
+                        </Row>
                     </Col>
 
                     <Col>
-                        <b>Price: 75 PLN</b>
+                        <b>Price: {props.parkingItem.pricePerHour} PLN/hour</b>
                     </Col>
                 </Row>
             </Card>

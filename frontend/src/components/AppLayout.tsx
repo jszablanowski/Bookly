@@ -11,9 +11,9 @@ export class AppLayout extends Component {
 
   render () {
     return (
-      <Layout className="layout">
+      <Layout className="layout" style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
         <NavMenu />
-        <Content style={{ padding: '0 50px' }}>
+        <Content style={{ padding: '0 50px', flex: 1}}>
           {this.props.children}
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2018 Created by Ant UED</Footer>

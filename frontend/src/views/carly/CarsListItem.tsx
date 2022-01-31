@@ -1,36 +1,28 @@
 import React from 'react';
-import { Car } from '../../exampleData/Car';
 import { Card, Row, Col, Image } from "antd";
+import { CarItem } from '../../classes/CarItem';
+import { BookingItem } from '../../classes/BookingItem';
 
 interface Props {
-    car : Car
+    car : CarItem
+    booking: BookingItem
 }
 
 const CarsListItem: React.FC<Props> = (props: Props) => {
 
     return (
        <div className="space-align-block">
-            <Card title={props.car.name}>
+            <Card title={props.car.brand + "  " + props.car.model}>
                 <Row justify="space-between">
                     <Col>
-                        <Image width={200} src={props.car.image} />
-                    </Col>
-
-                    <Col>
                         <Row>
-                            ul. Marszałkowska, Warszawa
+                            {props.car.location}
                         </Row>
                         <Row>
-                            {props.car.doors} doors
+                            Engine: {props.car.engine}
                         </Row>
                         <Row>
-                            {props.car.seats} seats
-                        </Row>
-                        <Row>
-                            Manual transmission
-                        </Row>
-                        <Row>
-                            {props.car.AC && 'Air conditioning'}
+                            Year: {props.car.year}
                         </Row>
                     </Col>
 
@@ -41,10 +33,17 @@ const CarsListItem: React.FC<Props> = (props: Props) => {
                         <Row>
                             UserIs: 1234
                         </Row>
+                        <Row>
+                            Start date: {props.booking.startDate}
+                        </Row>
+                        <Row>
+                            {props.booking.active && "active"}
+                            {!props.booking.active && "not active"}
+                        </Row>
                     </Col>
 
                     <Col>
-                        <b>Price: {props.car.pricePerDay} PLN</b>
+                        <b>Price: {props.car.price} PLN</b>
                     </Col>
                 </Row>
             </Card>

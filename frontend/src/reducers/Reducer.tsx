@@ -1,7 +1,7 @@
 import { ActionType, GlobalStateInterface } from './Types';
 import { initialState }  from './initial';
 
-const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
+const Reducer = (state = initialState, action: ActionType): any => {
   switch (action.type) {
     case 'SET_USER':
       return {
@@ -16,7 +16,7 @@ const Reducer = (state: GlobalStateInterface, action: ActionType): any => {
     case 'SET_TOKEN':
       return {
         ...state,
-        tokenType: action.payload,
+        token: action.payload,
       };
     case 'PURGE_STATE':
       return initialState;

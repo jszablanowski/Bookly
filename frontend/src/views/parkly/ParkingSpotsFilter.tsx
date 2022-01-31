@@ -15,61 +15,6 @@ const ParkingSpotsFilter: React.FC<Props> = (props: Props) => {
                 <Input placeholder="Username" />
             </Form.Item>
 
-            <Form.Item label="Price range (per hour)">
-            <Input.Group compact>
-                <InputNumber min={1} style={{ width: '45%', textAlign: 'center' }} placeholder="Minimum" />
-                <Input
-                    className="site-input-split"
-                    style={{
-                    width: '10%',
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    }}
-                    placeholder="~"
-                    disabled
-                />
-                <InputNumber min={1}
-                    className="site-input-right"
-                    style={{
-                    width: '45%',
-                    textAlign: 'center',
-                    }}
-                    placeholder="Maximum"
-                />
-                </Input.Group>
-            </Form.Item>
-
-            <Form.Item label="Number of available spots">
-            <Input.Group compact>
-                <InputNumber min={1} style={{ width: '45%', textAlign: 'center' }} placeholder="Minimum" />
-                <Input
-                    className="site-input-split"
-                    style={{
-                    width: '10%',
-                    borderLeft: 0,
-                    borderRight: 0,
-                    pointerEvents: 'none',
-                    }}
-                    placeholder="~"
-                    disabled
-                />
-                <InputNumber min={1}
-                    className="site-input-right"
-                    style={{
-                    width: '45%',
-                    textAlign: 'center',
-                    }}
-                    placeholder="Maximum"
-                />
-                </Input.Group>
-            </Form.Item>
-
-            <Form.Item label="Location">
-                <Input placeholder="City" />
-                <Input placeholder="Street" />
-            </Form.Item>
-
             <Form.Item>
                 <Button type="primary" htmlType="submit" onClick={(e : any) => props.filterResultsHandler()}>
                     Filter results

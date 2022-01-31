@@ -4,7 +4,7 @@ import { Table, Space, Button, Input, Row, Modal, Form } from 'antd';
 import exampleUsers from "../../exampleData/users.json";
 import {Typography} from "antd"
 import { UserForm } from './UserForm';
-import { User } from './User';
+import { User } from '../../classes/User';
 
 const { Title } = Typography;
 const { Search } = Input;

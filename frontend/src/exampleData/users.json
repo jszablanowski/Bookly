@@ -1,23 +1,20 @@
 [
     {
-        "key": "1",
-        "userid": "1234",
+        "userid": 1,
         "email": "johnbrown1234@gmail.com",
         "firstname": "John",
         "lastname": "Brown",
         "password": "abc"
     },
     {
-        "key": "2",
-        "userid": "2345",
+        "userid": 2,
         "email": "jimgreen@gmail.com",
         "firstname": "Jim",
         "lastname": "Green",
         "password": "abc"
     },
     {
-        "key": "3",
-        "userid": "5678",
+        "userid": 3,
         "email": "joeblack7@gmail.com",
         "firstname": "Joe",
         "lastname": "Black",

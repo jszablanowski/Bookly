@@ -1,0 +1,18 @@
+{
+    "id": "3",
+    "name": "Flat ABC",
+    "rooms": 2,
+    "numberOfGuests": 4,
+    "area": 5,
+    "address": {
+        "id": 2,
+        "street": "ul. Marszałkowska",
+        "houseNumber": "13",
+        "localNumber": "2A",
+        "city": "Warszawa"
+    },
+    "images": [{
+        "id": 1,
+        "path": "https://u.profitroom.pl/2020-flat-white-pl/thumb/1920x1030/uploads/Obywatelska/FlatWhite_110A0348.jpg"
+    }]
+}
