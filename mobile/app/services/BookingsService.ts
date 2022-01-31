@@ -1,5 +1,11 @@
 import { date } from "yup/lib/locale";
-import { Booking, BookingsControllerApi, CarlyBookingsResponse, FlatlyBookingsResponse, ParklyBookingsResponse } from "../api";
+import {
+  Booking,
+  BookingsControllerApi,
+  CarlyBookingsResponse,
+  FlatlyBookingsResponse,
+  ParklyBookingsResponse,
+} from "../api";
 import { BASE_URL } from "../apiConfig";
 
 export interface IBookingsService {
@@ -26,8 +32,10 @@ export interface IBookingsService {
     sortType: string,
     filteringType: string
   ) => Promise<FlatlyBookingsResponse>;
-  
-  bookItem: (token: string, id :number, itemType: string ) => Promise<Booking>;
+
+  bookItem: (token: string, id: number, itemType: string) => Promise<Booking>;
+
+  cancelBooking: (token: string, bookingId: number) => Promise<string>;
 }
 
 export class BookingService implements IBookingsService {
@@ -81,8 +89,7 @@ export class BookingService implements IBookingsService {
     );
   }
 
-  bookItem(token: string,id :number, itemType: string )
-  {
+  bookItem(token: string, id: number, itemType: string) {
     let client = new BookingsControllerApi({
       basePath: BASE_URL,
       apiKey: token,
@@ -90,6 +97,19 @@ export class BookingService implements IBookingsService {
 
     let now = new Date(Date.now());
     console.log("date: " + now);
-    return client.addBookingUsingPOST({itemId: id.toString(), itemType: itemType, startDateTime: now });
+    return client.addBookingUsingPOST({
+      itemId: id.toString(),
+      itemType: itemType,
+      startDateTime: now,
+    });
+  }
+
+  cancelBooking(token: string, bookingId: number) {
+    let client = new BookingsControllerApi({
+      basePath: BASE_URL,
+      apiKey: token,
+    });
+    console.log(bookingId);
+    return client.deleteBookingUsingDELETE(bookingId);
   }
 }

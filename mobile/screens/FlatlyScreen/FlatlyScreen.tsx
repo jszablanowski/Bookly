@@ -57,8 +57,8 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
                     rooms: i.rooms
                 }));
                 setFlatItems(flatItemsDetails);
-                if (response.totalPages && response.items) {
-                    setItemsCount(response.totalPages * response.items.length);
+                if (response.totalItems) {
+                    setItemsCount(response.totalItems);
                 }
                 else {
                     setItemsCount(0);
@@ -91,43 +91,43 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
     const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => {
 
         const renderItem = ({ item }: { item: FlatItemDetails }) => (
-            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item ) }} >
-             <FlatItem details={item}></FlatItem>
+            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item) }} >
+                <FlatItem details={item}></FlatItem>
             </TouchableOpacity>
         );
 
         return (
             <View>
-            <View style={{ alignSelf: "stretch" }}>
-                <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
-                    <View style={{ flex: 1, marginHorizontal: 4 }}>
-                        <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
-                    </View>
-                    <View style={{ flex: 1, marginHorizontal: 4 }}>
-                        <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
+                <View style={{ alignSelf: "stretch" }}>
+                    <View style={{ display: "flex", flexDirection: "row", margin: 6 }}>
+                        <View style={{ flex: 1, marginHorizontal: 4 }}>
+                            <Button title="Filter" type="outline" onPress={() => { navigation.navigate("FilterScreen") }} ></Button>
+                        </View>
+                        <View style={{ flex: 1, marginHorizontal: 4 }}>
+                            <Button title="Sort" type="outline" onPress={() => { navigation.navigate("SortScreen") }}></Button>
+                        </View>
                     </View>
                 </View>
+                <FlatList
+                    data={flatItems}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id.toString()}
+                    style={{ alignSelf: "stretch", marginBottom: 60 }}
+                    onRefresh={() => onRefresh()}
+                    refreshing={loading}
+                    ListHeaderComponent={itemsCountHeader}
+                />
             </View>
-            <FlatList
-                data={flatItems}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id.toString()}
-                style={{ alignSelf: "stretch", marginBottom: 60 }}
-                onRefresh={() => onRefresh()}
-                refreshing={loading}
-                ListHeaderComponent={itemsCountHeader}
-            />
-        </View>
         )
     }
 
 
-    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
-        <FlatlyDetailsScreen data= {route.params?? {id: " " }} onChange={() => {navigation.navigate("SuccessfullScreen");}} ></FlatlyDetailsScreen>
+    const DetailsScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <FlatlyDetailsScreen data={route.params ?? { id: " " }} onChange={() => { navigation.navigate("SuccessfullScreen"); }} ></FlatlyDetailsScreen>
     )
 
-    const SuccessfullScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
-        <SuccessfullyBookedScreen onClick = {() => {navigation.navigate("MainScreen");} }></SuccessfullyBookedScreen>
+    const SuccessfullScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
+        <SuccessfullyBookedScreen onClick={() => { navigation.navigate("MainScreen"); }}></SuccessfullyBookedScreen>
     )
 
     const FilterScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'FilterScreen'>) => (
@@ -151,8 +151,8 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
             <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="FilterScreen" component={FilterScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="SortScreen" component={SortScreen} options={{ headerShown: false, }} />
-            <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
-            <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{headerTitle: ""}} /> 
+            <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: "" }} />
+            <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{ headerTitle: "" }} />
         </Stack.Navigator>
     )
 }

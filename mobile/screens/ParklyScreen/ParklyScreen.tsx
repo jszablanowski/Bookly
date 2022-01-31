@@ -48,8 +48,8 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
                     id: i.id ?? ""
                 }));
                 setParkingItems(parkingItemsDetails);
-                if (response.totalPages && response.items) {
-                    setItemsCount(response.totalPages * response.items.length);
+                if (response.totalItems) {
+                    setItemsCount(response.totalItems);
                 } else {
                     setItemsCount(0);
                 }

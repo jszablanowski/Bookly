@@ -63,25 +63,25 @@ describe("BookingsControllerApi", () => {
     return expect(instance.getBookingUsingGET(bookingId, {})).resolves.toBe(null)
   })
   test("getCarsBookingsUsingGET", () => {
-    const filter: string = "filter_example"
     const page: number = 56
     const size: number = 56
+    const filter: string = "filter_example"
     const sort: string = "sort_example"
-    return expect(instance.getCarsBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+    return expect(instance.getCarsBookingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
   })
   test("getFlatsBookingsUsingGET", () => {
-    const filter: string = "filter_example"
     const page: number = 56
     const size: number = 56
+    const filter: string = "filter_example"
     const sort: string = "sort_example"
-    return expect(instance.getFlatsBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+    return expect(instance.getFlatsBookingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
   })
   test("getParkingsBookingsUsingGET", () => {
-    const filter: string = "filter_example"
     const page: number = 56
     const size: number = 56
+    const filter: string = "filter_example"
     const sort: string = "sort_example"
-    return expect(instance.getParkingsBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+    return expect(instance.getParkingsBookingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
   })
   test("getUserCarsUsingGET", () => {
     const page: number = 56
@@ -209,14 +209,16 @@ describe("UsersControllerApi", () => {
     const userId: number = 789
     return expect(instance.disableUserUsingDELETE(userId, {})).resolves.toBe(null)
   })
+  test("getUsersUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const active: boolean = true
+    return expect(instance.getUsersUsingGET(page, size, active, {})).resolves.toBe(null)
+  })
   test("updateUserUsingPUT", () => {
+    const body: api.UpdateUserDto = undefined
     const userId: number = 789
-    const email: string = "email_example"
-    const firstName: string = "firstName_example"
-    const lastName: string = "lastName_example"
-    const password: string = "password_example"
-    const username: string = "username_example"
-    return expect(instance.updateUserUsingPUT(userId, email, firstName, lastName, password, username, {})).resolves.toBe(null)
+    return expect(instance.updateUserUsingPUT(body, userId, {})).resolves.toBe(null)
   })
 })
 

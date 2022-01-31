@@ -61,7 +61,7 @@ public class BookingServiceImpl implements BookingService {
                     active = bookingEntry.isActive();
                     startDate = bookingEntry.getStartDateTime();
                     item = bookingItem;
-                    bookingId = bookingEntry.getExternalBookingId();
+                    bookingId = (int) bookingEntry.getId();
                 }
             });
         }

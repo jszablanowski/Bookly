@@ -1,14 +1,27 @@
+import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
 import { FlatlyBooking, ParklyBooking } from "../../../../app/api";
 import { BookingService } from "../../../../app/services/BookingsService";
+import { ParkingItemDetails } from "../../../../components/ParkingItem";
 import { useAuth } from "../../../../hooks/Auth";
+import { ParklyDetailsScreen } from "../../../ParklyDetailsScreen";
 import { ParkingBookingItem } from "./ParkingBookingItem";
 
 interface ParkingBookingsProps {
     bookingService: BookingService;
     active: boolean;
 }
+
+
+type RootStackParamList = {
+    MainScreen: undefined;
+    DetailsScreen: ParklyBooking;
+    SuccessfullScreen: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
 export const ParkingBookings = (props: ParkingBookingsProps) => {
 
 
@@ -34,27 +47,47 @@ export const ParkingBookings = (props: ParkingBookingsProps) => {
         fetchData();
     }, []);
 
-    const renderItem = ({ item }: { item: ParklyBooking }) => (
-        <TouchableOpacity onPress={() => { }} >
-            <ParkingBookingItem booking={item}></ParkingBookingItem>
-        </TouchableOpacity>
-    );
-
     const onRefresh = () => {
         setLoading(true);
     };
 
+    const DetailsScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <ParklyDetailsScreen data={{ ...route.params.item, id: route.params.item?.id ?? "" }} onChange={() => { navigation.navigate("SuccessfullScreen"); }}
+            bookingId={route.params.bookingId?.toString() ?? ""} cancelMode={true} active={props.active}></ParklyDetailsScreen>
+    )
+
+
+    const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => {
+
+        const renderItem = ({ item }: { item: FlatlyBooking }) => (
+            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item) }} >
+                <ParkingBookingItem booking={item}></ParkingBookingItem>
+            </TouchableOpacity >
+        );
+
+
+        return (
+            <View>
+                <FlatList
+                    data={parkingItems}
+                    renderItem={renderItem}
+                    keyExtractor={(b) => b.bookingId?.toString() ?? ""}
+                    refreshing={loading}
+                    onRefresh={() => onRefresh()}
+                    style={{ alignSelf: "stretch", marginBottom: 60 }}
+                // ListHeaderComponent={itemsCountHeader}
+                />
+            </View>
+        )
+    }
+
+
     return (
-        <View>
-            <FlatList
-                data={parkingItems}
-                renderItem={renderItem}
-                keyExtractor={(b) => b.bookingId?.toString() ?? ""}
-                refreshing={loading}
-                onRefresh={() => onRefresh()}
-                style={{ alignSelf: "stretch", marginBottom: 60 }}
-            // ListHeaderComponent={itemsCountHeader}
-            />
-        </View>
+
+        <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ contentStyle: { backgroundColor: "#fff" } }} >
+            <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
+            <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: "" }} />
+            {/* <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{ headerTitle: "" }} /> */}
+        </Stack.Navigator>
     )
 }

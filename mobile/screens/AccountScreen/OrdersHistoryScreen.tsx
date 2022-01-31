@@ -16,7 +16,7 @@ export const OrdersHistoryScreen = () => {
     let list: ReactNode;
 
     if (index == 0) {
-        list = <FlatBookings bookingService={new BookingService()} active={false}></FlatBookings>
+        list = <FlatBookings bookingService={new BookingService()} active={false} ></FlatBookings>
     }
     else if (index == 1) {
         list = <CarBookings bookingService={new BookingService()} active={false}></CarBookings>
