@@ -31,7 +31,7 @@ export const FlatDetails = (props: {
     }
 
     let button: ReactNode;
-    if (props.active === true) {
+    if (props.active === true || props.active == undefined) {
         if (props.cancelMode === true) {
             button = <Button title="Cancel booking" onPress={() => { cancelBooking() }}></Button>
         }

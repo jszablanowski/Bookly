@@ -133,7 +133,7 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
                     onRefresh={() => onRefresh()}
                     refreshing={loading}
                     style={{ alignSelf: "stretch", marginBottom: 60 }}
-                    ListHeaderComponent={itemsCountHeader}
+                // ListHeaderComponent={itemsCountHeader}
                 />
             </View>
         )

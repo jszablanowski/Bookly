@@ -115,7 +115,7 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
                     style={{ alignSelf: "stretch", marginBottom: 60 }}
                     onRefresh={() => onRefresh()}
                     refreshing={loading}
-                    ListHeaderComponent={itemsCountHeader}
+                // ListHeaderComponent={itemsCountHeader}
                 />
             </View>
         )

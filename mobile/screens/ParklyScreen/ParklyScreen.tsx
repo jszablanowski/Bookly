@@ -104,7 +104,7 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
                     onRefresh={() => onRefresh()}
                     refreshing={loading}
                     style={{ alignSelf: "stretch" }}
-                    ListHeaderComponent={itemsCountHeader}
+                // ListHeaderComponent={itemsCountHeader}
                 />
             </View>
         )
