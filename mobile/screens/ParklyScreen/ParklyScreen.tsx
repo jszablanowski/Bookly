@@ -41,10 +41,11 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
                     city: i.city,
                     street: i.street,
                     streetTag: i.streetTag,
-                    parkingName: i.parkingName ?? "",
+                    parkingName: i.parkingName,
                     pricePerHour: i.pricePerHour,
                     spotNumber: i.spotNumber,
-                    imageLink: i.imageLink
+                    imageLink: i.imageLink,
+                    id: i.id ?? ""
                 }));
                 setParkingItems(parkingItemsDetails);
                 if (response.totalPages && response.items) {
@@ -63,13 +64,13 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
 
     const [parkingItems, setParkingItems] = useState<Array<ParkingItemDetails> | undefined>(undefined);
 
-    
-    const DetailsScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
-        <ParklyDetailsScreen data= {route.params?? {id: "-1"} } onChange={() => {navigation.navigate("SuccessfullScreen");}}></ParklyDetailsScreen>
+
+    const DetailsScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
+        <ParklyDetailsScreen data={route.params ?? { id: "-1" }} onChange={() => { navigation.navigate("SuccessfullScreen"); }}></ParklyDetailsScreen>
     )
-    
-    const SuccessfullScreen = ({route,  navigation}: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
-        <SuccessfullyBookedScreen onClick = {() => {navigation.navigate("MainScreen");} }></SuccessfullyBookedScreen>
+
+    const SuccessfullScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
+        <SuccessfullyBookedScreen onClick={() => { navigation.navigate("MainScreen"); }}></SuccessfullyBookedScreen>
     )
 
     const onRefresh = () => {
@@ -88,33 +89,33 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
     };
     const MainScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'MainScreen'>) => {
 
-        const renderItem = ({ item }: { item: ParkingItemDetails}) => (
-            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item ) }} >
+        const renderItem = ({ item }: { item: ParkingItemDetails }) => (
+            <TouchableOpacity onPress={() => { navigation.navigate("DetailsScreen", item) }} >
                 <ParkingItem details={item}></ParkingItem>
             </TouchableOpacity>
         );
 
         return (
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <FlatList
-                data={parkingItems}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.parkingName + item.street + item.city + item.spotNumber}
-                onRefresh={() => onRefresh()}
-                refreshing={loading}
-                style={{ alignSelf: "stretch" }}
-                ListHeaderComponent={itemsCountHeader}
-            />
+                <FlatList
+                    data={parkingItems}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                    onRefresh={() => onRefresh()}
+                    refreshing={loading}
+                    style={{ alignSelf: "stretch" }}
+                    ListHeaderComponent={itemsCountHeader}
+                />
             </View>
         )
-}
+    }
 
-return (
-            <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ contentStyle: { backgroundColor: "#fff" } }} >
-                <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
-                <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{headerTitle: ""}} />
-                <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{headerTitle: ""}} /> 
+    return (
+        <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ contentStyle: { backgroundColor: "#fff" } }} >
+            <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
+            <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: "" }} />
+            <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{ headerTitle: "" }} />
 
-            </Stack.Navigator>
-        )
+        </Stack.Navigator>
+    )
 }

@@ -3,13 +3,14 @@ import { StyleSheet, View } from "react-native";
 import { Icon, Image, Text } from "react-native-elements"
 
 export interface ParkingItemDetails {
-    parkingName: string;
+    parkingName?: string;
     spotNumber?: number;
     city?: string;
     street?: string;
     streetTag?: string;
     pricePerHour?: number;
     imageLink?: string;
+    id: string;
 }
 
 export const ParkingItem = (props: { details: ParkingItemDetails }) => {
