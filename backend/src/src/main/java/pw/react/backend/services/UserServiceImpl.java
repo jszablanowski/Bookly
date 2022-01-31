@@ -10,11 +10,15 @@ import pw.react.backend.dao.UserRepository;
 import pw.react.backend.dto.UpdateUserDto;
 import pw.react.backend.exceptions.ResourceNotFoundException;
 import pw.react.backend.exceptions.UserValidationException;
+import pw.react.backend.models.Booking;
 import pw.react.backend.models.User;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
+
+import static java.lang.Integer.min;
 
 @Service
 @Slf4j
@@ -137,6 +141,22 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
         return user;
     }
+
+    public ArrayList<User> getUsers(int page, int size, Boolean active)
+    {
+        var users = userRepository.findAll();
+
+        if (active != null)
+        {
+            users.removeIf(x -> x.isActive() != active);
+        }
+        users.removeIf(x -> x.isAdmin());
+
+        var fromIdx = (page - 1) * 10;
+        var toIdx = min(fromIdx + 1 + size, users.size());
+        return new ArrayList<User>(users.subList(fromIdx, toIdx));
+    }
+
 
     @Override
     public boolean hasAdminPermissions(User user)

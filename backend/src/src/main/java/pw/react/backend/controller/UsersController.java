@@ -10,6 +10,8 @@ import pw.react.backend.dto.UpdateUserDto;
 import pw.react.backend.models.User;
 import pw.react.backend.services.UserService;
 
+import java.util.ArrayList;
+
 @RestController
 @RequestMapping(path = "/users")
 @Profile({"jwt"})
@@ -41,5 +43,19 @@ public class UsersController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
         var updatedUser = userService.updateUser(userId, updateUserDto);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @GetMapping(path = "")
+    public ResponseEntity<ArrayList<User>> getUsers(@RequestParam int page,
+                                                    @RequestParam int size,
+                                                    @RequestParam(required = false) Boolean active)
+    {
+        var userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        var user = userService.getByUserName(userName);
+        if (!userService.hasAdminPermissions(user))
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+        var users = userService.getUsers(page, size, active);
+
+        return ResponseEntity.ok(users);
     }
 }
