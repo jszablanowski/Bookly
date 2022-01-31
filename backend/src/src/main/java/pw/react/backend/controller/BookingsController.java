@@ -66,7 +66,7 @@ public class BookingsController {
 
         var userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.getByUserName(userName);
-        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.ROOM);
+        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.CAR);
         var response = new CarlyBookingsResponse(){{
             items = (List<CarlyBooking>)(Object)bookings.items;
             page = bookings.page;
@@ -83,7 +83,7 @@ public class BookingsController {
 
         var userName = SecurityContextHolder.getContext().getAuthentication().getName();
         var user = userService.getByUserName(userName);
-        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.ROOM);
+        var bookings = bookingService.getUserBookings(user.getId(), page, size, sort, filter, ItemType.PARKING);
         var response = new ParklyBookingsResponse(){{
             items = (List<ParklyBooking>)(Object)bookings.items;
             page = bookings.page;

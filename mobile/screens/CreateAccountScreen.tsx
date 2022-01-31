@@ -5,7 +5,7 @@ import { Button, Input, Text } from "react-native-elements";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
-import { UserService } from "../app/services/UserService";
+import { UserService } from "../app/services/JwtUserService";
 
 
 type FormData = {

@@ -8,4 +8,5 @@ public class FlatlyBooking {
     public FlatItem item;
     public Date startDate;
     public boolean active;
+    public int bookingId;
 }

@@ -8,4 +8,5 @@ public class BaseBooking {
     public ItemBase item;
     public Date startDate;
     public boolean active;
+    public int bookingId;
 }

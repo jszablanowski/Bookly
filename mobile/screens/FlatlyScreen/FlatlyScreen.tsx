@@ -31,7 +31,7 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
     const [flatlyFilters, setFlatlyFilters] = useState<FlatlyFilters>({ city: "", street: "", text: "" });
     const [flatlySort, setFlatlySort] = useState<boolean>(false);
     const [loading, setLoading] = useState(true);
-    const [itemsCount, setItemsCount] = useState<number>(0);
+    const [itemsCount, setItemsCount] = useState<number | undefined>(undefined);
 
     useEffect(() => {
         fetchData();
@@ -83,9 +83,9 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
     const itemsCountHeader = () => {
         return (
             <View>
-                <Text style={{ marginLeft: 10 }}>
+                {itemsCount != undefined && <Text style={{ marginLeft: 10 }}>
                     Found {itemsCount} {itemsCount > 1 ? "results" : "result"}
-                </Text>
+                </Text>}
                 <Divider orientation="vertical"></Divider>
             </View>
         );

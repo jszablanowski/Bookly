@@ -35,14 +35,15 @@ public class BookingServiceImpl implements BookingService {
         this.itemService = itemService;
     }
 
-
     @Override
     public BaseBookingResponse getUserBookings(long userId, Integer page, Integer size, SortType sort,
-                                                FilteringType filter, ItemType itemType) {
+            FilteringType filter, ItemType itemType) {
 
-        var response = new BaseBookingResponse(){{
-            items = new ArrayList<BaseBooking>();
-        }};
+        var response = new BaseBookingResponse() {
+            {
+                items = new ArrayList<BaseBooking>();
+            }
+        };
         var userBookings = repository.findBookingsByUserId(userId);
         userBookings.removeIf(x -> x.getItemType() != itemType);
 
@@ -50,20 +51,21 @@ public class BookingServiceImpl implements BookingService {
 
         var pagedBookings = pageBookings(filteredBookings, page.intValue(), size.intValue());
 
-        for (var bookingEntry: pagedBookings)
-        {
+        for (var bookingEntry : pagedBookings) {
             var bookingItem = itemService.getItem(bookingEntry.getItemId(), bookingEntry.getItemType());
 
-            response.items.add( new BaseBooking()
-            {{
-                active = bookingEntry.isActive();
-                startDate = bookingEntry.getStartDateTime();
-                item = bookingItem;
-            }});
+            response.items.add(new BaseBooking() {
+                {
+                    active = bookingEntry.isActive();
+                    startDate = bookingEntry.getStartDateTime();
+                    item = bookingItem;
+                    bookingId = bookingEntry.getExternalBookingId();
+                }
+            });
         }
 
         response.page = page;
-        response.totalPages = (int)(filteredBookings.size() / size) + 1;
+        response.totalPages = (int) (filteredBookings.size() / size) + 1;
         return response;
     }
 
@@ -76,47 +78,49 @@ public class BookingServiceImpl implements BookingService {
 
         var itemBase = itemService.getItem(bookingEntry.get().getItemId(), bookingEntry.get().getItemType());
         var booking = bookingEntry.get();
-        return new BaseBooking(){{
-            active = booking.isActive();
-            startDate = booking.getStartDateTime();
-            item = itemBase;
-        }};
+        return new BaseBooking() {
+            {
+                active = booking.isActive();
+                startDate = booking.getStartDateTime();
+                item = itemBase;
+            }
+        };
     }
 
     @Override
     public BaseBookingResponse getAllBookings(Integer page, Integer size, SortType sort, FilteringType filter,
-                                                     ItemType itemType)
-    {
-        var response = new BaseBookingResponse(){{
-            items = new ArrayList<BaseBooking>();
-        }};
+            ItemType itemType) {
+        var response = new BaseBookingResponse() {
+            {
+                items = new ArrayList<BaseBooking>();
+            }
+        };
         ArrayList<Booking> userBookings = new ArrayList<Booking>();
         var allBookings = repository.findBookingsByItemType(itemType);
         var filteredBookings = filterBookings(allBookings, filter, sort);
 
         var pagedBookings = pageBookings(filteredBookings, page, size);
 
-        for (var bookingEntry: pagedBookings)
-        {
+        for (var bookingEntry : pagedBookings) {
             var bookingItem = itemService.getItem(bookingEntry.getItemId(), bookingEntry.getItemType());
 
-            response.items.add( new BaseBooking()
-            {{
-                active = bookingEntry.isActive();
-                startDate = bookingEntry.getStartDateTime();
-                item = bookingItem;
-            }});
+            response.items.add(new BaseBooking() {
+                {
+                    active = bookingEntry.isActive();
+                    startDate = bookingEntry.getStartDateTime();
+                    item = bookingItem;
+                }
+            });
         }
 
         response.page = page;
-        response.totalPages = (int)(filteredBookings.size() / size) + 1;
+        response.totalPages = (int) (filteredBookings.size() / size) + 1;
         return response;
     }
 
     @Override
     public boolean deleteBooking(long bookingId) throws ResourceNotFoundException {
-        try
-        {
+        try {
             var booking = repository.findById(bookingId);
             if (!booking.isPresent())
                 return false;
@@ -124,10 +128,9 @@ public class BookingServiceImpl implements BookingService {
                     booking.get().getExternalBookingId());
             if (result == true)
                 repository.deleteById(bookingId);
-            else return false;
-        }
-        catch(Exception e)
-        {
+            else
+                return false;
+        } catch (Exception e) {
             return false;
         }
         return true;
@@ -152,19 +155,16 @@ public class BookingServiceImpl implements BookingService {
 
         var booking = bookingEntry.get();
 
-        if(updateBookingDto.itemType != null)
-        {
+        if (updateBookingDto.itemType != null) {
             var itemTypeEnum = ItemType.valueOf(updateBookingDto.itemType);
             booking.setItemType(itemTypeEnum);
         }
 
-        if(updateBookingDto.itemId != null)
-        {
+        if (updateBookingDto.itemId != null) {
             booking.setItemId(updateBookingDto.itemId);
         }
 
-        if(updateBookingDto.startDateTime != null)
-        {
+        if (updateBookingDto.startDateTime != null) {
             booking.setStartDateTime(updateBookingDto.startDateTime);
         }
 
@@ -173,41 +173,36 @@ public class BookingServiceImpl implements BookingService {
         return booking;
     }
 
-    private int compareDates(Date date1, Date date2, SortType sortType)
-    {
+    private int compareDates(Date date1, Date date2, SortType sortType) {
         if (sortType == SortType.asc) {
             if (date1.before(date2))
                 return 1;
             return 0;
         }
 
-            if (date2.before(date1))
-                return 1;
-            return 0;
+        if (date2.before(date1))
+            return 1;
+        return 0;
 
     }
 
-    private ArrayList<Booking> filterBookings(ArrayList<Booking> bookings, FilteringType filter, SortType sort)
-    {
-        if (filter != null)
-        {
+    private ArrayList<Booking> filterBookings(ArrayList<Booking> bookings, FilteringType filter, SortType sort) {
+        if (filter != null) {
             if (filter == FilteringType.active)
                 bookings.removeIf(x -> x.isActive() != true);
             else if (filter == FilteringType.inactive)
                 bookings.removeIf(x -> x.isActive() == true);
         }
 
-        if (sort != null)
-        {
-            bookings.sort((x,y) -> compareDates(x.getStartDateTime(),y.getStartDateTime(),sort));
+        if (sort != null) {
+            bookings.sort((x, y) -> compareDates(x.getStartDateTime(), y.getStartDateTime(), sort));
         }
 
         return bookings;
     }
 
-    private ArrayList<Booking> pageBookings(ArrayList<Booking> bookings, int page, int pageSize)
-    {
-        var fromIdx = (page-1) * 10;
+    private ArrayList<Booking> pageBookings(ArrayList<Booking> bookings, int page, int pageSize) {
+        var fromIdx = (page - 1) * 10;
         var toIdx = min(fromIdx + 1 + pageSize, bookings.size());
         return new ArrayList<Booking>(bookings.subList(fromIdx, toIdx));
     }

@@ -105,6 +105,37 @@ export interface AddBookingDto {
 /**
  * 
  * @export
+ * @interface BaseBooking
+ */
+export interface BaseBooking {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof BaseBooking
+     */
+    active?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof BaseBooking
+     */
+    bookingId?: number;
+    /**
+     * 
+     * @type {ItemBase}
+     * @memberof BaseBooking
+     */
+    item?: ItemBase;
+    /**
+     * 
+     * @type {Date}
+     * @memberof BaseBooking
+     */
+    startDate?: Date;
+}
+/**
+ * 
+ * @export
  * @interface Booking
  */
 export interface Booking {
@@ -157,53 +188,6 @@ export interface Booking {
  * @namespace Booking
  */
 export namespace Booking {
-    /**
-     * @export
-     * @enum {string}
-     */
-    export enum ItemTypeEnum {
-        CAR = <any> 'CAR',
-        PARKING = <any> 'PARKING',
-        ROOM = <any> 'ROOM'
-    }
-}
-/**
- * 
- * @export
- * @interface BookingResponse
- */
-export interface BookingResponse {
-    /**
-     * 
-     * @type {boolean}
-     * @memberof BookingResponse
-     */
-    active?: boolean;
-    /**
-     * 
-     * @type {ItemBase}
-     * @memberof BookingResponse
-     */
-    item?: ItemBase;
-    /**
-     * 
-     * @type {string}
-     * @memberof BookingResponse
-     */
-    itemType?: BookingResponse.ItemTypeEnum;
-    /**
-     * 
-     * @type {Date}
-     * @memberof BookingResponse
-     */
-    startDate?: Date;
-}
-
-/**
- * @export
- * @namespace BookingResponse
- */
-export namespace BookingResponse {
     /**
      * @export
      * @enum {string}
@@ -303,6 +287,68 @@ export interface CarItemsResponse {
      * 
      * @type {number}
      * @memberof CarItemsResponse
+     */
+    totalItems?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CarItemsResponse
+     */
+    totalPages?: number;
+}
+/**
+ * 
+ * @export
+ * @interface CarlyBooking
+ */
+export interface CarlyBooking {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof CarlyBooking
+     */
+    active?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof CarlyBooking
+     */
+    bookingId?: number;
+    /**
+     * 
+     * @type {CarItem}
+     * @memberof CarlyBooking
+     */
+    item?: CarItem;
+    /**
+     * 
+     * @type {Date}
+     * @memberof CarlyBooking
+     */
+    startDate?: Date;
+}
+/**
+ * 
+ * @export
+ * @interface CarlyBookingsResponse
+ */
+export interface CarlyBookingsResponse {
+    /**
+     * 
+     * @type {Array<CarlyBooking>}
+     * @memberof CarlyBookingsResponse
+     */
+    items?: Array<CarlyBooking>;
+    /**
+     * 
+     * @type {number}
+     * @memberof CarlyBookingsResponse
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof CarlyBookingsResponse
      */
     totalPages?: number;
 }
@@ -488,6 +534,68 @@ export interface FlatItemsResponse {
      * 
      * @type {number}
      * @memberof FlatItemsResponse
+     */
+    totalItems?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlatItemsResponse
+     */
+    totalPages?: number;
+}
+/**
+ * 
+ * @export
+ * @interface FlatlyBooking
+ */
+export interface FlatlyBooking {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof FlatlyBooking
+     */
+    active?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlatlyBooking
+     */
+    bookingId?: number;
+    /**
+     * 
+     * @type {FlatItem}
+     * @memberof FlatlyBooking
+     */
+    item?: FlatItem;
+    /**
+     * 
+     * @type {Date}
+     * @memberof FlatlyBooking
+     */
+    startDate?: Date;
+}
+/**
+ * 
+ * @export
+ * @interface FlatlyBookingsResponse
+ */
+export interface FlatlyBookingsResponse {
+    /**
+     * 
+     * @type {Array<FlatlyBooking>}
+     * @memberof FlatlyBookingsResponse
+     */
+    items?: Array<FlatlyBooking>;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlatlyBookingsResponse
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof FlatlyBookingsResponse
      */
     totalPages?: number;
 }
@@ -768,6 +876,68 @@ export interface ParkingItemsResponse {
      * @type {number}
      * @memberof ParkingItemsResponse
      */
+    totalItems?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ParkingItemsResponse
+     */
+    totalPages?: number;
+}
+/**
+ * 
+ * @export
+ * @interface ParklyBooking
+ */
+export interface ParklyBooking {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof ParklyBooking
+     */
+    active?: boolean;
+    /**
+     * 
+     * @type {number}
+     * @memberof ParklyBooking
+     */
+    bookingId?: number;
+    /**
+     * 
+     * @type {ParkingItem}
+     * @memberof ParklyBooking
+     */
+    item?: ParkingItem;
+    /**
+     * 
+     * @type {Date}
+     * @memberof ParklyBooking
+     */
+    startDate?: Date;
+}
+/**
+ * 
+ * @export
+ * @interface ParklyBookingsResponse
+ */
+export interface ParklyBookingsResponse {
+    /**
+     * 
+     * @type {Array<ParklyBooking>}
+     * @memberof ParklyBookingsResponse
+     */
+    items?: Array<ParklyBooking>;
+    /**
+     * 
+     * @type {number}
+     * @memberof ParklyBookingsResponse
+     */
+    page?: number;
+    /**
+     * 
+     * @type {number}
+     * @memberof ParklyBookingsResponse
+     */
     totalPages?: number;
 }
 /**
@@ -807,6 +977,12 @@ export interface UpdateBookingDto {
  * @interface User
  */
 export interface User {
+    /**
+     * 
+     * @type {boolean}
+     * @memberof User
+     */
+    active?: boolean;
     /**
      * 
      * @type {string}
@@ -1497,7 +1673,7 @@ export const BookingsControllerApiFetchParamCreator = function (configuration?: 
         },
         /**
          * 
-         * @summary getUserBookings
+         * @summary getCarsBookings
          * @param {string} [filter] filter
          * @param {number} [page] page
          * @param {number} [size] size
@@ -1505,8 +1681,287 @@ export const BookingsControllerApiFetchParamCreator = function (configuration?: 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options: any = {}): FetchArgs {
-            const localVarPath = `/bookings`;
+        getCarsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options: any = {}): FetchArgs {
+            const localVarPath = `/bookings/all/cars`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getFlatsBookings
+         * @param {string} [filter] filter
+         * @param {number} [page] page
+         * @param {number} [size] size
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFlatsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options: any = {}): FetchArgs {
+            const localVarPath = `/bookings/all/flats`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getParkingsBookings
+         * @param {string} [filter] filter
+         * @param {number} [page] page
+         * @param {number} [size] size
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getParkingsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options: any = {}): FetchArgs {
+            const localVarPath = `/bookings/all/parkings`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getUserCars
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserCarsUsingGET(page: number, size: number, filter?: string, sort?: string, options: any = {}): FetchArgs {
+            // verify required parameter 'page' is not null or undefined
+            if (page === null || page === undefined) {
+                throw new RequiredError('page','Required parameter page was null or undefined when calling getUserCarsUsingGET.');
+            }
+            // verify required parameter 'size' is not null or undefined
+            if (size === null || size === undefined) {
+                throw new RequiredError('size','Required parameter size was null or undefined when calling getUserCarsUsingGET.');
+            }
+            const localVarPath = `/bookings/user/cars`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getUserFlats
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserFlatsUsingGET(page: number, size: number, filter?: string, sort?: string, options: any = {}): FetchArgs {
+            // verify required parameter 'page' is not null or undefined
+            if (page === null || page === undefined) {
+                throw new RequiredError('page','Required parameter page was null or undefined when calling getUserFlatsUsingGET.');
+            }
+            // verify required parameter 'size' is not null or undefined
+            if (size === null || size === undefined) {
+                throw new RequiredError('size','Required parameter size was null or undefined when calling getUserFlatsUsingGET.');
+            }
+            const localVarPath = `/bookings/user/flats`;
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (filter !== undefined) {
+                localVarQueryParameter['filter'] = filter;
+            }
+
+            if (page !== undefined) {
+                localVarQueryParameter['page'] = page;
+            }
+
+            if (size !== undefined) {
+                localVarQueryParameter['size'] = size;
+            }
+
+            if (sort !== undefined) {
+                localVarQueryParameter['sort'] = sort;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary getUserParkings
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserParkingsUsingGET(page: number, size: number, filter?: string, sort?: string, options: any = {}): FetchArgs {
+            // verify required parameter 'page' is not null or undefined
+            if (page === null || page === undefined) {
+                throw new RequiredError('page','Required parameter page was null or undefined when calling getUserParkingsUsingGET.');
+            }
+            // verify required parameter 'size' is not null or undefined
+            if (size === null || size === undefined) {
+                throw new RequiredError('size','Required parameter size was null or undefined when calling getUserParkingsUsingGET.');
+            }
+            const localVarPath = `/bookings/user/parkings`;
             const localVarUrlObj = url.parse(localVarPath, true);
             const localVarRequestOptions = Object.assign({ method: 'GET' }, options);
             const localVarHeaderParameter = {} as any;
@@ -1646,7 +2101,7 @@ export const BookingsControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getBookingUsingGET(bookingId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BookingResponse> {
+        getBookingUsingGET(bookingId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<BaseBooking> {
             const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getBookingUsingGET(bookingId, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
@@ -1660,7 +2115,7 @@ export const BookingsControllerApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @summary getUserBookings
+         * @summary getCarsBookings
          * @param {string} [filter] filter
          * @param {number} [page] page
          * @param {number} [size] size
@@ -1668,8 +2123,118 @@ export const BookingsControllerApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<Array<BookingResponse>> {
-            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getUserBookingsUsingGET(filter, page, size, sort, options);
+        getCarsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<CarlyBookingsResponse> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getCarsBookingsUsingGET(filter, page, size, sort, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getFlatsBookings
+         * @param {string} [filter] filter
+         * @param {number} [page] page
+         * @param {number} [size] size
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFlatsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<FlatlyBookingsResponse> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getFlatsBookingsUsingGET(filter, page, size, sort, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getParkingsBookings
+         * @param {string} [filter] filter
+         * @param {number} [page] page
+         * @param {number} [size] size
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getParkingsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ParklyBookingsResponse> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getParkingsBookingsUsingGET(filter, page, size, sort, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getUserCars
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserCarsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<CarlyBookingsResponse> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getUserCarsUsingGET(page, size, filter, sort, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getUserFlats
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserFlatsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<FlatlyBookingsResponse> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getUserFlatsUsingGET(page, size, filter, sort, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary getUserParkings
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserParkingsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<ParklyBookingsResponse> {
+            const localVarFetchArgs = BookingsControllerApiFetchParamCreator(configuration).getUserParkingsUsingGET(page, size, filter, sort, options);
             return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
                 return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
                     if (response.status >= 200 && response.status < 300) {
@@ -1741,7 +2306,7 @@ export const BookingsControllerApiFactory = function (configuration?: Configurat
         },
         /**
          * 
-         * @summary getUserBookings
+         * @summary getCarsBookings
          * @param {string} [filter] filter
          * @param {number} [page] page
          * @param {number} [size] size
@@ -1749,8 +2314,73 @@ export const BookingsControllerApiFactory = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
-            return BookingsControllerApiFp(configuration).getUserBookingsUsingGET(filter, page, size, sort, options)(fetch, basePath);
+        getCarsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getCarsBookingsUsingGET(filter, page, size, sort, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getFlatsBookings
+         * @param {string} [filter] filter
+         * @param {number} [page] page
+         * @param {number} [size] size
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getFlatsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getFlatsBookingsUsingGET(filter, page, size, sort, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getParkingsBookings
+         * @param {string} [filter] filter
+         * @param {number} [page] page
+         * @param {number} [size] size
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getParkingsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getParkingsBookingsUsingGET(filter, page, size, sort, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getUserCars
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserCarsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getUserCarsUsingGET(page, size, filter, sort, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getUserFlats
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserFlatsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getUserFlatsUsingGET(page, size, filter, sort, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary getUserParkings
+         * @param {number} page page
+         * @param {number} size size
+         * @param {string} [filter] filter
+         * @param {string} [sort] sort
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getUserParkingsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any) {
+            return BookingsControllerApiFp(configuration).getUserParkingsUsingGET(page, size, filter, sort, options)(fetch, basePath);
         },
         /**
          * 
@@ -1811,7 +2441,7 @@ export class BookingsControllerApi extends BaseAPI {
 
     /**
      * 
-     * @summary getUserBookings
+     * @summary getCarsBookings
      * @param {string} [filter] filter
      * @param {number} [page] page
      * @param {number} [size] size
@@ -1820,8 +2450,83 @@ export class BookingsControllerApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof BookingsControllerApi
      */
-    public getUserBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
-        return BookingsControllerApiFp(this.configuration).getUserBookingsUsingGET(filter, page, size, sort, options)(this.fetch, this.basePath);
+    public getCarsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getCarsBookingsUsingGET(filter, page, size, sort, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getFlatsBookings
+     * @param {string} [filter] filter
+     * @param {number} [page] page
+     * @param {number} [size] size
+     * @param {string} [sort] sort
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingsControllerApi
+     */
+    public getFlatsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getFlatsBookingsUsingGET(filter, page, size, sort, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getParkingsBookings
+     * @param {string} [filter] filter
+     * @param {number} [page] page
+     * @param {number} [size] size
+     * @param {string} [sort] sort
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingsControllerApi
+     */
+    public getParkingsBookingsUsingGET(filter?: string, page?: number, size?: number, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getParkingsBookingsUsingGET(filter, page, size, sort, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getUserCars
+     * @param {number} page page
+     * @param {number} size size
+     * @param {string} [filter] filter
+     * @param {string} [sort] sort
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingsControllerApi
+     */
+    public getUserCarsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getUserCarsUsingGET(page, size, filter, sort, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getUserFlats
+     * @param {number} page page
+     * @param {number} size size
+     * @param {string} [filter] filter
+     * @param {string} [sort] sort
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingsControllerApi
+     */
+    public getUserFlatsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getUserFlatsUsingGET(page, size, filter, sort, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary getUserParkings
+     * @param {number} page page
+     * @param {number} size size
+     * @param {string} [filter] filter
+     * @param {string} [sort] sort
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof BookingsControllerApi
+     */
+    public getUserParkingsUsingGET(page: number, size: number, filter?: string, sort?: string, options?: any) {
+        return BookingsControllerApiFp(this.configuration).getUserParkingsUsingGET(page, size, filter, sort, options)(this.fetch, this.basePath);
     }
 
     /**
@@ -2946,6 +3651,237 @@ export class OperationHandlerApi extends BaseAPI {
      */
     public handleUsingPOST(body?: { [key: string]: string; }, options?: any) {
         return OperationHandlerApiFp(this.configuration).handleUsingPOST(body, options)(this.fetch, this.basePath);
+    }
+
+}
+/**
+ * UsersControllerApi - fetch parameter creator
+ * @export
+ */
+export const UsersControllerApiFetchParamCreator = function (configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary disableUser
+         * @param {number} userId userId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        disableUserUsingDELETE(userId: number, options: any = {}): FetchArgs {
+            // verify required parameter 'userId' is not null or undefined
+            if (userId === null || userId === undefined) {
+                throw new RequiredError('userId','Required parameter userId was null or undefined when calling disableUserUsingDELETE.');
+            }
+            const localVarPath = `/users/{userId}`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'DELETE' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @summary updateUser
+         * @param {number} userId userId
+         * @param {string} [email] 
+         * @param {string} [firstName] 
+         * @param {string} [lastName] 
+         * @param {string} [password] 
+         * @param {string} [username] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserUsingPUT(userId: number, email?: string, firstName?: string, lastName?: string, password?: string, username?: string, options: any = {}): FetchArgs {
+            // verify required parameter 'userId' is not null or undefined
+            if (userId === null || userId === undefined) {
+                throw new RequiredError('userId','Required parameter userId was null or undefined when calling updateUserUsingPUT.');
+            }
+            const localVarPath = `/users/userId`
+                .replace(`{${"userId"}}`, encodeURIComponent(String(userId)));
+            const localVarUrlObj = url.parse(localVarPath, true);
+            const localVarRequestOptions = Object.assign({ method: 'PUT' }, options);
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            // authentication JWT required
+            if (configuration && configuration.apiKey) {
+                const localVarApiKeyValue = typeof configuration.apiKey === 'function'
+					? configuration.apiKey("Authorization")
+					: configuration.apiKey;
+                localVarHeaderParameter["Authorization"] = localVarApiKeyValue;
+            }
+
+            if (email !== undefined) {
+                localVarQueryParameter['email'] = email;
+            }
+
+            if (firstName !== undefined) {
+                localVarQueryParameter['firstName'] = firstName;
+            }
+
+            if (lastName !== undefined) {
+                localVarQueryParameter['lastName'] = lastName;
+            }
+
+            if (password !== undefined) {
+                localVarQueryParameter['password'] = password;
+            }
+
+            if (username !== undefined) {
+                localVarQueryParameter['username'] = username;
+            }
+
+            localVarUrlObj.query = Object.assign({}, localVarUrlObj.query, localVarQueryParameter, options.query);
+            // fix override query string Detail: https://stackoverflow.com/a/7517673/1077943
+            delete localVarUrlObj.search;
+            localVarRequestOptions.headers = Object.assign({}, localVarHeaderParameter, options.headers);
+
+            return {
+                url: url.format(localVarUrlObj),
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * UsersControllerApi - functional programming interface
+ * @export
+ */
+export const UsersControllerApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @summary disableUser
+         * @param {number} userId userId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        disableUserUsingDELETE(userId: number, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<string> {
+            const localVarFetchArgs = UsersControllerApiFetchParamCreator(configuration).disableUserUsingDELETE(userId, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+        /**
+         * 
+         * @summary updateUser
+         * @param {number} userId userId
+         * @param {string} [email] 
+         * @param {string} [firstName] 
+         * @param {string} [lastName] 
+         * @param {string} [password] 
+         * @param {string} [username] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserUsingPUT(userId: number, email?: string, firstName?: string, lastName?: string, password?: string, username?: string, options?: any): (fetch?: FetchAPI, basePath?: string) => Promise<User> {
+            const localVarFetchArgs = UsersControllerApiFetchParamCreator(configuration).updateUserUsingPUT(userId, email, firstName, lastName, password, username, options);
+            return (fetch: FetchAPI = portableFetch, basePath: string = BASE_PATH) => {
+                return fetch(basePath + localVarFetchArgs.url, localVarFetchArgs.options).then((response) => {
+                    if (response.status >= 200 && response.status < 300) {
+                        return response.json();
+                    } else {
+                        throw response;
+                    }
+                });
+            };
+        },
+    }
+};
+
+/**
+ * UsersControllerApi - factory interface
+ * @export
+ */
+export const UsersControllerApiFactory = function (configuration?: Configuration, fetch?: FetchAPI, basePath?: string) {
+    return {
+        /**
+         * 
+         * @summary disableUser
+         * @param {number} userId userId
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        disableUserUsingDELETE(userId: number, options?: any) {
+            return UsersControllerApiFp(configuration).disableUserUsingDELETE(userId, options)(fetch, basePath);
+        },
+        /**
+         * 
+         * @summary updateUser
+         * @param {number} userId userId
+         * @param {string} [email] 
+         * @param {string} [firstName] 
+         * @param {string} [lastName] 
+         * @param {string} [password] 
+         * @param {string} [username] 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateUserUsingPUT(userId: number, email?: string, firstName?: string, lastName?: string, password?: string, username?: string, options?: any) {
+            return UsersControllerApiFp(configuration).updateUserUsingPUT(userId, email, firstName, lastName, password, username, options)(fetch, basePath);
+        },
+    };
+};
+
+/**
+ * UsersControllerApi - object-oriented interface
+ * @export
+ * @class UsersControllerApi
+ * @extends {BaseAPI}
+ */
+export class UsersControllerApi extends BaseAPI {
+    /**
+     * 
+     * @summary disableUser
+     * @param {number} userId userId
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersControllerApi
+     */
+    public disableUserUsingDELETE(userId: number, options?: any) {
+        return UsersControllerApiFp(this.configuration).disableUserUsingDELETE(userId, options)(this.fetch, this.basePath);
+    }
+
+    /**
+     * 
+     * @summary updateUser
+     * @param {number} userId userId
+     * @param {string} [email] 
+     * @param {string} [firstName] 
+     * @param {string} [lastName] 
+     * @param {string} [password] 
+     * @param {string} [username] 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UsersControllerApi
+     */
+    public updateUserUsingPUT(userId: number, email?: string, firstName?: string, lastName?: string, password?: string, username?: string, options?: any) {
+        return UsersControllerApiFp(this.configuration).updateUserUsingPUT(userId, email, firstName, lastName, password, username, options)(this.fetch, this.basePath);
     }
 
 }

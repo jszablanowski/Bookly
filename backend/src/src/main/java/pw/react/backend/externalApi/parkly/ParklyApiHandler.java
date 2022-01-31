@@ -43,20 +43,20 @@ public class ParklyApiHandler implements ExternalApiHandler {
     private ObjectMapper mapper;
 
     @Autowired
-    public ParklyApiHandler(RestTemplate restTemplate)
-    {
+    public ParklyApiHandler(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
         mapper = new ObjectMapper();
         updateAuthorization();
     }
+
     @Override
     public GetItemsResponse getItems(GetItemsBaseDto getItemsBaseDto) {
-        var parklyGetItemsDto = (ParklyGetItemsDto)getItemsBaseDto;
+        var parklyGetItemsDto = (ParklyGetItemsDto) getItemsBaseDto;
         try {
             var uriBuilder = UriComponentsBuilder.fromHttpUrl(baseUri + "/parking-spots")
                     .queryParam("page-number", parklyGetItemsDto.page - 1)
                     .queryParam("page-size", parklyGetItemsDto.pageSize);
-            if (parklyGetItemsDto.active!=null)
+            if (parklyGetItemsDto.active != null)
                 uriBuilder = uriBuilder
                         .queryParam("booked", !parklyGetItemsDto.active);
 
@@ -78,15 +78,15 @@ public class ParklyApiHandler implements ExternalApiHandler {
                     e.printStackTrace();
                 }
             });
-            return new GetItemsResponse(){{
-                items = responseItems;
-                page = objJsonObject.getInt("currentPage") + 1;
-                totalPages = objJsonObject.getInt("totalPages");
-                totalItems = responseItems.size();
-            }};
-        }
-        catch (Exception e)
-        {
+            return new GetItemsResponse() {
+                {
+                    items = responseItems;
+                    page = objJsonObject.getInt("currentPage") + 1;
+                    totalPages = objJsonObject.getInt("totalPages");
+                    totalItems = responseItems.size();
+                }
+            };
+        } catch (Exception e) {
             return null;
         }
     }
@@ -113,10 +113,12 @@ public class ParklyApiHandler implements ExternalApiHandler {
     public int bookItem(User user, Date startDateTime, int itemId) {
         int booking;
 
-        var dto = new ParklyBookRequest(){{
-            ownerName = user.getFirstName() + user.getLastName();
-            ownerId = user.getId().intValue();
-        }};
+        var dto = new ParklyBookRequest() {
+            {
+                ownerName = user.getFirstName() + user.getLastName();
+                ownerId = user.getId().intValue();
+            }
+        };
 
         try {
             var json = mapper.writeValueAsString(dto);
@@ -129,8 +131,7 @@ public class ParklyApiHandler implements ExternalApiHandler {
             booking = parseInt(response.getBody());
         }
 
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return -1;
         }
         return booking;
@@ -142,11 +143,10 @@ public class ParklyApiHandler implements ExternalApiHandler {
             var request = new HttpEntity<>(buildHeaders());
 
             var response = restTemplate.exchange(baseUri + "/parking-spots/" + externalBookingId +
-                            "/release", HttpMethod.POST, request, String.class);
+                    "/release", HttpMethod.POST, request, String.class);
         }
 
-        catch (Exception e)
-        {
+        catch (Exception e) {
             return false;
         }
 
@@ -155,10 +155,12 @@ public class ParklyApiHandler implements ExternalApiHandler {
 
     @Override
     public void updateAuthorization() {
-        var dto = new ParklyLoginRequest(){{
-            username = "bookly";
-            password = "bookly";
-        }};
+        var dto = new ParklyLoginRequest() {
+            {
+                username = "bookly";
+                password = "bookly";
+            }
+        };
         try {
             var json = mapper.writeValueAsString(dto);
 
@@ -172,14 +174,13 @@ public class ParklyApiHandler implements ExternalApiHandler {
             authenticationHeaderValue = "Bearer " + objJsonObject.getString("jwttoken");
         }
 
-        catch(Exception e) {
+        catch (Exception e) {
 
         }
 
     }
 
-    private HttpHeaders buildHeaders()
-    {
+    private HttpHeaders buildHeaders() {
         var headers = new HttpHeaders();
         headers.add(authenticationHeader, authenticationHeaderValue);
         headers.add("Content-Type", "application/json");

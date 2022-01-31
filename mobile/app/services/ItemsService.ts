@@ -1,5 +1,4 @@
 import {
-  BookingResponse,
   ItemsControllerApi,
   CarItemsResponse,
   FlatItemsResponse,

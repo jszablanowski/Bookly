@@ -8,4 +8,5 @@ public class ParklyBooking {
     public ParkingItem item;
     public Date startDate;
     public boolean active;
+    public int bookingId;
 }

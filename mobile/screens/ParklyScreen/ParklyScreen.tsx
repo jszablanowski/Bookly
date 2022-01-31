@@ -28,7 +28,7 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
 
     const { token } = useAuth();
     const [loading, setLoading] = useState(true);
-    const [itemsCount, setItemsCount] = useState<number>(0);
+    const [itemsCount, setItemsCount] = useState<number | undefined>(undefined);
 
 
     const fetchData = () => {
@@ -74,9 +74,9 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
     const itemsCountHeader = () => {
         return (
             <View>
-                <Text style={{ marginLeft: 10 }}>
+                {itemsCount != undefined && <Text style={{ marginLeft: 10 }}>
                     Found {itemsCount} {itemsCount > 1 ? "results" : "result"}
-                </Text>
+                </Text>}
                 <Divider orientation="vertical"></Divider>
             </View>
         );

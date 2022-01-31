@@ -7,7 +7,7 @@ import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { CreateAccountScreen } from "./CreateAccountScreen";
 import * as yup from "yup";
-import { UserService } from "../app/services/UserService";
+import { UserService } from "../app/services/JwtUserService";
 import { useAuth } from "../hooks/Auth";
 
 

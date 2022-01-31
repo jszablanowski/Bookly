@@ -62,12 +62,47 @@ describe("BookingsControllerApi", () => {
     const bookingId: number = 789
     return expect(instance.getBookingUsingGET(bookingId, {})).resolves.toBe(null)
   })
-  test("getUserBookingsUsingGET", () => {
+  test("getCarsBookingsUsingGET", () => {
     const filter: string = "filter_example"
     const page: number = 56
     const size: number = 56
     const sort: string = "sort_example"
-    return expect(instance.getUserBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+    return expect(instance.getCarsBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+  })
+  test("getFlatsBookingsUsingGET", () => {
+    const filter: string = "filter_example"
+    const page: number = 56
+    const size: number = 56
+    const sort: string = "sort_example"
+    return expect(instance.getFlatsBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+  })
+  test("getParkingsBookingsUsingGET", () => {
+    const filter: string = "filter_example"
+    const page: number = 56
+    const size: number = 56
+    const sort: string = "sort_example"
+    return expect(instance.getParkingsBookingsUsingGET(filter, page, size, sort, {})).resolves.toBe(null)
+  })
+  test("getUserCarsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getUserCarsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getUserFlatsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getUserFlatsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
+  })
+  test("getUserParkingsUsingGET", () => {
+    const page: number = 56
+    const size: number = 56
+    const filter: string = "filter_example"
+    const sort: string = "sort_example"
+    return expect(instance.getUserParkingsUsingGET(page, size, filter, sort, {})).resolves.toBe(null)
   })
   test("updateBookingUsingPUT", () => {
     const body: api.UpdateBookingDto = undefined
@@ -161,6 +196,27 @@ describe("OperationHandlerApi", () => {
   test("handleUsingPOST", () => {
     const body: { [key: string]: string; } = undefined
     return expect(instance.handleUsingPOST(body, {})).resolves.toBe(null)
+  })
+})
+
+describe("UsersControllerApi", () => {
+  let instance: api.UsersControllerApi
+  beforeEach(function() {
+    instance = new api.UsersControllerApi(config)
+  });
+
+  test("disableUserUsingDELETE", () => {
+    const userId: number = 789
+    return expect(instance.disableUserUsingDELETE(userId, {})).resolves.toBe(null)
+  })
+  test("updateUserUsingPUT", () => {
+    const userId: number = 789
+    const email: string = "email_example"
+    const firstName: string = "firstName_example"
+    const lastName: string = "lastName_example"
+    const password: string = "password_example"
+    const username: string = "username_example"
+    return expect(instance.updateUserUsingPUT(userId, email, firstName, lastName, password, username, {})).resolves.toBe(null)
   })
 })
 
