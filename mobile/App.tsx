@@ -14,8 +14,8 @@ import { AccountScreen } from './screens/AccountScreen/AccountScreen';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'LoginScreen'>;
 
-const CreateAccountScreenWrapper = () => (
-  <CreateAccountScreen registerCallback={() => { }}
+const CreateAccountScreenWrapper = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'RegisterScreen'>) => (
+  <CreateAccountScreen registerCallback={() => { navigation.navigate("LoginScreen") }}
     userService={new UserService()}></CreateAccountScreen>
 );
 

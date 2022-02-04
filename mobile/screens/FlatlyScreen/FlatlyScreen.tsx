@@ -32,7 +32,7 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
 
     const { token } = useAuth();
     const [flatlyFilters, setFlatlyFilters] = useState<FlatlyFilters>({ city: "", street: "", text: "" });
-    const [flatlySort, setFlatlySort] = useState<boolean>(false);
+    const [flatlySort, setFlatlySort] = useState<boolean | undefined>(undefined);
     const [loading, setLoading] = useState(true);
     const [itemsCount, setItemsCount] = useState<number | undefined>(undefined);
 
@@ -139,7 +139,7 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
 
 
     const SortScreen = ({ navigation }: NativeStackScreenProps<RootStackParamList, 'SortScreen'>) => (
-        <FlatlySortScreen sorted={flatlySort} onChange={(val) => {
+        <FlatlySortScreen sorted={flatlySort ?? false} onChange={(val) => {
             setFlatlySort(val);
             navigation.navigate("MainScreen");
         }}></FlatlySortScreen>
