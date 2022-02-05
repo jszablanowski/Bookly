@@ -1,11 +1,13 @@
 import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react"
 import { FlatList, TouchableOpacity, View } from "react-native"
+import { Text } from "react-native-elements";
 import { CarlyBooking } from "../../../../app/api";
 import { BookingService } from "../../../../app/services/BookingsService";
 import { CarItemDetails } from "../../../../components/CarItem";
 import { useAuth } from "../../../../hooks/Auth";
 import { CarlyDetailsScreen } from "../../../CarlyDetailsScreen";
+import { SuccessfullyCancelledScreen } from "../../../SuccessfullyCanceledScreen";
 import { CarBookingItem } from "./CarBookingItem";
 
 
@@ -51,12 +53,17 @@ export const CarBookings = (props: CarBookingsProps) => {
 
     const onRefresh = () => {
         setLoading(true);
+        fetchData();
     };
 
 
     const DetailsScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'DetailsScreen'>) => (
         <CarlyDetailsScreen data={{ ...route.params.item, id: route.params.item?.id ?? "" }} onChange={() => { navigation.navigate("SuccessfullScreen"); }}
             bookingId={route.params.bookingId?.toString() ?? ""} cancelMode={true} active={props.active}></CarlyDetailsScreen>
+    )
+
+    const SuccessfullScreen = ({ route, navigation }: NativeStackScreenProps<RootStackParamList, 'SuccessfullScreen'>) => (
+        <SuccessfullyCancelledScreen onClick={() => { navigation.navigate("MainScreen"); fetchData(); }}></SuccessfullyCancelledScreen>
     )
 
 
@@ -72,16 +79,19 @@ export const CarBookings = (props: CarBookingsProps) => {
 
         return (
             <View>
-                <FlatList
-                    data={carItems}
-                    renderItem={renderItem}
-                    keyExtractor={(b) => b.bookingId?.toString() ?? ""}
-                    refreshing={loading}
-                    onRefresh={() => onRefresh()}
+                {(carItems === undefined || carItems.length === 0) && loading == false ?
+                    <Text style={{ marginLeft: 10 }}>No results</Text> :
+                    <FlatList
+                        data={carItems}
+                        renderItem={renderItem}
+                        keyExtractor={(b) => b.bookingId?.toString() ?? ""}
+                        refreshing={loading}
+                        onRefresh={() => onRefresh()}
 
-                    style={{ alignSelf: "stretch", marginBottom: 60 }}
-                // ListHeaderComponent={itemsCountHeader}
-                />
+                        style={{ alignSelf: "stretch", marginBottom: 60 }}
+                    // ListHeaderComponent={itemsCountHeader}
+                    />
+                }
             </View>
         )
     }
@@ -92,7 +102,7 @@ export const CarBookings = (props: CarBookingsProps) => {
         <Stack.Navigator initialRouteName="MainScreen" screenOptions={{ contentStyle: { backgroundColor: "#fff" } }} >
             <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false, }} />
             <Stack.Screen name="DetailsScreen" component={DetailsScreen} options={{ headerTitle: "" }} />
-            {/* <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{ headerTitle: "" }} /> */}
+            <Stack.Screen name="SuccessfullScreen" component={SuccessfullScreen} options={{ headerTitle: "" }} />
         </Stack.Navigator>
     )
 }

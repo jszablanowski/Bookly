@@ -3,6 +3,7 @@ import {
   Booking,
   BookingsControllerApi,
   CarlyBookingsResponse,
+  DeleteBookingResponse,
   FlatlyBookingsResponse,
   ParklyBookingsResponse,
 } from "../api";
@@ -35,7 +36,7 @@ export interface IBookingsService {
 
   bookItem: (token: string, id: number, itemType: string) => Promise<Booking>;
 
-  cancelBooking: (token: string, bookingId: number) => Promise<string>;
+  cancelBooking: (token: string, bookingId: number) => Promise<DeleteBookingResponse>;
 }
 
 export class BookingService implements IBookingsService {
@@ -94,7 +95,6 @@ export class BookingService implements IBookingsService {
       basePath: BASE_URL,
       apiKey: token,
     });
-
     let now = new Date(Date.now());
     console.log("date: " + now);
     return client.addBookingUsingPOST({

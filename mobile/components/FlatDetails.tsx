@@ -27,20 +27,20 @@ export const FlatDetails = (props: {
     }
 
     const cancelBooking = () => {
-        props.service.cancelBooking(token, Number(props.bookingId) ?? 0).then(() => { props.onChange() });
+        props.service.cancelBooking(token, Number(props.bookingId) ?? 0).then(() => { props.onChange() })
+            .catch((error) => console.log(error));
+
     }
 
     let button: ReactNode;
-    if (props.active === true || props.active == undefined) {
-        if (props.cancelMode === true) {
-            button = <Button title="Cancel booking" onPress={() => { cancelBooking() }}></Button>
-        }
-        else {
-            button = <View></View>
-        }
+    if (props.active === true && props.cancelMode === true) {
+        button = <Button title="Cancel booking" onPress={() => { cancelBooking() }}></Button>
+    }
+    else if (props.active === undefined || props.active === false) {
+        button = <Button title="Book" onPress={() => { bookItem() }}></Button>
     }
     else {
-        button = <Button title="Book" onPress={() => { bookItem() }}></Button>
+        button = <View></View>
     }
 
 

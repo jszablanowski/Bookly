@@ -14,6 +14,7 @@ import pw.react.backend.enums.ItemType;
 import pw.react.backend.enums.SortType;
 import pw.react.backend.models.Booking;
 import pw.react.backend.requests.BaseBooking;
+import pw.react.backend.requests.DeleteBookingResponse;
 import pw.react.backend.requests.carly.CarlyBooking;
 import pw.react.backend.requests.carly.CarlyBookingsResponse;
 import pw.react.backend.requests.carly.CarlyUserBooking;
@@ -172,10 +173,10 @@ public class BookingsController {
     }
 
     @DeleteMapping(path = "/{bookingId}")
-    public ResponseEntity<String> deleteBooking(@PathVariable long bookingId)
+    public ResponseEntity<DeleteBookingResponse> deleteBooking(@PathVariable long bookingId)
     {
         var result = bookingService.deleteBooking(bookingId);
-        return result ? ResponseEntity.ok("Booking deleted")
-                : ResponseEntity.ok("Error when deleting booking");
+        return result ? ResponseEntity.ok(new DeleteBookingResponse(){{message = "Booking deleted";}})
+                : ResponseEntity.ok(new DeleteBookingResponse(){{message = "Booking not found";}});
     }
 }
