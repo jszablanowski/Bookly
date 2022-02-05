@@ -16,7 +16,6 @@ export interface CarItemDetails {
 export const CarItem = (props: { details: CarItemDetails }) => {
 
 
-
     return (
         <View style={styles.container}>
             <View style={{ display: "flex", flexDirection: "row" }}>
