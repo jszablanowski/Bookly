@@ -33,12 +33,17 @@ export const LoginScreen = (props: LoginScreenProps) => {
     });
 
     const { setToken } = useAuth();
+    const [loginFailed, setLoginFailed] = useState<boolean | undefined>(undefined);
 
     const onSubmit = (data: FormData) => {
         props.userService.login(data.login, data.password)
             .then(response => {
                 setToken("Bearer " + response.jwttoken);
+                setLoginFailed(false);
                 props.loginUserCallback();
+            })
+            .catch(() => {
+                setLoginFailed(true);
             });
     }
 
@@ -94,6 +99,8 @@ export const LoginScreen = (props: LoginScreenProps) => {
                         <View style={styles.button}>
                             <Button title="Create new account" type="outline" onPress={() => props.createAccountCallback()}></Button>
                         </View>
+                        {loginFailed === true && <Text style={{ color: "#FF0000" }}>Login failed</Text>}
+
                     </View>
                 </View>
             </KeyboardAwareScrollView>

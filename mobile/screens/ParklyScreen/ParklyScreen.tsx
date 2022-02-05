@@ -97,15 +97,18 @@ export const ParklyScreen = (props: ParklyScreenProps) => {
 
         return (
             <View style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-                <FlatList
-                    data={parkingItems}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    onRefresh={() => onRefresh()}
-                    refreshing={loading}
-                    style={{ alignSelf: "stretch" }}
-                // ListHeaderComponent={itemsCountHeader}
-                />
+                {(parkingItems === undefined || parkingItems.length === 0) && loading == false ?
+                    <Text style={{ marginLeft: 10 }}>No results</Text> :
+                    <FlatList
+                        data={parkingItems}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        onRefresh={() => onRefresh()}
+                        refreshing={loading}
+                        style={{ alignSelf: "stretch" }}
+                    // ListHeaderComponent={itemsCountHeader}
+                    />
+                }
             </View>
         )
     }

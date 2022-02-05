@@ -30,7 +30,7 @@ export const ParkingDetails = (props: {
     if (props.active === true && props.cancelMode === true) {
         button = <Button title="Cancel booking" onPress={() => { cancelBooking() }}></Button>
     }
-    else if (props.active === undefined || props.active === false) {
+    else if (props.active === undefined) {
         button = <Button title="Book" onPress={() => { bookItem() }}></Button>
     }
     else {

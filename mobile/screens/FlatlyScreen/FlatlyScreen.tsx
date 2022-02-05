@@ -108,15 +108,18 @@ export const FlatlyScreen = (props: FlatlyScreenProps) => {
                         </View>
                     </View>
                 </View>
-                <FlatList
-                    data={flatItems}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
-                    style={{ alignSelf: "stretch", marginBottom: 60 }}
-                    onRefresh={() => onRefresh()}
-                    refreshing={loading}
-                // ListHeaderComponent={itemsCountHeader}
-                />
+                {(flatItems === undefined || flatItems.length === 0) && loading == false ?
+                    <Text style={{ marginLeft: 10 }}>No results</Text> :
+                    <FlatList
+                        data={flatItems}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id.toString()}
+                        style={{ alignSelf: "stretch", marginBottom: 60 }}
+                        onRefresh={() => onRefresh()}
+                        refreshing={loading}
+                    // ListHeaderComponent={itemsCountHeader}
+                    />
+                }
             </View>
         )
     }

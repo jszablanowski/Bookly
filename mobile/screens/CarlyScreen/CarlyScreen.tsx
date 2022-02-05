@@ -126,15 +126,17 @@ export const CarlyScreen = (props: CarlyScreenProps) => {
                         </View>
                     </View>
                 </View>
-                <FlatList
-                    data={carItems}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                    onRefresh={() => onRefresh()}
-                    refreshing={loading}
-                    style={{ alignSelf: "stretch", marginBottom: 60 }}
-                // ListHeaderComponent={itemsCountHeader}
-                />
+                {(carItems === undefined || carItems.length === 0) && loading == false ?
+                    <Text style={{ marginLeft: 10 }}>No results</Text> :
+                    <FlatList
+                        data={carItems}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        onRefresh={() => onRefresh()}
+                        refreshing={loading}
+                        style={{ alignSelf: "stretch", marginBottom: 60 }}
+                    />
+                }
             </View>
         )
     }
